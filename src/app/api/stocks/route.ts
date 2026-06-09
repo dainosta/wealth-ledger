@@ -1,6 +1,4 @@
 import { NextResponse } from 'next/server';
-// @ts-ignore
-import { quickQuote } from 'vnstock-js';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -19,11 +17,24 @@ export async function GET(request: Request) {
     const results = await Promise.all(
       symbols.map(async (symbol) => {
         try {
-          const quote = await quickQuote(symbol);
+          const toTime = Math.floor(Date.now() / 1000);
+          const fromTime = toTime - 7 * 24 * 60 * 60; // Fetch last 7 days to be safe
+          const url = `https://services.entrade.com.vn/chart-api/v2/ohlcs/stock?from=${fromTime}&to=${toTime}&symbol=${symbol}&resolution=1D`;
+          
+          const res = await fetch(url, { cache: 'no-store' });
+          if (!res.ok) throw new Error('API fetch failed');
+          
+          const data = await res.json();
+          if (!data || !data.c || data.c.length === 0) {
+            throw new Error('No data found');
+          }
+
+          const currentPrice = data.c[data.c.length - 1]; // Last close price
+          
           return {
             symbol,
-            price: (quote?.price || 0) * 1000, // Multiply by 1000 to get actual VND
-            companyName: quote?.companyName || symbol,
+            price: currentPrice * 1000, // Multiply by 1000 to get actual VND
+            companyName: symbol, // DNSE chart API doesn't return company name, fallback to symbol
             error: null
           };
         } catch (err: any) {
