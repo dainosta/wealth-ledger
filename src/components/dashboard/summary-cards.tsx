@@ -9,10 +9,7 @@ import { useGold } from '@/hooks/use-gold';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 import dynamic from 'next/dynamic';
 
-const GoalProgress = dynamic(
-  () => import('./goal-progress').then((mod) => mod.GoalProgress),
-  { ssr: false }
-);
+import { useRealtimeNetWorth } from '@/hooks/use-realtime-net-worth';
 
 interface SummaryCardsProps {
   data: CalculatedMonthlyRecord[];
@@ -20,36 +17,18 @@ interface SummaryCardsProps {
 }
 
 export function SummaryCards({ data, stocks }: SummaryCardsProps) {
-  const totalStockValue = stocks.reduce((sum, stock) => sum + stock.currentValue, 0);
+  const {
+    realtimeNetWorth,
+    totalStockValue,
+    liveGoldDebt,
+    realtimeMoMChange,
+    realtimeYtdGrowth,
+    liveGoldPrice: displayGoldPrice,
+    currentMonth,
+    previousMonth
+  } = useRealtimeNetWorth(data, stocks);
 
-  if (!data || data.length === 0) return null;
-
-  const currentMonth = data[data.length - 1];
-  const previousMonth = data.length > 1 ? data[data.length - 2] : null;
-
-  const { goldPrice: liveGoldPrice } = useGold();
-  const displayGoldPrice = liveGoldPrice || currentMonth.gold_price;
-  const liveGoldDebt = currentMonth.gold_debt_qty * displayGoldPrice;
-
-  // Real-time Net Worth (Assets are entirely stocks)
-  const realtimeNetWorth = totalStockValue - liveGoldDebt;
-
-  // Real-time MoM Change
-  let realtimeMoMChange = 0;
-  if (previousMonth && previousMonth.net_worth !== 0) {
-    realtimeMoMChange = ((realtimeNetWorth - previousMonth.net_worth) / previousMonth.net_worth) * 100;
-  }
-
-  // Real-time YTD (Year-to-date)
-  const currentYear = currentMonth.month_year.split('-')[1];
-  const lastYearEnd = data.find(
-    (d) => d.month_year === `12-${parseInt(currentYear) - 1}`
-  );
-  
-  let realtimeYtdGrowth = 0;
-  if (lastYearEnd && lastYearEnd.net_worth !== 0) {
-    realtimeYtdGrowth = ((realtimeNetWorth - lastYearEnd.net_worth) / lastYearEnd.net_worth) * 100;
-  }
+  if (!data || data.length === 0 || !currentMonth) return null;
 
   // Sparkline Data
   const netWorthHistory = data.map(d => ({ value: d.net_worth }));
@@ -58,9 +37,8 @@ export function SummaryCards({ data, stocks }: SummaryCardsProps) {
   const ytdHistory = data.map(d => ({ value: d.net_worth })); // Use net worth trend for YTD card as well
 
   return (
-    <div className="flex flex-col w-full">
-      <GoalProgress currentNetWorth={realtimeNetWorth} />
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+    <div className="flex flex-col w-full h-full">
+      <div className="grid grid-cols-2 gap-3 flex-1">
         {/* Net Worth Card */}
       <Card className="bg-emerald-50/60 border-emerald-200/60 shadow-sm relative overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 pt-3 z-10 relative">

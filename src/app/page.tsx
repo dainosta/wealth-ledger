@@ -15,10 +15,20 @@ import { StockPieChart } from '@/components/stocks/stock-pie-chart';
 
 import { useStocks } from '@/hooks/use-stocks';
 
+import { useRealtimeNetWorth } from '@/hooks/use-realtime-net-worth';
+import dynamic from 'next/dynamic';
+
+const GoalProgress = dynamic(
+  () => import('@/components/dashboard/goal-progress').then((mod) => mod.GoalProgress),
+  { ssr: false }
+);
+
 export default function Home() {
   const { records, loading: recordsLoading } = useRecords();
   const stocksData = useStocks();
   const isAppLoading = recordsLoading || !stocksData.initialized;
+  
+  const { realtimeNetWorth } = useRealtimeNetWorth(records, stocksData.stocks);
 
   if (isAppLoading) {
     return (
@@ -52,18 +62,39 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Summary Cards */}
-      <div className="shrink-0 mb-3 animate-fade-in-up delay-100">
-        <SummaryCards data={records} stocks={stocksData.stocks} />
-      </div>
-
-      {/* Main Grid */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3 lg:min-h-0 lg:overflow-hidden animate-fade-in-up delay-200">
+      {/* Main Grid: 2 Columns */}
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3 lg:min-h-0 lg:overflow-hidden animate-fade-in-up delay-100">
         
-        {/* Right Col: Charts & Stocks (Order 1 on mobile) */}
+        {/* Left Col: Summary Cards & Ledger (Order 2 on mobile) */}
+        <div className="lg:col-span-4 flex flex-col gap-3 lg:min-h-0 order-2 lg:order-1">
+          {/* Summary Cards */}
+          <div className="shrink-0">
+            <SummaryCards data={records} stocks={stocksData.stocks} />
+          </div>
+
+          {/* Ledger */}
+          <div className="flex-1 flex flex-col bg-white rounded-xl shadow-sm border overflow-hidden min-h-[400px] lg:min-h-0">
+            <div className="flex items-center justify-between p-3 border-b bg-neutral-50 shrink-0">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-600">Sổ cái (Ledger)</h3>
+              <AddRecordDialog />
+            </div>
+            <div className="flex-1 overflow-auto p-0 relative">
+              <div className="absolute inset-0">
+                <DataTable columns={columns} data={[...records].reverse()} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Col: Goal Progress, Charts & Stocks (Order 1 on mobile) */}
         <div className="lg:col-span-8 flex flex-col gap-3 lg:min-h-0 order-1 lg:order-2">
+          {/* Goal Progress */}
+          <div className="shrink-0">
+            <GoalProgress currentNetWorth={realtimeNetWorth} />
+          </div>
+
           {/* Charts Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:h-[340px] shrink-0">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:h-[280px] shrink-0">
              <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border overflow-hidden h-[300px] lg:h-auto">
                <NetWorthChart data={records} />
              </div>
@@ -75,19 +106,6 @@ export default function Home() {
           {/* Stock Portfolio Row */}
           <div className="flex-1 lg:min-h-0 flex flex-col min-h-[400px] lg:min-h-0">
             <StockPortfolio stocksData={stocksData} />
-          </div>
-        </div>
-
-        {/* Left Col: Ledger (Order 2 on mobile) */}
-        <div className="lg:col-span-4 flex flex-col lg:min-h-0 bg-white rounded-xl shadow-sm border overflow-hidden min-h-[500px] lg:min-h-0 order-2 lg:order-1">
-          <div className="flex items-center justify-between p-3 border-b bg-neutral-50 shrink-0">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-600">Sổ cái (Ledger)</h3>
-            <AddRecordDialog />
-          </div>
-          <div className="flex-1 overflow-auto p-0 relative">
-            <div className="absolute inset-0">
-              <DataTable columns={columns} data={[...records].reverse()} />
-            </div>
           </div>
         </div>
 
