@@ -155,13 +155,18 @@ export function SummaryCards({ data, stocks }: SummaryCardsProps) {
           <CoinsIcon className="h-4 w-4 text-rose-600" />
         </CardHeader>
         <CardContent className="pb-4 z-10 relative">
-          <div className="text-2xl font-bold text-rose-700">
+          <div className="text-2xl font-bold text-rose-700 mb-2">
             {formatCurrency(liveGoldDebt)}
           </div>
-          <div className="mt-1">
-            <p className="text-xs text-rose-600 opacity-80 font-medium">
-              Quy đổi từ {currentMonth.gold_debt_qty} lượng (Giá Live: {formatCurrency(displayGoldPrice)}/lượng)
-            </p>
+          <div className="flex flex-col gap-1.5">
+            <div className="flex items-center justify-between text-[11px] font-semibold text-rose-700/70">
+              <span className="uppercase tracking-wider">Số lượng đang nợ:</span>
+              <span className="text-rose-800 font-bold">{currentMonth.gold_debt_qty} lượng</span>
+            </div>
+            <div className="flex items-center justify-between text-[11px] font-semibold bg-amber-100/60 px-2 py-1.5 rounded-md border border-amber-200/60">
+              <span className="uppercase tracking-wider text-amber-700/90 flex items-center"><CoinsIcon className="w-3 h-3 mr-1"/>Giá Live SJC:</span>
+              <span className="text-amber-800 font-bold">{formatCurrency(displayGoldPrice)} / lượng</span>
+            </div>
           </div>
         </CardContent>
         <div className="absolute bottom-0 left-0 right-0 h-16 w-full opacity-60 pointer-events-none">
