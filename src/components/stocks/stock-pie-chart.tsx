@@ -24,8 +24,11 @@ const COLORS = [
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
-    const data = payload[0].payload.payload;
-    const color = payload[0].payload.fill;
+    const data = payload[0].payload?.payload || payload[0].payload;
+    const color = payload[0].color || payload[0].fill || payload[0].payload?.fill;
+    
+    if (!data) return null;
+
     return (
       <div className="bg-neutral-900 text-neutral-100 p-3 rounded-xl text-xs shadow-xl border border-neutral-800 z-50">
         <div className="flex items-center font-bold mb-1 text-sm">
@@ -93,7 +96,7 @@ export function StockPieChart({ stocks }: { stocks: StockWithQuote[] }) {
         dominantBaseline="central" 
         className="text-[11px] font-bold"
       >
-        {chartData[index].symbol}
+        {chartData[index]?.symbol}
       </text>
     );
   };

@@ -137,18 +137,18 @@ function StockTableRow({ stock, updateStock, deleteStock }: { stock: any, update
     }
   };
 
-  const bgColors = ['bg-blue-600', 'bg-emerald-600', 'bg-rose-600', 'bg-amber-600', 'bg-purple-600', 'bg-cyan-600'];
-  const charCode = stock.symbol.charCodeAt(0) || 0;
-  const avatarColor = bgColors[charCode % bgColors.length];
+  const avatarColors = ['bg-blue-600', 'bg-emerald-600', 'bg-rose-600', 'bg-amber-600', 'bg-purple-600', 'bg-cyan-600'];
+  const charCode = stock?.symbol?.charCodeAt(0) || 0;
+  const bgColorClass = avatarColors[charCode % avatarColors.length];
 
   return (
     <TableRow className={`${isUpdating ? 'opacity-50' : ''} hover:bg-neutral-50/50 transition-colors`}>
-      <TableCell className="font-bold">
-        <div className="flex items-center gap-3">
-          <div className={`w-6 h-6 rounded-full ${avatarColor} flex items-center justify-center text-[10px] text-white font-bold shrink-0 shadow-sm`}>
-            {stock.symbol.charAt(0)}
+      <TableCell className="font-medium">
+        <div className="flex items-center gap-2">
+          <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-sm ${bgColorClass}`}>
+            {stock?.symbol?.charAt(0) || '?'}
           </div>
-          <span className="text-neutral-800">{stock.symbol}</span>
+          <span className="text-neutral-800">{stock?.symbol}</span>
         </div>
       </TableCell>
       <TableCell className="text-right">
