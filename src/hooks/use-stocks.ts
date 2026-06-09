@@ -119,6 +119,28 @@ export function useStocks() {
     }
   };
 
+  const replacePortfolio = async (newStocks: Omit<StockRecord, 'id' | 'created_at'>[]) => {
+    try {
+      setLoading(true);
+      // Xóa toàn bộ
+      const { error: deleteError } = await supabase.from('stock_portfolio').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      if (deleteError) throw deleteError;
+
+      // Chèn danh sách mới (nếu có)
+      if (newStocks.length > 0) {
+        const { error: insertError } = await supabase.from('stock_portfolio').insert(newStocks);
+        if (insertError) throw insertError;
+      }
+      
+      await fetchStocks();
+    } catch (err) {
+      console.error('Error replacing portfolio:', err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     stocks,
     loading,
@@ -127,6 +149,7 @@ export function useStocks() {
     addStock,
     updateStock,
     deleteStock,
+    replacePortfolio,
     refresh: fetchStocks
   };
 }

@@ -14,8 +14,10 @@ import { Button } from '@/components/ui/button';
 import { RefreshCwIcon, Trash2Icon, PencilIcon } from 'lucide-react';
 import { formatCurrency } from '@/lib/calculations';
 
+import { DnseSyncDialog } from './dnse-sync-dialog';
+
 export function StockPortfolio({ stocksData }: { stocksData: any }) {
-  const { stocks, loading, error, deleteStock, refresh, updateStock } = stocksData;
+  const { stocks, loading, error, deleteStock, refresh, updateStock, replacePortfolio } = stocksData;
 
   const totalBuyValue = stocks.reduce((sum: any, stock: any) => sum + stock.quantity * stock.buy_price, 0);
   const totalCurrentValue = stocks.reduce((sum: any, stock: any) => sum + stock.currentValue, 0);
@@ -29,6 +31,7 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
           <CardTitle className="text-sm font-bold uppercase tracking-wider text-neutral-700">Bảng Danh mục Cổ phiếu</CardTitle>
         </div>
         <div className="flex items-center space-x-2">
+          <DnseSyncDialog onSyncComplete={replacePortfolio} />
           <Button variant="outline" size="sm" onClick={refresh} disabled={loading} className="h-8 text-xs font-semibold bg-white">
             <RefreshCwIcon className={`mr-2 h-3 w-3 ${loading ? 'animate-spin' : ''}`} />
             Làm mới giá
