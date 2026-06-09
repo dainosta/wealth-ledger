@@ -72,11 +72,10 @@ export async function POST(request: Request) {
       }
     }
     
-    // Chuyển map thành array các cổ phiếu
     const syncedStocks = Array.from(portfolioMap.entries()).map(([symbol, data]) => ({
       symbol,
       quantity: data.quantity,
-      buy_price: data.totalCost / data.quantity // Tính giá vốn trung bình
+      buy_price: Math.round(data.totalCost / data.quantity) // Tính giá vốn trung bình và làm tròn thành số nguyên
     }));
     
     return NextResponse.json({ 
