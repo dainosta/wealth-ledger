@@ -28,10 +28,10 @@ export default function Home() {
   }
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-neutral-100/50 p-4">
+    <div className="flex lg:h-screen min-h-screen flex-col lg:overflow-hidden overflow-auto bg-neutral-100/50 p-2 md:p-4">
       {/* Header */}
-      <div className="flex items-center justify-between mb-3 shrink-0">
-        <h2 className="text-2xl font-extrabold tracking-tight">Wealth Ledger</h2>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 shrink-0 gap-3 sm:gap-0">
+        <h2 className="text-xl md:text-2xl font-extrabold tracking-tight">Wealth Ledger</h2>
         <div className="flex items-center space-x-2">
           <BackupManager />
           <ImportCsvButton />
@@ -45,10 +45,28 @@ export default function Home() {
       </div>
 
       {/* Main Grid */}
-      <div className="flex-1 grid grid-cols-12 gap-3 min-h-0 overflow-hidden">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3 lg:min-h-0 lg:overflow-hidden">
         
-        {/* Left Col: Ledger */}
-        <div className="col-span-4 flex flex-col min-h-0 bg-white rounded-xl shadow-sm border overflow-hidden">
+        {/* Right Col: Charts & Stocks (Order 1 on mobile) */}
+        <div className="lg:col-span-8 flex flex-col gap-3 lg:min-h-0 order-1 lg:order-2">
+          {/* Charts Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:h-[340px] shrink-0">
+             <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border overflow-hidden h-[300px] lg:h-auto">
+               <NetWorthChart data={records} />
+             </div>
+             <div className="lg:col-span-1 bg-white rounded-xl shadow-sm border overflow-hidden h-[300px] lg:h-auto">
+               <StockPieChart stocks={stocksData.stocks} />
+             </div>
+          </div>
+
+          {/* Stock Portfolio Row */}
+          <div className="flex-1 lg:min-h-0 flex flex-col min-h-[400px] lg:min-h-0">
+            <StockPortfolio stocksData={stocksData} />
+          </div>
+        </div>
+
+        {/* Left Col: Ledger (Order 2 on mobile) */}
+        <div className="lg:col-span-4 flex flex-col lg:min-h-0 bg-white rounded-xl shadow-sm border overflow-hidden min-h-[500px] lg:min-h-0 order-2 lg:order-1">
           <div className="flex items-center justify-between p-3 border-b bg-neutral-50 shrink-0">
             <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-600">Sổ cái (Ledger)</h3>
             <AddRecordDialog />
@@ -60,23 +78,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Right Col: Charts & Stocks */}
-        <div className="col-span-8 flex flex-col gap-3 min-h-0">
-          {/* Charts Row */}
-          <div className="grid grid-cols-3 gap-3 h-[340px] shrink-0">
-             <div className="col-span-2 bg-white rounded-xl shadow-sm border overflow-hidden">
-               <NetWorthChart data={records} />
-             </div>
-             <div className="col-span-1 bg-white rounded-xl shadow-sm border overflow-hidden">
-               <StockPieChart stocks={stocksData.stocks} />
-             </div>
-          </div>
-
-          {/* Stock Portfolio Row */}
-          <div className="flex-1 min-h-0 flex flex-col">
-            <StockPortfolio stocksData={stocksData} />
-          </div>
-        </div>
       </div>
     </div>
   );

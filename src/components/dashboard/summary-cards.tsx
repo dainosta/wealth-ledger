@@ -60,7 +60,7 @@ export function SummaryCards({ data, stocks }: SummaryCardsProps) {
   return (
     <div className="flex flex-col w-full">
       <GoalProgress currentNetWorth={realtimeNetWorth} />
-      <div className="grid gap-3 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {/* Net Worth Card */}
       <Card className="bg-emerald-50/60 border-emerald-200/60 shadow-sm relative overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 pt-4 z-10 relative">

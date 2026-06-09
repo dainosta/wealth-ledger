@@ -103,20 +103,20 @@ export function StockPieChart({ stocks }: { stocks: StockWithQuote[] }) {
       <CardHeader className="py-3 px-4 shrink-0 border-b border-transparent">
         <CardTitle className="text-sm">Phân bổ Danh mục</CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 min-h-0 p-0 flex flex-row items-center h-full">
+      <CardContent className="flex-1 min-h-0 p-0 flex flex-col lg:flex-row items-center h-full">
         
         {/* Left Column: Portfolio Summary */}
-        <div className="w-[45%] h-full flex flex-col justify-center px-4 border-r border-neutral-100/60">
+        <div className="w-full lg:w-[45%] h-auto lg:h-full flex flex-col justify-center px-4 py-4 lg:py-0 border-b lg:border-b-0 lg:border-r border-neutral-100/60 order-2 lg:order-1">
           <div className="space-y-4">
             <div>
               <p className="text-xs font-bold text-neutral-800 mb-3">Tổng quan Danh mục</p>
               
-              <div className="mb-3">
+              <div className="flex justify-between lg:block mb-3">
                 <p className="text-[10px] text-neutral-500 font-medium mb-0.5">Tổng giá trị</p>
                 <p className="text-base font-bold text-neutral-900">{formatCurrency(totalValue)}</p>
               </div>
               
-              <div className="mb-4">
+              <div className="flex justify-between lg:block mb-4">
                 <p className="text-[10px] text-neutral-500 font-medium mb-0.5">Số lượng Cổ phiếu</p>
                 <p className="text-sm font-bold text-neutral-900">{stocks.length}</p>
               </div>
@@ -143,7 +143,7 @@ export function StockPieChart({ stocks }: { stocks: StockWithQuote[] }) {
         </div>
 
         {/* Right Column: Pie Chart */}
-        <div className="w-[55%] h-full relative">
+        <div className="w-full lg:w-[55%] min-h-[200px] lg:min-h-0 lg:h-full relative order-1 lg:order-2">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
               <Pie
