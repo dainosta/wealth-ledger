@@ -19,6 +19,7 @@ export interface StockWithQuote extends StockRecord {
 export function useStocks() {
   const [stocks, setStocks] = useState<StockWithQuote[]>([]);
   const [loading, setLoading] = useState(true);
+  const [initialized, setInitialized] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const supabase = createClient();
 
@@ -70,6 +71,7 @@ export function useStocks() {
       setError(err.message);
     } finally {
       if (showLoading) setLoading(false);
+      setInitialized(true);
     }
   };
 
@@ -120,6 +122,7 @@ export function useStocks() {
   return {
     stocks,
     loading,
+    initialized,
     error,
     addStock,
     updateStock,

@@ -18,8 +18,9 @@ import { useStocks } from '@/hooks/use-stocks';
 export default function Home() {
   const { records, loading: recordsLoading } = useRecords();
   const stocksData = useStocks();
+  const isAppLoading = recordsLoading || !stocksData.initialized;
 
-  if (recordsLoading) {
+  if (isAppLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-neutral-100/50">
         <div className="relative flex items-center justify-center w-24 h-24 mb-4">
