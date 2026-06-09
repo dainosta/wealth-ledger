@@ -18,8 +18,8 @@ export async function GET(request: Request) {
       symbols.map(async (symbol) => {
         try {
           const toTime = Math.floor(Date.now() / 1000);
-          const fromTime = toTime - 7 * 24 * 60 * 60; // Fetch last 7 days to be safe
-          const url = `https://services.entrade.com.vn/chart-api/v2/ohlcs/stock?from=${fromTime}&to=${toTime}&symbol=${symbol}&resolution=1D`;
+          const fromTime = toTime - 3 * 24 * 60 * 60; // Fetch last 3 days to account for weekends
+          const url = `https://services.entrade.com.vn/chart-api/v2/ohlcs/stock?from=${fromTime}&to=${toTime}&symbol=${symbol}&resolution=1`;
           
           const res = await fetch(url, { cache: 'no-store' });
           if (!res.ok) throw new Error('API fetch failed');
