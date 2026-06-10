@@ -87,7 +87,7 @@ export function useStocks() {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [fetchStocks]);
+  }, []);
 
   const addStock = async (record: Omit<StockRecord, 'id' | 'created_at'>) => {
     try {
