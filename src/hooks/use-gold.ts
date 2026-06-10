@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 export function useGold() {
   const [goldPrice, setGoldPrice] = useState<number | null>(null);
   const [worldGoldPrice, setWorldGoldPrice] = useState<number | null>(null);
+  const [worldGoldChange, setWorldGoldChange] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchGoldPrice = async () => {
@@ -15,6 +16,9 @@ export function useGold() {
       }
       if (data.xauusdPrice) {
         setWorldGoldPrice(data.xauusdPrice);
+      }
+      if (data.xauusdChange !== undefined) {
+        setWorldGoldChange(data.xauusdChange);
       }
     } catch (err) {
       console.error('Không thể lấy giá vàng SJC Live:', err);
@@ -33,5 +37,5 @@ export function useGold() {
     return () => clearInterval(interval);
   }, []);
 
-  return { goldPrice, worldGoldPrice, loading };
+  return { goldPrice, worldGoldPrice, worldGoldChange, loading };
 }

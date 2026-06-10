@@ -27,6 +27,7 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
     realtimeYtdGrowth,
     liveGoldPrice: displayGoldPrice,
     worldGoldPrice,
+    worldGoldChange,
     currentMonth,
     previousMonth
   } = useRealtimeNetWorth(data, stocks);
@@ -186,7 +187,15 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
             {worldGoldPrice ? (
               <div className="flex items-center justify-between bg-neutral-100/80 px-2 py-1.5 rounded border border-neutral-200/80">
                 <span className="text-[10px] uppercase tracking-wider text-neutral-600 flex items-center font-bold"><CoinsIcon className="w-3 h-3 mr-1"/>XAU/USD:</span>
-                <span className="text-neutral-700 font-extrabold text-xs">${worldGoldPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-[9px] font-semibold text-neutral-500">/ oz</span></span>
+                <span className="text-neutral-700 font-extrabold text-xs">
+                  ${worldGoldPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  {worldGoldChange !== undefined && worldGoldChange !== null && (
+                    <span className={`ml-1.5 text-[10px] font-bold ${worldGoldChange >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+                      {worldGoldChange >= 0 ? '+' : ''}{worldGoldChange.toFixed(2)}%
+                    </span>
+                  )}
+                  <span className="text-[9px] font-semibold text-neutral-500 ml-1">/ oz</span>
+                </span>
               </div>
             ) : null}
           </div>

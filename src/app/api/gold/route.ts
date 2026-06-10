@@ -26,13 +26,14 @@ export async function GET() {
 
     // 3. Fetch XAUUSD from TradingView
     let xauusdPrice = 0;
+    let xauusdChange = 0;
     try {
       const tvRes = await fetch('https://scanner.tradingview.com/cfd/scan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           symbols: { tickers: ['FX_IDC:XAUUSD'] },
-          columns: ['close']
+          columns: ['close', 'change']
         }),
         next: { revalidate: 60 },
         signal: AbortSignal.timeout(3000)
@@ -41,6 +42,7 @@ export async function GET() {
         const tvData = await tvRes.json();
         if (tvData.data && tvData.data.length > 0) {
           xauusdPrice = tvData.data[0].d[0];
+          xauusdChange = tvData.data[0].d[1];
         }
       }
     } catch (e) {
@@ -50,7 +52,8 @@ export async function GET() {
     if (goldData.results && goldData.results.length > 0) {
       return NextResponse.json({
         ...goldData.results[0],
-        xauusdPrice
+        xauusdPrice,
+        xauusdChange
       });
     }
 
