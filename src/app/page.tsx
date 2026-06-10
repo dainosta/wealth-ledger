@@ -16,12 +16,7 @@ import { StockPieChart } from '@/components/stocks/stock-pie-chart';
 import { useStocks } from '@/hooks/use-stocks';
 
 import { useRealtimeNetWorth } from '@/hooks/use-realtime-net-worth';
-import dynamic from 'next/dynamic';
-
-const GoalProgress = dynamic(
-  () => import('@/components/dashboard/goal-progress').then((mod) => mod.GoalProgress),
-  { ssr: false }
-);
+import { GoalProgress } from '@/components/dashboard/goal-progress';
 
 export default function Home() {
   const { records, loading: recordsLoading } = useRecords();
@@ -32,19 +27,38 @@ export default function Home() {
 
   if (isAppLoading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-neutral-100/50">
-        <div className="relative flex items-center justify-center w-24 h-24 mb-4">
-          <div className="absolute inset-0 bg-emerald-500 rounded-2xl opacity-20 animate-ping" style={{ animationDuration: '2s' }}></div>
-          <div className="absolute inset-0 bg-emerald-400 rounded-2xl opacity-30 animate-pulse"></div>
-          <div className="relative bg-emerald-600 w-16 h-16 rounded-xl shadow-xl flex items-center justify-center text-white font-extrabold text-3xl tracking-tighter">
-            W
-          </div>
+      <div className="flex lg:h-screen min-h-screen flex-col lg:overflow-hidden bg-neutral-100/50 p-2 md:p-4">
+        {/* Header Skeleton */}
+        <div className="flex items-center justify-between mb-3 h-8">
+          <div className="h-8 w-48 bg-neutral-200/70 animate-pulse rounded-md"></div>
+          <div className="h-8 w-32 bg-neutral-200/70 animate-pulse rounded-md"></div>
         </div>
-        <h2 className="text-xl font-bold text-neutral-700 tracking-wider mb-3">Wealth Ledger</h2>
-        <div className="flex gap-1.5">
-          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: '0ms' }}></div>
-          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: '150ms' }}></div>
-          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: '300ms' }}></div>
+        
+        {/* Main Grid Skeleton */}
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3">
+          <div className="lg:col-span-4 flex flex-col gap-3 order-2 lg:order-1">
+            {/* Summary Cards Skeleton */}
+            <div className="grid grid-cols-2 gap-3 h-[200px]">
+              <div className="bg-neutral-200/70 animate-pulse rounded-xl"></div>
+              <div className="bg-neutral-200/70 animate-pulse rounded-xl"></div>
+              <div className="bg-neutral-200/70 animate-pulse rounded-xl"></div>
+              <div className="bg-neutral-200/70 animate-pulse rounded-xl"></div>
+            </div>
+            {/* Ledger Skeleton */}
+            <div className="flex-1 bg-neutral-200/70 animate-pulse rounded-xl min-h-[400px] lg:min-h-0"></div>
+          </div>
+          
+          <div className="lg:col-span-8 flex flex-col gap-3 order-1 lg:order-2">
+            {/* Goal Progress Skeleton */}
+            <div className="h-24 bg-neutral-200/70 animate-pulse rounded-xl"></div>
+            {/* Charts Skeleton */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 h-[280px]">
+              <div className="lg:col-span-2 bg-neutral-200/70 animate-pulse rounded-xl"></div>
+              <div className="lg:col-span-1 bg-neutral-200/70 animate-pulse rounded-xl"></div>
+            </div>
+            {/* Portfolio Skeleton */}
+            <div className="flex-1 bg-neutral-200/70 animate-pulse rounded-xl min-h-[400px] lg:min-h-0"></div>
+          </div>
         </div>
       </div>
     );
