@@ -18,7 +18,7 @@ export async function GET() {
       headers: {
         'Authorization': `Bearer ${apiKey}`
       },
-      next: { revalidate: 3600 } // Cache gold price for 1 hour
+      next: { revalidate: 60 } // Cache gold price for 1 minute
     });
 
     if (!goldRes.ok) throw new Error('Failed to fetch gold price');
