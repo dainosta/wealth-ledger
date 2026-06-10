@@ -16,8 +16,11 @@ import { formatCurrency } from '@/lib/calculations';
 
 import { DnseSyncDialog } from './dnse-sync-dialog';
 
+import { StockPieChart } from './stock-pie-chart';
+
 export function StockPortfolio({ stocksData }: { stocksData: any }) {
   const { stocks, loading, error, deleteStock, refresh, updateStock, replacePortfolio } = stocksData;
+  const [viewMode, setViewMode] = useState<'table' | 'chart'>('table');
 
   const totalBuyValue = stocks.reduce((sum: any, stock: any) => sum + stock.quantity * stock.buy_price, 0);
   const totalCurrentValue = stocks.reduce((sum: any, stock: any) => sum + stock.currentValue, 0);
@@ -26,9 +29,23 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
 
   return (
     <Card className="h-full flex flex-col border-0 shadow-sm rounded-xl overflow-hidden bg-white">
-      <CardHeader className="flex flex-row items-center justify-between shrink-0 py-3 border-b border-neutral-100">
-        <div>
-          <CardTitle className="text-sm font-bold uppercase tracking-wider text-neutral-700">Bảng Danh mục Cổ phiếu</CardTitle>
+      <CardHeader className="flex flex-row items-center justify-between shrink-0 py-3 border-b border-neutral-100 flex-wrap gap-2">
+        <div className="flex items-center gap-4">
+          <CardTitle className="text-sm font-bold uppercase tracking-wider text-neutral-700">Danh mục Cổ phiếu</CardTitle>
+          <div className="flex items-center bg-neutral-100 rounded-lg p-0.5">
+            <button
+              onClick={() => setViewMode('table')}
+              className={`px-3 py-1 text-xs font-semibold rounded-md transition-all ${viewMode === 'table' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700'}`}
+            >
+              Dữ liệu bảng
+            </button>
+            <button
+              onClick={() => setViewMode('chart')}
+              className={`px-3 py-1 text-xs font-semibold rounded-md transition-all ${viewMode === 'chart' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700'}`}
+            >
+              Phân bổ
+            </button>
+          </div>
         </div>
         <div className="flex items-center space-x-2">
           <DnseSyncDialog onSyncComplete={replacePortfolio} />
@@ -46,6 +63,7 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
           </div>
         )}
 
+        {viewMode === 'table' ? (
         <div className="absolute inset-0">
           <Table>
             <TableHeader className="bg-neutral-50/50">
@@ -89,6 +107,11 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
             </TableBody>
           </Table>
         </div>
+        ) : (
+        <div className="absolute inset-0">
+          <StockPieChart stocks={stocks} />
+        </div>
+        )}
       </CardContent>
     </Card>
   );

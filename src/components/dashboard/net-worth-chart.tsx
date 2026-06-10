@@ -162,27 +162,27 @@ export const NetWorthChart = React.memo(function NetWorthChart({ data }: NetWort
                   <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
+              <CartesianGrid strokeDasharray="3 3" vertical={true} stroke="#f3f4f6" />
               <XAxis 
                 dataKey="name" 
                 stroke="#9ca3af"
-                fontSize={11}
+                fontSize={12}
                 tickLine={false}
                 axisLine={false}
                 minTickGap={20}
-                tickMargin={8}
+                tickMargin={12}
               />
               <YAxis
                 stroke="#9ca3af"
-                fontSize={11}
+                fontSize={12}
                 tickLine={false}
                 axisLine={false}
                 tickFormatter={(value) => `${(value / 1000000).toFixed(0)}tr`}
-                width={55}
-                tickMargin={5}
+                width={60}
+                tickMargin={8}
               />
               <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#9ca3af', strokeWidth: 1, strokeDasharray: '5 5' }} />
-              <Legend verticalAlign="top" height={36} iconType="circle" wrapperStyle={{ fontSize: '12px' }}/>
+              <Legend verticalAlign="top" height={40} iconType="circle" wrapperStyle={{ fontSize: '13px' }}/>
               <Area
                 type="monotone"
                 dataKey="Tài sản ròng"
@@ -190,7 +190,7 @@ export const NetWorthChart = React.memo(function NetWorthChart({ data }: NetWort
                 fillOpacity={1}
                 fill="url(#colorNetWorth)"
                 strokeWidth={3}
-                activeDot={{ r: 6, strokeWidth: 0, fill: '#10b981' }}
+                activeDot={{ r: 8, strokeWidth: 2, stroke: '#fff', fill: '#059669' }}
               />
               <Area
                 type="monotone"
@@ -199,7 +199,7 @@ export const NetWorthChart = React.memo(function NetWorthChart({ data }: NetWort
                 fillOpacity={1}
                 fill="url(#colorPortfolio)"
                 strokeWidth={2}
-                activeDot={{ r: 6, strokeWidth: 0, fill: '#6366f1' }}
+                activeDot={{ r: 7, strokeWidth: 2, stroke: '#fff', fill: '#2563eb' }}
               />
             </AreaChart>
           </ResponsiveContainer>

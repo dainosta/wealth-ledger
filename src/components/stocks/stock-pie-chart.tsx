@@ -52,14 +52,10 @@ const CustomTooltip = ({ active, payload }: any) => {
 export const StockPieChart = React.memo(function StockPieChart({ stocks }: { stocks: StockWithQuote[] }) {
   if (!stocks || stocks.length === 0) {
     return (
-      <Card className="h-full flex flex-col border-0 shadow-none rounded-none bg-neutral-50/50">
-        <CardHeader className="py-3 px-4 shrink-0">
-          <CardTitle className="text-sm">Phân bổ Danh mục</CardTitle>
-        </CardHeader>
-        <CardContent className="flex-1 flex items-center justify-center min-h-0 px-4 pb-4">
-          <p className="text-xs text-muted-foreground">Chưa có cổ phiếu</p>
-        </CardContent>
-      </Card>
+      <div className="flex-1 flex flex-col items-center justify-center h-full min-h-[300px] bg-neutral-50/50 p-6 text-center">
+        <p className="text-sm font-medium text-neutral-500 mb-1">Chưa có cổ phiếu</p>
+        <p className="text-xs text-neutral-400">Hãy thêm cổ phiếu vào danh mục để xem biểu đồ phân bổ</p>
+      </div>
     );
   }
 
@@ -102,40 +98,35 @@ export const StockPieChart = React.memo(function StockPieChart({ stocks }: { sto
   };
 
   return (
-    <Card className="h-full flex flex-col border-0 shadow-none rounded-none">
-      <CardHeader className="py-3 px-4 shrink-0 border-b border-transparent">
-        <CardTitle className="text-sm">Phân bổ Danh mục</CardTitle>
-      </CardHeader>
-      <CardContent className="flex-1 min-h-0 p-0 flex flex-col lg:flex-row items-center h-full">
-        
+    <div className="flex-1 flex flex-col lg:flex-row h-full min-h-0">
         {/* Left Column: Portfolio Summary */}
-        <div className="w-full lg:w-[45%] h-auto lg:h-full flex flex-col justify-center px-4 py-4 lg:py-0 border-b lg:border-b-0 lg:border-r border-neutral-100/60 order-2 lg:order-1">
+        <div className="w-full lg:w-[45%] h-auto lg:h-full flex flex-col justify-center px-6 py-4 lg:py-0 border-b lg:border-b-0 lg:border-r border-neutral-100/60 order-2 lg:order-1">
           <div className="space-y-4">
             <div>
-              <p className="text-xs font-bold text-neutral-800 mb-3">Tổng quan Danh mục</p>
+              <p className="text-sm font-bold text-neutral-800 mb-3">Tổng quan Phân bổ</p>
               
               <div className="flex justify-between lg:block mb-3">
-                <p className="text-[10px] text-neutral-500 font-medium mb-0.5">Tổng giá trị</p>
-                <p className="text-base font-bold text-neutral-900">{formatCurrency(totalValue)}</p>
+                <p className="text-xs text-neutral-500 font-medium mb-0.5">Tổng giá trị danh mục</p>
+                <p className="text-lg font-bold text-neutral-900">{formatCurrency(totalValue)}</p>
               </div>
               
               <div className="flex justify-between lg:block mb-4">
-                <p className="text-[10px] text-neutral-500 font-medium mb-0.5">Số lượng Cổ phiếu</p>
-                <p className="text-sm font-bold text-neutral-900">{stocks.length}</p>
+                <p className="text-xs text-neutral-500 font-medium mb-0.5">Số lượng mã nắm giữ</p>
+                <p className="text-base font-bold text-neutral-900">{stocks.length}</p>
               </div>
             </div>
 
             <div>
-              <p className="text-[10px] text-neutral-500 font-medium mb-2">Tỷ trọng Phân bổ %</p>
-              <div className="flex flex-col gap-1.5 overflow-y-auto max-h-[100px] pr-2">
+              <p className="text-xs text-neutral-500 font-medium mb-2">Tỷ trọng Phân bổ %</p>
+              <div className="flex flex-col gap-1.5 overflow-y-auto max-h-[150px] pr-2">
                 {topStocks.map((stock, index) => (
-                  <div key={stock.symbol} className="flex justify-between items-center text-[11px]">
+                  <div key={stock.symbol} className="flex justify-between items-center text-xs">
                     <span className="font-semibold text-neutral-700">{stock.symbol}</span>
                     <span className="text-neutral-500 font-medium">{stock.weight}%</span>
                   </div>
                 ))}
                 {othersWeight > 0 && (
-                  <div className="flex justify-between items-center text-[11px]">
+                  <div className="flex justify-between items-center text-xs">
                     <span className="font-semibold text-neutral-700">Khác</span>
                     <span className="text-neutral-500 font-medium">{othersWeight.toFixed(2)}%</span>
                   </div>
@@ -146,15 +137,15 @@ export const StockPieChart = React.memo(function StockPieChart({ stocks }: { sto
         </div>
 
         {/* Right Column: Pie Chart */}
-        <div className="w-full lg:w-[55%] min-h-[200px] lg:min-h-0 lg:h-full relative order-1 lg:order-2">
+        <div className="w-full lg:w-[55%] min-h-[300px] lg:min-h-0 lg:h-full relative order-1 lg:order-2">
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
+            <PieChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
               <Pie
                 data={chartData}
                 cx="50%"
                 cy="50%"
-                innerRadius="55%"
-                outerRadius="75%"
+                innerRadius="60%"
+                outerRadius="80%"
                 dataKey="value"
                 stroke="none"
                 isAnimationActive={false}
@@ -170,8 +161,6 @@ export const StockPieChart = React.memo(function StockPieChart({ stocks }: { sto
           </ResponsiveContainer>
         </div>
         
-      </CardContent>
-    </Card>
+    </div>
   );
 });
-

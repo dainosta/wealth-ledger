@@ -8,7 +8,7 @@ import { columns } from '@/components/ledger/columns';
 import { AddRecordDialog } from '@/components/ledger/add-record-dialog';
 
 import { StockPortfolio } from '@/components/stocks/stock-portfolio';
-import { StockPieChart } from '@/components/stocks/stock-pie-chart';
+
 
 import { useStocks } from '@/hooks/use-stocks';
 
@@ -58,12 +58,9 @@ export default function Home() {
           </div>
 
           {/* Charts Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:h-[280px] shrink-0">
-             <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border overflow-hidden h-[300px] lg:h-auto">
+          <div className="shrink-0 mb-3 h-[450px]">
+             <div className="bg-white rounded-xl shadow-sm border overflow-hidden h-full">
                <NetWorthChart data={records} />
-             </div>
-             <div className="lg:col-span-1 bg-white rounded-xl shadow-sm border overflow-hidden h-[300px] lg:h-auto">
-               <StockPieChart stocks={stocksData.stocks} />
              </div>
           </div>
 
