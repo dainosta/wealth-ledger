@@ -22,49 +22,12 @@ export default function Home() {
   
   const { realtimeNetWorth } = useRealtimeNetWorth(records, stocksData.stocks);
 
-  if (isAppLoading) {
-    return (
-      <div className="flex lg:h-screen min-h-screen flex-col lg:overflow-hidden bg-neutral-100/50 p-2 md:p-4">
-        {/* Header Skeleton */}
-        <div className="flex items-center justify-between mb-3 h-8">
-          <div className="h-8 w-48 bg-neutral-200/70 animate-pulse rounded-md"></div>
-          <div className="h-8 w-32 bg-neutral-200/70 animate-pulse rounded-md"></div>
-        </div>
-        
-        {/* Main Grid Skeleton */}
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3">
-          <div className="lg:col-span-4 flex flex-col gap-3 order-2 lg:order-1">
-            {/* Summary Cards Skeleton */}
-            <div className="grid grid-cols-2 gap-3 h-[200px]">
-              <div className="bg-neutral-200/70 animate-pulse rounded-xl"></div>
-              <div className="bg-neutral-200/70 animate-pulse rounded-xl"></div>
-              <div className="bg-neutral-200/70 animate-pulse rounded-xl"></div>
-              <div className="bg-neutral-200/70 animate-pulse rounded-xl"></div>
-            </div>
-            {/* Ledger Skeleton */}
-            <div className="flex-1 bg-neutral-200/70 animate-pulse rounded-xl min-h-[400px] lg:min-h-0"></div>
-          </div>
-          
-          <div className="lg:col-span-8 flex flex-col gap-3 order-1 lg:order-2">
-            {/* Goal Progress Skeleton */}
-            <div className="h-24 bg-neutral-200/70 animate-pulse rounded-xl"></div>
-            {/* Charts Skeleton */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 h-[280px]">
-              <div className="lg:col-span-2 bg-neutral-200/70 animate-pulse rounded-xl"></div>
-              <div className="lg:col-span-1 bg-neutral-200/70 animate-pulse rounded-xl"></div>
-            </div>
-            {/* Portfolio Skeleton */}
-            <div className="flex-1 bg-neutral-200/70 animate-pulse rounded-xl min-h-[400px] lg:min-h-0"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // No global loading blocking the layout, allowing individual components to handle loading and preserving animations.
 
   return (
     <div className="flex lg:h-screen min-h-screen flex-col lg:overflow-hidden overflow-auto bg-neutral-100/50 p-2 md:p-4">
       {/* Main Grid: 2 Columns */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3 lg:min-h-0 lg:overflow-hidden">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3 lg:min-h-0 lg:overflow-hidden animate-fade-in-up delay-100">
         
         {/* Left Col: Summary Cards & Ledger (Order 2 on mobile) */}
         <div className="lg:col-span-4 flex flex-col gap-3 lg:min-h-0 order-2 lg:order-1">
