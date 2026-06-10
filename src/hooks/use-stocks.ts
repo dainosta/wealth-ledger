@@ -6,6 +6,7 @@ export interface StockRecord {
   symbol: string;
   quantity: number;
   buy_price: number;
+  source?: string;
   created_at: string;
 }
 
@@ -40,7 +41,7 @@ export function useStocks() {
 
       // Lấy giá hiện tại từ API VNStock (Thêm timestamp để chống cache trình duyệt)
       const symbols = data.map(s => s.symbol).join(',');
-      const res = await fetch(`/api/stocks?symbols=${symbols}&t=${Date.now()}`, { cache: 'no-store' });
+      const res = await fetch(`/api/stocks?symbols=${symbols}`, { cache: 'no-store' });
       if (!res.ok) throw new Error('Không thể tải dữ liệu giá cổ phiếu');
       
       const quoteData = await res.json();
@@ -122,8 +123,8 @@ export function useStocks() {
   const replacePortfolio = async (newStocks: Omit<StockRecord, 'id' | 'created_at'>[]) => {
     try {
       setLoading(true);
-      // Xóa toàn bộ
-      const { error: deleteError } = await supabase.from('stock_portfolio').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      // Xóa toàn bộ mã thuộc DNSE
+      const { error: deleteError } = await supabase.from('stock_portfolio').delete().eq('source', 'DNSE');
       if (deleteError) throw deleteError;
 
       // Chèn danh sách mới (nếu có)

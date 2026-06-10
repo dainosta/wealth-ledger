@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { CalculatedMonthlyRecord } from '@/types';
 import { formatCurrency } from '@/lib/calculations';
 import {
@@ -39,7 +39,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-export function NetWorthChart({ data }: NetWorthChartProps) {
+export const NetWorthChart = React.memo(function NetWorthChart({ data }: NetWorthChartProps) {
   const [filter, setFilter] = useState<'6M' | 'YTD' | '1Y' | '2Y' | '3Y' | '5Y' | 'ALL'>('ALL');
 
   if (!data || data.length === 0) return null;
@@ -196,4 +196,4 @@ export function NetWorthChart({ data }: NetWorthChartProps) {
       </CardContent>
     </Card>
   );
-}
+});

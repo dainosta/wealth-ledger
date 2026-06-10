@@ -32,7 +32,8 @@ export function AddStockDialog() {
       await addStock({
         symbol: symbol.toUpperCase(),
         quantity: Number(quantity.replace(/,/g, '')),
-        buy_price: Number(buyPrice.replace(/,/g, ''))
+        buy_price: Number(buyPrice.replace(/,/g, '')),
+        source: 'MANUAL'
       });
       setOpen(false);
       setSymbol('');

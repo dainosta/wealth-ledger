@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 10;
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -21,7 +20,10 @@ export async function GET(request: Request) {
           const fromTime = toTime - 3 * 24 * 60 * 60; // Fetch last 3 days to account for weekends
           const url = `https://services.entrade.com.vn/chart-api/v2/ohlcs/stock?from=${fromTime}&to=${toTime}&symbol=${symbol}&resolution=1`;
           
-          const res = await fetch(url, { cache: 'no-store' });
+          const res = await fetch(url, { 
+            next: { revalidate: 10 },
+            signal: AbortSignal.timeout(8000)
+          });
           if (!res.ok) throw new Error('API fetch failed');
           
           const data = await res.json();

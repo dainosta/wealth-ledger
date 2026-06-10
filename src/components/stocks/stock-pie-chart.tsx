@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { StockWithQuote } from '@/hooks/use-stocks';
 import { formatCurrency } from '@/lib/calculations';
 import {
@@ -49,7 +49,7 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
-export function StockPieChart({ stocks }: { stocks: StockWithQuote[] }) {
+export const StockPieChart = React.memo(function StockPieChart({ stocks }: { stocks: StockWithQuote[] }) {
   if (!stocks || stocks.length === 0) {
     return (
       <Card className="h-full flex flex-col border-0 shadow-none rounded-none bg-neutral-50/50">
@@ -173,5 +173,5 @@ export function StockPieChart({ stocks }: { stocks: StockWithQuote[] }) {
       </CardContent>
     </Card>
   );
-}
+});
 

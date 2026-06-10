@@ -12,7 +12,8 @@ export async function POST(request: Request) {
     const authRes = await fetch('https://services.entrade.com.vn/dnse-user-service/api/auth', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({ username, password }),
+      signal: AbortSignal.timeout(8000)
     });
     const authData = await authRes.json();
     
@@ -26,7 +27,8 @@ export async function POST(request: Request) {
 
     // 2. Lấy danh sách tiểu khoản (Sub-accounts)
     const accRes = await fetch('https://services.entrade.com.vn/dnse-order-service/accounts', {
-      headers: { 'Authorization': 'Bearer ' + token }
+      headers: { 'Authorization': 'Bearer ' + token },
+      signal: AbortSignal.timeout(8000)
     });
     
     if (!accRes.ok) {
@@ -43,7 +45,8 @@ export async function POST(request: Request) {
 
     // 3. Lấy danh sách các giao dịch (Deals/Positions) đang mở
     const dealsRes = await fetch(`https://services.entrade.com.vn/dnse-deal-service/deals?accountNo=${accountId}`, {
-      headers: { 'Authorization': 'Bearer ' + token }
+      headers: { 'Authorization': 'Bearer ' + token },
+      signal: AbortSignal.timeout(8000)
     });
     
     if (!dealsRes.ok) {
@@ -75,7 +78,8 @@ export async function POST(request: Request) {
     const syncedStocks = Array.from(portfolioMap.entries()).map(([symbol, data]) => ({
       symbol,
       quantity: data.quantity,
-      buy_price: Math.round(data.totalCost / data.quantity) // Tính giá vốn trung bình và làm tròn thành số nguyên
+      buy_price: Math.round(data.totalCost / data.quantity), // Tính giá vốn trung bình và làm tròn thành số nguyên
+      source: 'DNSE'
     }));
     
     return NextResponse.json({ 
