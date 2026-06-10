@@ -33,7 +33,7 @@ export default function Home() {
         <div className="lg:col-span-4 flex flex-col gap-3 lg:min-h-0 order-2 lg:order-1">
           {/* Summary Cards */}
           <div className="shrink-0">
-            <SummaryCards data={records} stocks={stocksData.stocks} />
+            <SummaryCards data={records} stocks={stocksData.stocks} isLoading={isAppLoading} />
           </div>
 
           {/* Ledger */}
@@ -54,7 +54,7 @@ export default function Home() {
         <div className="lg:col-span-8 flex flex-col gap-3 lg:min-h-0 order-1 lg:order-2">
           {/* Goal Progress */}
           <div className="shrink-0">
-            <GoalProgress currentNetWorth={realtimeNetWorth} />
+            <GoalProgress currentNetWorth={realtimeNetWorth} isLoading={isAppLoading} />
           </div>
 
           {/* Charts Row */}

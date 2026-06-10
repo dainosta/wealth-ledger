@@ -9,9 +9,10 @@ import { useState, useEffect } from 'react';
 
 interface GoalProgressProps {
   currentNetWorth: number;
+  isLoading?: boolean;
 }
 
-export function GoalProgress({ currentNetWorth }: GoalProgressProps) {
+export function GoalProgress({ currentNetWorth, isLoading = false }: GoalProgressProps) {
   const { goal, loading } = useGoal();
   const [mounted, setMounted] = useState(false);
 
@@ -19,8 +20,8 @@ export function GoalProgress({ currentNetWorth }: GoalProgressProps) {
     setMounted(true);
   }, []);
 
-  if (!mounted || loading) {
-    return <div className="h-24 w-full bg-neutral-100 animate-pulse rounded-xl mb-3 border border-neutral-200" />;
+  if (!mounted || loading || isLoading) {
+    return <div className="h-[90px] w-full bg-neutral-100 animate-pulse rounded-xl mb-3 border border-neutral-200" />;
   }
 
   if (!goal || goal.target_net_worth <= 0) {

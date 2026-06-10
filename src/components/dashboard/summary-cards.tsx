@@ -15,9 +15,10 @@ import { useRealtimeNetWorth } from '@/hooks/use-realtime-net-worth';
 interface SummaryCardsProps {
   data: CalculatedMonthlyRecord[];
   stocks: StockWithQuote[];
+  isLoading?: boolean;
 }
 
-export function SummaryCards({ data, stocks }: SummaryCardsProps) {
+export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsProps) {
   const {
     realtimeNetWorth,
     totalStockValue,
@@ -29,7 +30,7 @@ export function SummaryCards({ data, stocks }: SummaryCardsProps) {
     previousMonth
   } = useRealtimeNetWorth(data, stocks);
 
-  if (!data || data.length === 0 || !currentMonth) {
+  if (isLoading) {
     return (
       <div className="flex flex-col w-full h-full">
         <div className="grid grid-cols-2 gap-3 flex-1">
@@ -175,7 +176,7 @@ export function SummaryCards({ data, stocks }: SummaryCardsProps) {
           <div className="flex flex-col gap-1.5 z-20 relative">
             <div className="flex items-center justify-between text-[10px] font-semibold text-rose-700/70">
               <span className="uppercase tracking-wider">Số lượng đang nợ:</span>
-              <span className="text-rose-800 font-bold">{currentMonth.gold_debt_qty} lượng</span>
+              <span className="text-rose-800 font-bold">{currentMonth?.gold_debt_qty || 0} lượng</span>
             </div>
             <div className="flex items-center justify-between bg-amber-100/80 px-2 py-1.5 rounded border border-amber-200/80">
               <span className="text-[10px] uppercase tracking-wider text-amber-700/90 flex items-center font-bold"><CoinsIcon className="w-3 h-3 mr-1"/>Giá Live SJC:</span>
