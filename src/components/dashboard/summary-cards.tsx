@@ -26,6 +26,7 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
     realtimeMoMChange,
     realtimeYtdGrowth,
     liveGoldPrice: displayGoldPrice,
+    worldGoldPrice,
     currentMonth,
     previousMonth
   } = useRealtimeNetWorth(data, stocks);
