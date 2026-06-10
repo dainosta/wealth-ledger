@@ -49,7 +49,7 @@ export function useStocks() {
 
       // Tính toán lỗ/lãi
       const enrichedStocks = data.map((stock: StockRecord) => {
-        const quote = quotes.find((q: any) => q.symbol === stock.symbol);
+        const quote = quotes.find((q: { symbol: string; price: number }) => q.symbol === stock.symbol);
         const currentPrice = quote?.price || stock.buy_price; // Nếu lỗi mạng, dùng giá mua tạm
         const currentValue = stock.quantity * currentPrice;
         const totalCost = stock.quantity * stock.buy_price;
@@ -67,9 +67,9 @@ export function useStocks() {
 
       setStocks(enrichedStocks);
       setError(null);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Lỗi khi tải danh mục cổ phiếu:', err);
-      setError(err.message);
+      setError(err instanceof Error ? err.message : String(err));
     } finally {
       if (showLoading) setLoading(false);
       setInitialized(true);
@@ -77,15 +77,17 @@ export function useStocks() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     fetchStocks();
     
     // Auto refresh every 5 seconds without showing loading spinner
     const interval = setInterval(() => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       fetchStocks(false);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchStocks]);
 
   const addStock = async (record: Omit<StockRecord, 'id' | 'created_at'>) => {
     try {

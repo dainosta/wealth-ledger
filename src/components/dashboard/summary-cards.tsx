@@ -33,12 +33,32 @@ export function SummaryCards({ data, stocks }: SummaryCardsProps) {
     return (
       <div className="flex flex-col w-full h-full">
         <div className="grid grid-cols-2 gap-3 flex-1">
-          {[...Array(4)].map((_, i) => (
-            <Card key={i} className="bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden h-[112px] animate-pulse">
-              <CardHeader className="pb-0 pt-3"><div className="h-4 bg-neutral-200 w-24 rounded"></div></CardHeader>
-              <CardContent><div className="h-8 bg-neutral-200 w-32 rounded mt-2"></div></CardContent>
-            </Card>
-          ))}
+          {/* Skeleton 1: Net Worth */}
+          <Card className="bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
+            <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-200 w-24 rounded"></div><div className="w-4 h-4 bg-neutral-200 rounded-full"></div></CardHeader>
+            <CardContent className="pb-3 flex-1 flex flex-col justify-end"><div className="h-7 bg-neutral-200 w-32 rounded mb-1"></div><div className="h-3 bg-neutral-200 w-20 rounded"></div></CardContent>
+          </Card>
+          {/* Skeleton 2: Stocks */}
+          <Card className="bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
+            <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-200 w-24 rounded"></div><div className="w-4 h-4 bg-neutral-200 rounded-full"></div></CardHeader>
+            <CardContent className="pb-3 flex-1 flex flex-col justify-end"><div className="h-7 bg-neutral-200 w-32 rounded mb-1"></div><div className="h-3 bg-neutral-200 w-20 rounded"></div></CardContent>
+          </Card>
+          {/* Skeleton 3: Gold Debt (Taller) */}
+          <Card className="bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
+            <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-200 w-24 rounded"></div><div className="w-4 h-4 bg-neutral-200 rounded-full"></div></CardHeader>
+            <CardContent className="pb-3 flex-1 flex flex-col">
+              <div className="h-7 bg-neutral-200 w-32 rounded mb-3 mt-1"></div>
+              <div className="flex flex-col gap-2 mt-auto">
+                <div className="flex justify-between"><div className="h-3 bg-neutral-200 w-20 rounded"></div><div className="h-3 bg-neutral-200 w-16 rounded"></div></div>
+                <div className="h-6 bg-neutral-200 w-full rounded mt-1"></div>
+              </div>
+            </CardContent>
+          </Card>
+          {/* Skeleton 4: YTD Growth */}
+          <Card className="bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
+            <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-200 w-24 rounded"></div><div className="w-4 h-4 bg-neutral-200 rounded-full"></div></CardHeader>
+            <CardContent className="pb-3 flex-1 flex flex-col justify-start"><div className="h-7 bg-neutral-200 w-32 rounded mt-1 mb-1"></div><div className="h-3 bg-neutral-200 w-20 rounded mt-auto"></div></CardContent>
+          </Card>
         </div>
       </div>
     );
