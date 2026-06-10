@@ -66,9 +66,8 @@ export default function Home() {
 
   return (
     <div className="flex lg:h-screen min-h-screen flex-col lg:overflow-hidden overflow-auto bg-neutral-100/50 p-2 md:p-4">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 shrink-0 gap-3 sm:gap-0 animate-fade-in-up">
-        <h2 className="text-xl md:text-2xl font-extrabold tracking-tight">Wealth Ledger</h2>
+      {/* Header Toolbar */}
+      <div className="flex items-center justify-end mb-3 shrink-0">
         <div className="flex items-center space-x-2">
           <BackupManager />
           <ImportCsvButton />
@@ -77,7 +76,7 @@ export default function Home() {
       </div>
 
       {/* Main Grid: 2 Columns */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3 lg:min-h-0 lg:overflow-hidden animate-fade-in-up delay-100">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3 lg:min-h-0 lg:overflow-hidden">
         
         {/* Left Col: Summary Cards & Ledger (Order 2 on mobile) */}
         <div className="lg:col-span-4 flex flex-col gap-3 lg:min-h-0 order-2 lg:order-1">
