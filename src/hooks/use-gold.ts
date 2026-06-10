@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 export function useGold() {
   const [goldPrice, setGoldPrice] = useState<number | null>(null);
+  const [worldGoldPrice, setWorldGoldPrice] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchGoldPrice = async () => {
@@ -11,6 +12,9 @@ export function useGold() {
       const data = await res.json();
       if (data.sell_1l) {
         setGoldPrice(data.sell_1l);
+      }
+      if (data.xauusdPrice) {
+        setWorldGoldPrice(data.xauusdPrice);
       }
     } catch (err) {
       console.error('Không thể lấy giá vàng SJC Live:', err);
@@ -29,5 +33,5 @@ export function useGold() {
     return () => clearInterval(interval);
   }, []);
 
-  return { goldPrice, loading };
+  return { goldPrice, worldGoldPrice, loading };
 }

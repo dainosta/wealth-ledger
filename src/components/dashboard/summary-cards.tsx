@@ -182,6 +182,12 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
               <span className="text-[10px] uppercase tracking-wider text-amber-700/90 flex items-center font-bold"><CoinsIcon className="w-3 h-3 mr-1"/>Giá Live SJC:</span>
               <span className="text-amber-900 font-extrabold text-xs">{formatCurrency(displayGoldPrice)} <span className="text-[9px] font-semibold text-amber-700/80">/ lượng</span></span>
             </div>
+            {worldGoldPrice ? (
+              <div className="flex items-center justify-between bg-neutral-100/80 px-2 py-1.5 rounded border border-neutral-200/80">
+                <span className="text-[10px] uppercase tracking-wider text-neutral-600 flex items-center font-bold"><CoinsIcon className="w-3 h-3 mr-1"/>XAU/USD:</span>
+                <span className="text-neutral-700 font-extrabold text-xs">${worldGoldPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-[9px] font-semibold text-neutral-500">/ oz</span></span>
+              </div>
+            ) : null}
           </div>
         </CardContent>
         <div className="absolute bottom-0 left-0 right-0 h-10 w-full opacity-60 pointer-events-none">

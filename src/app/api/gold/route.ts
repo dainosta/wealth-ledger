@@ -24,9 +24,34 @@ export async function GET() {
     if (!goldRes.ok) throw new Error('Failed to fetch gold price');
     const goldData = await goldRes.json();
 
+    // 3. Fetch XAUUSD from TradingView
+    let xauusdPrice = 0;
+    try {
+      const tvRes = await fetch('https://scanner.tradingview.com/cfd/scan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          symbols: { tickers: ['FX_IDC:XAUUSD'] },
+          columns: ['close']
+        }),
+        next: { revalidate: 60 },
+        signal: AbortSignal.timeout(3000)
+      });
+      if (tvRes.ok) {
+        const tvData = await tvRes.json();
+        if (tvData.data && tvData.data.length > 0) {
+          xauusdPrice = tvData.data[0].d[0];
+        }
+      }
+    } catch (e) {
+      console.error('TradingView Gold Error:', e);
+    }
+
     if (goldData.results && goldData.results.length > 0) {
-      // Return the latest SJC price
-      return NextResponse.json(goldData.results[0]);
+      return NextResponse.json({
+        ...goldData.results[0],
+        xauusdPrice
+      });
     }
 
     throw new Error('No gold data returned');

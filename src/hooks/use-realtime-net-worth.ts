@@ -6,7 +6,7 @@ export function useRealtimeNetWorth(
   records: CalculatedMonthlyRecord[],
   stocks: StockWithQuote[]
 ) {
-  const { goldPrice: liveGoldPrice } = useGold();
+  const { goldPrice: liveGoldPrice, worldGoldPrice } = useGold();
 
   const totalStockValue = stocks.reduce((sum, stock) => sum + stock.currentValue, 0);
 
@@ -18,6 +18,7 @@ export function useRealtimeNetWorth(
       realtimeMoMChange: 0,
       realtimeYtdGrowth: 0,
       liveGoldPrice: 0,
+      worldGoldPrice: 0,
       currentMonth: null,
       previousMonth: null,
     };
@@ -56,6 +57,7 @@ export function useRealtimeNetWorth(
     realtimeMoMChange,
     realtimeYtdGrowth,
     liveGoldPrice: displayGoldPrice,
+    worldGoldPrice,
     currentMonth,
     previousMonth
   };
