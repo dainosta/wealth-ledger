@@ -6,9 +6,6 @@ import { NetWorthChart } from '@/components/dashboard/net-worth-chart';
 import { DataTable } from '@/components/ledger/data-table';
 import { columns } from '@/components/ledger/columns';
 import { AddRecordDialog } from '@/components/ledger/add-record-dialog';
-import { ImportCsvButton } from '@/components/ledger/import-csv-button';
-import { ExportCsvButton } from '@/components/ledger/export-csv-button';
-import { BackupManager } from '@/components/ledger/backup-manager';
 
 import { StockPortfolio } from '@/components/stocks/stock-portfolio';
 import { StockPieChart } from '@/components/stocks/stock-pie-chart';
@@ -66,15 +63,6 @@ export default function Home() {
 
   return (
     <div className="flex lg:h-screen min-h-screen flex-col lg:overflow-hidden overflow-auto bg-neutral-100/50 p-2 md:p-4">
-      {/* Header Toolbar */}
-      <div className="flex items-center justify-end mb-3 shrink-0">
-        <div className="flex items-center space-x-2">
-          <BackupManager />
-          <ImportCsvButton />
-          <ExportCsvButton />
-        </div>
-      </div>
-
       {/* Main Grid: 2 Columns */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3 lg:min-h-0 lg:overflow-hidden">
         
