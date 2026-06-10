@@ -42,7 +42,18 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export const NetWorthChart = React.memo(function NetWorthChart({ data }: NetWorthChartProps) {
   const [filter, setFilter] = useState<'6M' | 'YTD' | '1Y' | '2Y' | '3Y' | '5Y' | 'ALL'>('ALL');
 
-  if (!data || data.length === 0) return null;
+  if (!data || data.length === 0) {
+    return (
+      <Card className="h-full flex flex-col shadow-sm border-0 bg-neutral-100 animate-pulse">
+        <CardHeader className="flex flex-row items-center justify-between pb-2 shrink-0">
+          <div className="h-4 bg-neutral-200 w-32 rounded"></div>
+        </CardHeader>
+        <CardContent className="flex-1 pb-4">
+          <div className="h-full w-full bg-neutral-200/50 rounded-xl"></div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   const getFilteredData = () => {
     if (filter === 'ALL') return data;

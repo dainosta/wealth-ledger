@@ -8,6 +8,7 @@ import { StockWithQuote } from '@/hooks/use-stocks';
 import { useGold } from '@/hooks/use-gold';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 import dynamic from 'next/dynamic';
+import CountUp from 'react-countup';
 
 import { useRealtimeNetWorth } from '@/hooks/use-realtime-net-worth';
 
@@ -28,7 +29,20 @@ export function SummaryCards({ data, stocks }: SummaryCardsProps) {
     previousMonth
   } = useRealtimeNetWorth(data, stocks);
 
-  if (!data || data.length === 0 || !currentMonth) return null;
+  if (!data || data.length === 0 || !currentMonth) {
+    return (
+      <div className="flex flex-col w-full h-full">
+        <div className="grid grid-cols-2 gap-3 flex-1">
+          {[...Array(4)].map((_, i) => (
+            <Card key={i} className="bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden h-[112px] animate-pulse">
+              <CardHeader className="pb-0 pt-3"><div className="h-4 bg-neutral-200 w-24 rounded"></div></CardHeader>
+              <CardContent><div className="h-8 bg-neutral-200 w-32 rounded mt-2"></div></CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   // Sparkline Data
   const netWorthHistory = data.map(d => ({ value: d.net_worth }));
@@ -46,7 +60,9 @@ export function SummaryCards({ data, stocks }: SummaryCardsProps) {
           <WalletIcon className="h-3.5 w-3.5 text-emerald-600" />
         </CardHeader>
         <CardContent className="pb-3 z-10 relative">
-          <div className="text-xl font-bold text-emerald-700">{formatCurrency(realtimeNetWorth)}</div>
+          <div className="text-xl font-bold text-emerald-700">
+            <CountUp end={realtimeNetWorth} separator="." decimal="," suffix=" ₫" duration={1.5} preserveValue />
+          </div>
           <div className="mt-0.5">
             <p className="text-[10px] text-emerald-600 font-medium flex items-center">
               {previousMonth ? (
@@ -94,7 +110,7 @@ export function SummaryCards({ data, stocks }: SummaryCardsProps) {
         </CardHeader>
         <CardContent className="pb-3 z-10 relative">
           <div className="text-xl font-bold text-blue-700">
-            {formatCurrency(totalStockValue)}
+            <CountUp end={totalStockValue} separator="." decimal="," suffix=" ₫" duration={1.5} preserveValue />
           </div>
           <div className="mt-0.5">
             <p className="text-[10px] text-blue-600 opacity-80 font-medium">
@@ -134,7 +150,7 @@ export function SummaryCards({ data, stocks }: SummaryCardsProps) {
         </CardHeader>
         <CardContent className="pb-3 z-10 relative">
           <div className="text-xl font-bold text-rose-700 mb-1.5 z-20 relative">
-            {formatCurrency(liveGoldDebt)}
+            <CountUp end={liveGoldDebt} separator="." decimal="," suffix=" ₫" duration={1.5} preserveValue />
           </div>
           <div className="flex flex-col gap-1.5 z-20 relative">
             <div className="flex items-center justify-between text-[10px] font-semibold text-rose-700/70">
@@ -179,7 +195,7 @@ export function SummaryCards({ data, stocks }: SummaryCardsProps) {
         </CardHeader>
         <CardContent className="pb-3 z-10 relative">
           <div className="text-xl font-bold text-neutral-900">
-            {formatPercent(realtimeYtdGrowth)}
+            <CountUp end={realtimeYtdGrowth} decimals={2} decimal="," suffix="%" duration={1.5} preserveValue prefix={realtimeYtdGrowth > 0 ? '+' : ''} />
           </div>
           <div className="mt-0.5">
             <p className="text-[10px] text-neutral-500 font-medium">
