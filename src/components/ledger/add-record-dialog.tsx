@@ -258,7 +258,14 @@ export function AddRecordDialog() {
           <DialogFooter className="mt-6">
             <Button type="button" variant="ghost" onClick={() => setOpen(false)}>Hủy</Button>
             <Button type="submit" disabled={loading || fetchingGold} className="bg-neutral-900">
-              {loading ? 'Đang chốt sổ...' : 'Xác nhận Chốt Sổ'}
+              {loading ? (
+                <span className="flex items-center">
+                  <RefreshCwIcon className="mr-2 h-4 w-4 animate-spin" />
+                  Đang lưu...
+                </span>
+              ) : (
+                'Lưu bản ghi'
+              )}
             </Button>
           </DialogFooter>
         </form>
