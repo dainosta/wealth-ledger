@@ -16,7 +16,6 @@ export function useRealtimeNetWorth(
       totalStockValue,
       liveGoldDebt: 0,
       realtimeMoMChange: 0,
-      realtimeYtdGrowth: 0,
       liveGoldPrice: 0,
       worldGoldPrice: 0,
       worldGoldChange: 0,
@@ -31,9 +30,10 @@ export function useRealtimeNetWorth(
   const displayGoldPrice = liveGoldPrice || currentMonth.gold_price;
   const liveGoldDebt = currentMonth.gold_debt_qty * displayGoldPrice;
   const liveCashDebt = currentMonth.cash_debt || 0;
+  const liveCreditCardDebt = currentMonth.credit_card_debt || 0;
 
   // Real-time Net Worth (Assets are entirely stocks)
-  const realtimeNetWorth = totalStockValue - liveGoldDebt - liveCashDebt;
+  const realtimeNetWorth = totalStockValue - liveGoldDebt - liveCashDebt - liveCreditCardDebt;
 
   // Real-time MoM Change
   let realtimeMoMChange = 0;
@@ -41,24 +41,13 @@ export function useRealtimeNetWorth(
     realtimeMoMChange = ((realtimeNetWorth - previousMonth.net_worth) / previousMonth.net_worth) * 100;
   }
 
-  // Real-time YTD (Year-to-date)
-  const currentYear = currentMonth.month_year.split('-')[1];
-  const lastYearEnd = records.find(
-    (d) => d.month_year === `12-${parseInt(currentYear) - 1}`
-  );
-  
-  let realtimeYtdGrowth = 0;
-  if (lastYearEnd && lastYearEnd.net_worth !== 0) {
-    realtimeYtdGrowth = ((realtimeNetWorth - lastYearEnd.net_worth) / lastYearEnd.net_worth) * 100;
-  }
-
   return {
     realtimeNetWorth,
     totalStockValue,
     liveGoldDebt,
     liveCashDebt,
+    liveCreditCardDebt,
     realtimeMoMChange,
-    realtimeYtdGrowth,
     liveGoldPrice: displayGoldPrice,
     worldGoldPrice,
     worldGoldChange,

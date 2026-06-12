@@ -5,6 +5,7 @@ export interface MonthlyRecord {
   gold_price: number; // Giá vàng tại thời điểm
   gold_debt_qty: number; // Số lượng vàng nợ (lượng/chỉ)
   cash_debt: number; // Tổng nợ tiền mặt (VNĐ)
+  credit_card_debt: number; // Tổng nợ thẻ tín dụng (VNĐ)
   notes: string;
   created_at: string;
 }

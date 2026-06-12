@@ -12,9 +12,10 @@ export function calculateRecords(records: MonthlyRecord[]): CalculatedMonthlyRec
     const prev = i > 0 ? calculated[i - 1] : null;
 
     const gold_debt_value = current.gold_price * current.gold_debt_qty;
-    // Tương thích ngược: nếu cash_debt chưa có trong DB, coi như là 0
+    // Tương thích ngược: nếu cash_debt hoặc credit_card_debt chưa có trong DB, coi như là 0
     const cash_debt = current.cash_debt || 0;
-    const net_worth = current.portfolio_value - gold_debt_value - cash_debt;
+    const credit_card_debt = current.credit_card_debt || 0;
+    const net_worth = current.portfolio_value - gold_debt_value - cash_debt - credit_card_debt;
 
     let portfolio_change = 0;
     let net_worth_change_value = 0;

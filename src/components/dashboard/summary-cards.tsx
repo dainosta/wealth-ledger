@@ -24,8 +24,8 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
     totalStockValue,
     liveGoldDebt,
     liveCashDebt,
+    liveCreditCardDebt,
     realtimeMoMChange,
-    realtimeYtdGrowth,
     liveGoldPrice: displayGoldPrice,
     worldGoldPrice,
     worldGoldChange,
@@ -47,8 +47,8 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
             <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-200 w-24 rounded"></div><div className="w-4 h-4 bg-neutral-200 rounded-full"></div></CardHeader>
             <CardContent className="pb-3 flex-1 flex flex-col justify-end"><div className="h-7 bg-neutral-200 w-32 rounded mb-1"></div><div className="h-3 bg-neutral-200 w-20 rounded"></div></CardContent>
           </Card>
-          {/* Skeleton 3: Gold Debt (Taller) */}
-          <Card className="bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
+          {/* Skeleton 3: Total Debt (Taller, col-span-2) */}
+          <Card className="col-span-2 bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
             <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-200 w-24 rounded"></div><div className="w-4 h-4 bg-neutral-200 rounded-full"></div></CardHeader>
             <CardContent className="pb-3 flex-1 flex flex-col">
               <div className="h-7 bg-neutral-200 w-32 rounded mb-3 mt-1"></div>
@@ -58,11 +58,6 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
               </div>
             </CardContent>
           </Card>
-          {/* Skeleton 4: YTD Growth */}
-          <Card className="bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
-            <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-200 w-24 rounded"></div><div className="w-4 h-4 bg-neutral-200 rounded-full"></div></CardHeader>
-            <CardContent className="pb-3 flex-1 flex flex-col justify-start"><div className="h-7 bg-neutral-200 w-32 rounded mt-1 mb-1"></div><div className="h-3 bg-neutral-200 w-20 rounded mt-auto"></div></CardContent>
-          </Card>
         </div>
       </div>
     );
@@ -71,9 +66,7 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
   // Sparkline Data
   const netWorthHistory = data.map(d => ({ value: d.net_worth }));
   const stockHistory = data.map(d => ({ value: d.portfolio_value }));
-  const debtHistory = data.map(d => ({ value: d.gold_debt_value }));
-  const ytdHistory = data.map(d => ({ value: d.net_worth })); // Use net worth trend for YTD card as well
-
+  const debtHistory = data.map(d => ({ value: d.gold_debt_value + (d.cash_debt || 0) + (d.credit_card_debt || 0) }));
   return (
     <div className="flex flex-col w-full h-full">
       <div className="grid grid-cols-2 gap-3 flex-1">
@@ -162,48 +155,36 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
                 dot={(props: any) => props.index === stockHistory.length - 1 ? <circle key="dot" cx={props.cx} cy={props.cy} r={3} fill="#2563eb" stroke="#fff" strokeWidth={1.5} /> : null}
               />
             </AreaChart>
-          </ResponsiveContainer>
-        </div>
-      </Card>
-
-      {/* Total Debt Card */}
-      <Card className="bg-rose-50/60 border-rose-200/60 shadow-sm relative overflow-hidden">
+          </ResponsiveContai      {/* Total Debt Card */}
+      <Card className="col-span-2 bg-rose-50/60 border-rose-200/60 shadow-sm relative overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 pt-3 z-10 relative">
           <CardTitle className="text-xs font-semibold text-rose-800 uppercase">Tổng Nợ</CardTitle>
           <CoinsIcon className="h-3.5 w-3.5 text-rose-600" />
         </CardHeader>
         <CardContent className="pb-3 z-10 relative">
-          <div className="text-xl font-bold text-rose-700 mb-1.5 z-20 relative flex flex-col">
-            <CountUp end={liveGoldDebt + liveCashDebt} separator="." decimal="," suffix=" ₫" duration={1.5} preserveValue />
-            {liveCashDebt > 0 && (
-              <span className="text-[10px] text-rose-600/80 font-semibold mt-0.5 tracking-tight">
-                (Tiền mặt: {formatCurrency(liveCashDebt)} + Vàng: {formatCurrency(liveGoldDebt)})
-              </span>
-            )}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-2">
+            <div className="text-2xl font-bold text-rose-700 z-20 relative flex flex-col">
+              <CountUp end={liveGoldDebt + liveCashDebt + liveCreditCardDebt} separator="." decimal="," suffix=" ₫" duration={1.5} preserveValue />
+            </div>
           </div>
-          <div className="flex flex-col gap-1.5 z-20 relative mt-2">
-            <div className="flex items-center justify-between text-[10px] font-semibold text-rose-700/70">
-              <span className="uppercase tracking-wider">Số lượng vàng nợ:</span>
-              <span className="text-rose-800 font-bold">{currentMonth?.gold_debt_qty || 0} lượng</span>
-            </div>
-            <div className="flex items-center justify-between bg-amber-100/80 px-2 py-1.5 rounded border border-amber-200/80">
-              <span className="text-[10px] uppercase tracking-wider text-amber-700/90 flex items-center font-bold"><CoinsIcon className="w-3 h-3 mr-1"/>Giá Live SJC:</span>
-              <span className="text-amber-900 font-extrabold text-xs">{formatCurrency(displayGoldPrice)} <span className="text-[9px] font-semibold text-amber-700/80">/ lượng</span></span>
-            </div>
-            {worldGoldPrice ? (
-              <div className="flex items-center justify-between bg-neutral-100/80 px-2 py-1.5 rounded border border-neutral-200/80">
-                <span className="text-[10px] uppercase tracking-wider text-neutral-600 flex items-center font-bold"><CoinsIcon className="w-3 h-3 mr-1"/>XAU/USD:</span>
-                <span className="text-neutral-700 font-extrabold text-xs">
-                  ${worldGoldPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                  {worldGoldChange !== undefined && worldGoldChange !== null && (
-                    <span className={`ml-1.5 text-[10px] font-bold ${worldGoldChange >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
-                      {worldGoldChange >= 0 ? '+' : ''}{worldGoldChange.toFixed(2)}%
-                    </span>
-                  )}
-                  <span className="text-[9px] font-semibold text-neutral-500 ml-1">/ oz</span>
-                </span>
+          
+          <div className="grid grid-cols-3 gap-2 z-20 relative mt-2">
+            <div className="flex flex-col bg-rose-100/50 p-2 rounded-lg border border-rose-200/50">
+              <span className="text-[10px] font-semibold text-rose-700/80 uppercase">Nợ Vàng</span>
+              <span className="font-bold text-rose-800 text-sm mt-0.5">{formatCurrency(liveGoldDebt)}</span>
+              <div className="flex items-center justify-between mt-1 text-[9px] text-rose-600">
+                <span>{currentMonth?.gold_debt_qty || 0} lượng</span>
+                <span>{formatCurrency(displayGoldPrice)}/lượng</span>
               </div>
-            ) : null}
+            </div>
+            <div className="flex flex-col bg-amber-50 p-2 rounded-lg border border-amber-200/50">
+              <span className="text-[10px] font-semibold text-amber-700/80 uppercase">Vay Tiền mặt</span>
+              <span className="font-bold text-amber-800 text-sm mt-0.5">{formatCurrency(liveCashDebt)}</span>
+            </div>
+            <div className="flex flex-col bg-violet-50 p-2 rounded-lg border border-violet-200/50">
+              <span className="text-[10px] font-semibold text-violet-700/80 uppercase">Thẻ tín dụng</span>
+              <span className="font-bold text-violet-800 text-sm mt-0.5">{formatCurrency(liveCreditCardDebt)}</span>
+            </div>
           </div>
         </CardContent>
         <div className="absolute bottom-0 left-0 right-0 h-10 w-full opacity-60 pointer-events-none">
@@ -229,44 +210,7 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
           </ResponsiveContainer>
         </div>
       </Card>
-
-      {/* YTD Growth Card */}
-      <Card className="bg-white border-neutral-200 shadow-sm relative overflow-hidden">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 pt-3 z-10 relative">
-          <CardTitle className="text-xs font-semibold text-neutral-800 uppercase">Tăng trưởng YTD</CardTitle>
-          <TrendingUpIcon className="h-3.5 w-3.5 text-neutral-500" />
-        </CardHeader>
-        <CardContent className="pb-3 z-10 relative">
-          <div className="text-xl font-bold text-neutral-900">
-            <CountUp end={realtimeYtdGrowth} decimals={2} decimal="," suffix="%" duration={1.5} preserveValue prefix={realtimeYtdGrowth > 0 ? '+' : ''} />
-          </div>
-          <div className="mt-0.5">
-            <p className="text-[10px] text-neutral-500 font-medium">
-              So với cuối năm trước
-            </p>
-          </div>
-        </CardContent>
-        <div className="absolute bottom-0 left-0 right-0 h-10 w-full opacity-40 pointer-events-none">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={ytdHistory} margin={{ top: 10, right: 3, left: 3, bottom: 0 }}>
-              <defs>
-                <linearGradient id="colorYtd" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#52525b" stopOpacity={0.4}/>
-                  <stop offset="95%" stopColor="#52525b" stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-              <Area 
-                type="monotone" 
-                dataKey="value" 
-                stroke="#52525b" 
-                strokeWidth={2} 
-                fill="url(#colorYtd)" 
-                isAnimationActive={false}
-                activeDot={false}
-                dot={(props: any) => props.index === ytdHistory.length - 1 ? <circle key="dot" cx={props.cx} cy={props.cy} r={3} fill="#52525b" stroke="#fff" strokeWidth={1.5} /> : null}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
+      </div>         </ResponsiveContainer>
         </div>
       </Card>
       </div>

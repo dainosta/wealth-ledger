@@ -41,8 +41,9 @@ export function AddRecordDialog() {
   const [monthYear, setMonthYear] = useState('');
   const [portfolioValue, setPortfolioValue] = useState('');
   const [goldPrice, setGoldPrice] = useState('');
-  const [goldDebtQty, setGoldDebtQty] = useState('');
-  const [cashDebt, setCashDebt] = useState('');
+  const [goldDebtQty, setGoldDebtQty] = useState('0');
+  const [cashDebt, setCashDebt] = useState('0');
+  const [creditCardDebt, setCreditCardDebt] = useState('0');
   const [notes, setNotes] = useState('');
 
   const fetchGoldPrice = async () => {
@@ -69,11 +70,13 @@ export function AddRecordDialog() {
       
       if (records.length > 0) {
         const latestRecord = records[records.length - 1];
-        setGoldDebtQty(latestRecord.gold_debt_qty.toString());
+        setGoldDebtQty(latestRecord.gold_debt_qty ? latestRecord.gold_debt_qty.toString() : '0');
         setCashDebt(latestRecord.cash_debt ? formatNumberWithCommas(latestRecord.cash_debt) : '0');
+        setCreditCardDebt(latestRecord.credit_card_debt ? formatNumberWithCommas(latestRecord.credit_card_debt) : '0');
       } else {
         setGoldDebtQty('');
         setCashDebt('');
+        setCreditCardDebt('');
       }
       setNotes('');
       
@@ -94,6 +97,7 @@ export function AddRecordDialog() {
         gold_price: Number(goldPrice.replace(/,/g, '')),
         gold_debt_qty: Number(goldDebtQty),
         cash_debt: Number(cashDebt.replace(/,/g, '')),
+        credit_card_debt: Number(creditCardDebt.replace(/,/g, '')),
         notes: notes,
       };
 
@@ -238,6 +242,27 @@ export function AddRecordDialog() {
                 />
                 <p className="text-[10px] text-neutral-400 mt-1.5 flex items-center">
                   Tổng dư nợ tiền mặt
+                </p>
+              </div>
+            </div>
+            
+            {/* Credit Card Debt */}
+            <div className="grid grid-cols-4 items-start gap-4">
+              <label htmlFor="credit_card_debt" className="text-right text-sm font-semibold text-neutral-600 mt-2">
+                Nợ thẻ tín dụng
+              </label>
+              <div className="col-span-3">
+                <Input
+                  id="credit_card_debt"
+                  type="text"
+                  inputMode="numeric"
+                  className="font-bold text-rose-700 bg-rose-50/50"
+                  value={creditCardDebt}
+                  onChange={(e) => setCreditCardDebt(formatNumberWithCommas(e.target.value))}
+                  required
+                />
+                <p className="text-[10px] text-neutral-400 mt-1.5 flex items-center">
+                  Tổng dư nợ thẻ tín dụng
                 </p>
               </div>
             </div>
