@@ -155,7 +155,11 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
                 dot={(props: any) => props.index === stockHistory.length - 1 ? <circle key="dot" cx={props.cx} cy={props.cy} r={3} fill="#2563eb" stroke="#fff" strokeWidth={1.5} /> : null}
               />
             </AreaChart>
-          </ResponsiveContai      {/* Total Debt Card */}
+          </ResponsiveContainer>
+        </div>
+      </Card>
+
+      {/* Total Debt Card */}
       <Card className="col-span-2 bg-rose-50/60 border-rose-200/60 shadow-sm relative overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 pt-3 z-10 relative">
           <CardTitle className="text-xs font-semibold text-rose-800 uppercase">Tổng Nợ</CardTitle>
@@ -208,9 +212,6 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
               />
             </AreaChart>
           </ResponsiveContainer>
-        </div>
-      </Card>
-      </div>         </ResponsiveContainer>
         </div>
       </Card>
       </div>
