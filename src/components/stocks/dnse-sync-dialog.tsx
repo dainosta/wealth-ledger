@@ -85,7 +85,7 @@ export function DnseSyncDialog({
           <div className="bg-amber-50 border border-amber-200 p-3 rounded-lg flex gap-3 items-start">
             <AlertTriangleIcon className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
             <div className="text-xs text-amber-800 font-medium leading-relaxed">
-              <strong>Lưu ý:</strong> Hành động này sẽ <strong>xóa toàn bộ danh mục cũ</strong> và thay bằng dữ liệu lấy trực tiếp từ DNSE.
+              <strong>Lưu ý:</strong> Hành động này sẽ <strong>ghi đè các mã cổ phiếu đã đồng bộ từ DNSE trước đó</strong>. Các mã bạn nhập tay (MANUAL) sẽ được giữ nguyên.
             </div>
           </div>
 

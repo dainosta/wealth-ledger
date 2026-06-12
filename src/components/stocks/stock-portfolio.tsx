@@ -171,7 +171,14 @@ function StockTableRow({ stock, updateStock, deleteStock }: { stock: any, update
           <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-sm ${bgColorClass}`}>
             {stock?.symbol?.charAt(0) || '?'}
           </div>
-          <span className="text-neutral-800">{stock?.symbol}</span>
+          <div className="flex flex-col">
+            <span className="text-neutral-800 leading-none">{stock?.symbol}</span>
+            {stock?.source === 'DNSE' ? (
+              <span className="text-[9px] font-medium text-emerald-600 mt-0.5">DNSE</span>
+            ) : (
+              <span className="text-[9px] font-medium text-amber-600 mt-0.5">Nhập tay</span>
+            )}
+          </div>
         </div>
       </TableCell>
       <TableCell className="text-right">
