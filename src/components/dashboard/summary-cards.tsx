@@ -23,6 +23,7 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
     realtimeNetWorth,
     totalStockValue,
     liveGoldDebt,
+    liveCashDebt,
     realtimeMoMChange,
     realtimeYtdGrowth,
     liveGoldPrice: displayGoldPrice,
