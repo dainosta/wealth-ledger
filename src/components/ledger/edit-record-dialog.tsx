@@ -29,6 +29,7 @@ export function EditRecordDialog({ record, open, onOpenChange }: EditRecordDialo
   const [portfolioValue, setPortfolioValue] = useState(record.portfolio_value.toString());
   const [goldPrice, setGoldPrice] = useState(record.gold_price.toString());
   const [goldDebtQty, setGoldDebtQty] = useState(record.gold_debt_qty.toString());
+  const [cashDebt, setCashDebt] = useState(record.cash_debt ? record.cash_debt.toString() : '0');
   const [notes, setNotes] = useState(record.notes || '');
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -41,6 +42,7 @@ export function EditRecordDialog({ record, open, onOpenChange }: EditRecordDialo
         portfolio_value: Number(portfolioValue),
         gold_price: Number(goldPrice),
         gold_debt_qty: Number(goldDebtQty),
+        cash_debt: Number(cashDebt),
         notes: notes,
       });
       
@@ -131,6 +133,19 @@ export function EditRecordDialog({ record, open, onOpenChange }: EditRecordDialo
                 className="col-span-3"
                 value={goldDebtQty}
                 onChange={(e) => setGoldDebtQty(e.target.value)}
+                required
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label htmlFor="edit_cash_debt" className="text-right text-sm font-medium">
+                Nợ tiền mặt (VNĐ)
+              </label>
+              <Input
+                id="edit_cash_debt"
+                type="number"
+                className="col-span-3"
+                value={cashDebt}
+                onChange={(e) => setCashDebt(e.target.value)}
                 required
               />
             </div>

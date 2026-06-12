@@ -42,6 +42,7 @@ export function AddRecordDialog() {
   const [portfolioValue, setPortfolioValue] = useState('');
   const [goldPrice, setGoldPrice] = useState('');
   const [goldDebtQty, setGoldDebtQty] = useState('');
+  const [cashDebt, setCashDebt] = useState('');
   const [notes, setNotes] = useState('');
 
   const fetchGoldPrice = async () => {
@@ -69,8 +70,10 @@ export function AddRecordDialog() {
       if (records.length > 0) {
         const latestRecord = records[records.length - 1];
         setGoldDebtQty(latestRecord.gold_debt_qty.toString());
+        setCashDebt(latestRecord.cash_debt ? formatNumberWithCommas(latestRecord.cash_debt) : '0');
       } else {
         setGoldDebtQty('');
+        setCashDebt('');
       }
       setNotes('');
       
@@ -90,6 +93,7 @@ export function AddRecordDialog() {
         portfolio_value: Number(portfolioValue.replace(/,/g, '')),
         gold_price: Number(goldPrice.replace(/,/g, '')),
         gold_debt_qty: Number(goldDebtQty),
+        cash_debt: Number(cashDebt.replace(/,/g, '')),
         notes: notes,
       };
 
@@ -213,6 +217,27 @@ export function AddRecordDialog() {
                 />
                 <p className="text-[10px] text-neutral-400 mt-1.5 flex items-center">
                   Kế thừa từ tháng trước
+                </p>
+              </div>
+            </div>
+
+            {/* Cash Debt */}
+            <div className="grid grid-cols-4 items-start gap-4">
+              <label htmlFor="cash_debt" className="text-right text-sm font-semibold text-neutral-600 mt-2">
+                Nợ tiền mặt (VNĐ)
+              </label>
+              <div className="col-span-3">
+                <Input
+                  id="cash_debt"
+                  type="text"
+                  inputMode="numeric"
+                  className="font-bold text-rose-700 bg-rose-50/50"
+                  value={cashDebt}
+                  onChange={(e) => setCashDebt(formatNumberWithCommas(e.target.value))}
+                  required
+                />
+                <p className="text-[10px] text-neutral-400 mt-1.5 flex items-center">
+                  Tổng dư nợ tiền mặt
                 </p>
               </div>
             </div>

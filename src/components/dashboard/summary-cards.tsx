@@ -165,19 +165,24 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
         </div>
       </Card>
 
-      {/* Gold Debt Card */}
+      {/* Total Debt Card */}
       <Card className="bg-rose-50/60 border-rose-200/60 shadow-sm relative overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 pt-3 z-10 relative">
-          <CardTitle className="text-xs font-semibold text-rose-800 uppercase">Nợ vàng</CardTitle>
+          <CardTitle className="text-xs font-semibold text-rose-800 uppercase">Tổng Nợ</CardTitle>
           <CoinsIcon className="h-3.5 w-3.5 text-rose-600" />
         </CardHeader>
         <CardContent className="pb-3 z-10 relative">
-          <div className="text-xl font-bold text-rose-700 mb-1.5 z-20 relative">
-            <CountUp end={liveGoldDebt} separator="." decimal="," suffix=" ₫" duration={1.5} preserveValue />
+          <div className="text-xl font-bold text-rose-700 mb-1.5 z-20 relative flex flex-col">
+            <CountUp end={liveGoldDebt + liveCashDebt} separator="." decimal="," suffix=" ₫" duration={1.5} preserveValue />
+            {liveCashDebt > 0 && (
+              <span className="text-[10px] text-rose-600/80 font-semibold mt-0.5 tracking-tight">
+                (Tiền mặt: {formatCurrency(liveCashDebt)} + Vàng: {formatCurrency(liveGoldDebt)})
+              </span>
+            )}
           </div>
-          <div className="flex flex-col gap-1.5 z-20 relative">
+          <div className="flex flex-col gap-1.5 z-20 relative mt-2">
             <div className="flex items-center justify-between text-[10px] font-semibold text-rose-700/70">
-              <span className="uppercase tracking-wider">Số lượng đang nợ:</span>
+              <span className="uppercase tracking-wider">Số lượng vàng nợ:</span>
               <span className="text-rose-800 font-bold">{currentMonth?.gold_debt_qty || 0} lượng</span>
             </div>
             <div className="flex items-center justify-between bg-amber-100/80 px-2 py-1.5 rounded border border-amber-200/80">
