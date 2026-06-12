@@ -41,6 +41,25 @@ export function useRealtimeNetWorth(
     realtimeMoMChange = ((realtimeNetWorth - previousMonth.net_worth) / previousMonth.net_worth) * 100;
   }
 
+  // Calculate Gold Debt Cost Basis (Option A)
+  // Find the earliest contiguous month where gold_debt_qty > 0 to determine the cost basis
+  let goldDebtCostBasis = 0;
+  let goldDebtProfitLoss = 0;
+  
+  if (currentMonth.gold_debt_qty > 0) {
+    let basisRecord = currentMonth;
+    for (let i = records.length - 2; i >= 0; i--) {
+      if (records[i].gold_debt_qty > 0) {
+        basisRecord = records[i];
+      } else {
+        break; // Stop at the first month with no debt in the cycle
+      }
+    }
+    goldDebtCostBasis = basisRecord.gold_price;
+    // Profit/Loss for debt: If current price > cost basis, it's a loss (negative) because we owe more
+    goldDebtProfitLoss = (goldDebtCostBasis - displayGoldPrice) * currentMonth.gold_debt_qty;
+  }
+
   return {
     realtimeNetWorth,
     totalStockValue,
@@ -48,6 +67,8 @@ export function useRealtimeNetWorth(
     liveCashDebt,
     liveCreditCardDebt,
     realtimeMoMChange,
+    goldDebtCostBasis,
+    goldDebtProfitLoss,
     liveGoldPrice: displayGoldPrice,
     worldGoldPrice,
     worldGoldChange,

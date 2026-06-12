@@ -19,7 +19,7 @@ import { DnseSyncDialog } from './dnse-sync-dialog';
 import { StockPieChart } from './stock-pie-chart';
 
 export function StockPortfolio({ stocksData }: { stocksData: any }) {
-  const { stocks, loading, error, deleteStock, refresh, updateStock, replacePortfolio } = stocksData;
+  const { stocks, loading, error, deleteStock, refresh, updateStock, replacePortfolio, lastSyncTime, syncStatus } = stocksData;
   const [viewMode, setViewMode] = useState<'table' | 'chart'>('table');
 
   const totalBuyValue = stocks.reduce((sum: any, stock: any) => sum + stock.quantity * stock.buy_price, 0);
@@ -48,11 +48,23 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
           </div>
         </div>
         <div className="flex items-center space-x-2">
-          <DnseSyncDialog onSyncComplete={replacePortfolio} />
-          <Button variant="outline" size="sm" onClick={refresh} disabled={loading} className="h-8 text-xs font-semibold bg-white">
-            <RefreshCwIcon className={`mr-2 h-3 w-3 ${loading ? 'animate-spin' : ''}`} />
-            Làm mới giá
+          {lastSyncTime && (
+            <div className="hidden md:flex items-center text-[10px] text-neutral-400 mr-2 bg-neutral-50 px-2 py-1 rounded-md border">
+              <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${syncStatus === 'error' ? 'bg-rose-500' : 'bg-emerald-500 animate-pulse'}`}></span>
+              Cập nhật lúc: {lastSyncTime.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+            </div>
+          )}
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => refresh()} 
+            disabled={loading}
+            className="h-8 text-xs font-semibold"
+          >
+            <RefreshCwIcon className={`w-3.5 h-3.5 mr-1 ${loading ? 'animate-spin text-blue-500' : 'text-neutral-500'}`} />
+            Làm mới
           </Button>
+          <DnseSyncDialog onSyncComplete={replacePortfolio} />
           <AddStockDialog />
         </div>
       </CardHeader>
@@ -75,19 +87,20 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
                 <TableHead className="text-right font-semibold text-neutral-600">Thành tiền</TableHead>
                 <TableHead className="text-right font-semibold text-neutral-600">Lỗ/Lãi</TableHead>
                 <TableHead className="text-right font-semibold text-neutral-600">%</TableHead>
+                <TableHead className="text-right font-semibold text-neutral-600 w-24">Tỷ trọng</TableHead>
                 <TableHead className="text-right font-semibold text-neutral-600">Thao tác</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {stocks.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                  <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
                     {loading ? 'Đang tải dữ liệu...' : 'Chưa có mã cổ phiếu nào trong danh mục.'}
                   </TableCell>
                 </TableRow>
               ) : (
                 stocks.map((stock: any) => (
-                  <StockTableRow key={stock.id} stock={stock} updateStock={updateStock} deleteStock={deleteStock} />
+                  <StockTableRow key={stock.id} stock={stock} totalValue={totalCurrentValue} updateStock={updateStock} deleteStock={deleteStock} />
                 ))
               )}
 
@@ -101,6 +114,7 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
                   <TableCell className={`text-right ${totalProfitPercent >= 0 ? 'text-emerald-600' : 'text-rose-500'}`}>
                     {totalProfitPercent > 0 ? '+' : ''}{totalProfitPercent.toFixed(2)}%
                   </TableCell>
+                  <TableCell></TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               )}
@@ -117,7 +131,7 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
   );
 }
 
-function StockTableRow({ stock, updateStock, deleteStock }: { stock: any, updateStock: any, deleteStock: any }) {
+function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock: any, totalValue: number, updateStock: any, deleteStock: any }) {
   const [isEditingQty, setIsEditingQty] = useState(false);
   const [isEditingPrice, setIsEditingPrice] = useState(false);
   const [qty, setQty] = useState(stock.quantity.toString());
@@ -240,6 +254,19 @@ function StockTableRow({ stock, updateStock, deleteStock }: { stock: any, update
       </TableCell>
       <TableCell className={`text-right font-bold ${stock.profitPercent >= 0 ? 'text-emerald-600 bg-emerald-50/30' : 'text-rose-500 bg-rose-50/30'}`}>
         {stock.profitPercent > 0 ? '+' : ''}{stock.profitPercent.toFixed(2)}%
+      </TableCell>
+      <TableCell className="text-right">
+        <div className="flex flex-col items-end gap-1 w-full justify-end">
+          <span className="text-[10px] font-bold text-neutral-600">
+            {((stock.currentValue / totalValue) * 100).toFixed(1)}%
+          </span>
+          <div className="w-16 h-1.5 bg-neutral-100 rounded-full overflow-hidden flex justify-end">
+            <div 
+              className="h-full bg-blue-500 rounded-full" 
+              style={{ width: `${(stock.currentValue / totalValue) * 100}%` }}
+            />
+          </div>
+        </div>
       </TableCell>
       <TableCell className="text-right">
         <div className="flex items-center justify-end gap-1">

@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { CalculatedMonthlyRecord } from '@/types';
 import { formatCurrency } from '@/lib/calculations';
 import {
-  AreaChart,
-  Area,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -148,7 +148,7 @@ export const NetWorthChart = React.memo(function NetWorthChart({ data }: NetWort
       <CardContent className="flex-1 min-h-0 px-4 pb-4 pt-2">
         <div className="w-full h-full">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart
+            <LineChart
               data={chartData}
               margin={{ top: 5, right: 30, left: 10, bottom: 5 }}
             >
@@ -183,25 +183,23 @@ export const NetWorthChart = React.memo(function NetWorthChart({ data }: NetWort
               />
               <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#9ca3af', strokeWidth: 1, strokeDasharray: '5 5' }} />
               <Legend verticalAlign="top" height={40} iconType="circle" wrapperStyle={{ fontSize: '13px' }}/>
-              <Area
+              <Line
                 type="monotone"
                 dataKey="Tài sản ròng"
                 stroke="#059669"
-                fillOpacity={1}
-                fill="url(#colorNetWorth)"
                 strokeWidth={3}
+                dot={{ r: 4, fill: '#059669', strokeWidth: 0 }}
                 activeDot={{ r: 8, strokeWidth: 2, stroke: '#fff', fill: '#059669' }}
               />
-              <Area
+              <Line
                 type="monotone"
                 dataKey="Danh mục cổ phiếu"
                 stroke="#2563eb"
-                fillOpacity={1}
-                fill="url(#colorPortfolio)"
                 strokeWidth={2}
+                dot={{ r: 3, fill: '#2563eb', strokeWidth: 0 }}
                 activeDot={{ r: 7, strokeWidth: 2, stroke: '#fff', fill: '#2563eb' }}
               />
-            </AreaChart>
+            </LineChart>
           </ResponsiveContainer>
         </div>
       </CardContent>

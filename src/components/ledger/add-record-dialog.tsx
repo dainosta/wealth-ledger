@@ -123,9 +123,9 @@ export function AddRecordDialog() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className={buttonVariants({ size: 'sm', variant: 'default' })}>
-        <ZapIcon className="mr-2 h-4 w-4 fill-yellow-400 text-yellow-500" />
-        Chốt sổ tháng này
+      <DialogTrigger className={`${buttonVariants({ size: 'default', variant: 'default' })} rounded-full shadow-lg shadow-blue-500/30 hover:shadow-xl hover:-translate-y-1 transition-all h-14 px-6`}>
+        <ZapIcon className="mr-2 h-5 w-5 fill-yellow-400 text-yellow-500" />
+        <span className="font-bold text-base">Chốt sổ tháng này</span>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[450px]">
         <form onSubmit={handleSubmit}>

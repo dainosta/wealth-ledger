@@ -40,7 +40,6 @@ export default function Home() {
           <div className="flex-1 flex flex-col bg-white rounded-xl shadow-sm border overflow-hidden min-h-[400px] lg:min-h-0">
             <div className="flex items-center justify-between p-3 border-b bg-neutral-50 shrink-0">
               <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-600">Sổ cái (Ledger)</h3>
-              <AddRecordDialog />
             </div>
             <div className="flex-1 overflow-auto p-0 relative">
               <div className="absolute inset-0">
@@ -70,6 +69,11 @@ export default function Home() {
           </div>
         </div>
 
+      </div>
+      
+      {/* Floating Action Button for Chốt Sổ */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <AddRecordDialog />
       </div>
     </div>
   );

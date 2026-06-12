@@ -22,6 +22,8 @@ export function useStocks() {
   const [loading, setLoading] = useState(true);
   const [initialized, setInitialized] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [lastSyncTime, setLastSyncTime] = useState<Date | null>(null);
+  const [syncStatus, setSyncStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const supabase = createClient();
 
   const fetchStocks = async (showLoading = true) => {
@@ -67,9 +69,12 @@ export function useStocks() {
 
       setStocks(enrichedStocks);
       setError(null);
+      setLastSyncTime(new Date());
+      setSyncStatus('success');
     } catch (err: unknown) {
       console.error('Lỗi khi tải danh mục cổ phiếu:', err);
       setError(err instanceof Error ? err.message : String(err));
+      setSyncStatus('error');
     } finally {
       if (showLoading) setLoading(false);
       setInitialized(true);
@@ -147,8 +152,11 @@ export function useStocks() {
   return {
     stocks,
     loading,
-    initialized,
     error,
+    initialized,
+    lastSyncTime,
+    syncStatus,
+    fetchStocks,
     addStock,
     updateStock,
     deleteStock,

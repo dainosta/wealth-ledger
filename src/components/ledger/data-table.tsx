@@ -13,7 +13,7 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { formatCurrency, formatPercent } from '@/lib/calculations';
-import { ArrowDownIcon, ArrowUpIcon, WalletIcon, TrendingUpIcon, CoinsIcon, CalendarIcon } from 'lucide-react';
+import { ArrowDownIcon, ArrowUpIcon, WalletIcon, TrendingUpIcon, CoinsIcon, CalendarIcon, FilterIcon } from 'lucide-react';
 import { ActionsCell } from './columns';
 
 interface DataTableProps<TData, TValue> {
@@ -44,8 +44,51 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  const years = React.useMemo(() => {
+    const uniqueYears = new Set<string>();
+    data.forEach((d: any) => {
+      const year = d.month_year.split('-')[1];
+      if (year) uniqueYears.add(year);
+    });
+    const currentYear = new Date().getFullYear().toString();
+    uniqueYears.add(currentYear);
+    return Array.from(uniqueYears).sort((a, b) => b.localeCompare(a));
+  }, [data]);
+
+  const [selectedYear, setSelectedYear] = React.useState<string>(years[0] || new Date().getFullYear().toString());
+
+  const filteredData = React.useMemo(() => {
+    if (selectedYear === 'ALL') return data;
+    return data.filter((d: any) => d.month_year.endsWith(`-${selectedYear}`));
+  }, [data, selectedYear]);
+
+  // Update table data when filter changes
+  React.useEffect(() => {
+    table.setOptions((prev) => ({
+      ...prev,
+      data: filteredData,
+    }));
+  }, [filteredData, table]);
+
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full relative">
+      <div className="absolute top-[-44px] right-3 z-10 flex items-center">
+        <div className="flex items-center bg-white border rounded-md shadow-sm overflow-hidden text-xs font-medium">
+          <div className="px-2 py-1.5 bg-neutral-50 border-r flex items-center text-neutral-500">
+            <FilterIcon className="w-3.5 h-3.5 mr-1" /> Năm
+          </div>
+          <select 
+            className="px-2 py-1.5 outline-none bg-transparent cursor-pointer text-neutral-700"
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(e.target.value)}
+          >
+            <option value="ALL">Tất cả</option>
+            {years.map(year => (
+              <option key={year} value={year}>{year}</option>
+            ))}
+          </select>
+        </div>
+      </div>
       <div className="flex-1 overflow-auto bg-neutral-50/50 p-3 flex flex-col gap-3">
         {table.getRowModel().rows?.length ? (
           table.getRowModel().rows.map((row) => {
