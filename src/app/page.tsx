@@ -8,9 +8,10 @@ import { columns } from '@/components/ledger/columns';
 import { AddRecordDialog } from '@/components/ledger/add-record-dialog';
 
 import { StockPortfolio } from '@/components/stocks/stock-portfolio';
-
+import { CashLoansTable } from '@/components/loans/cash-loans-table';
 
 import { useStocks } from '@/hooks/use-stocks';
+import { useLoans } from '@/hooks/use-loans';
 
 import { useRealtimeNetWorth } from '@/hooks/use-realtime-net-worth';
 import { GoalProgress } from '@/components/dashboard/goal-progress';
@@ -18,9 +19,12 @@ import { GoalProgress } from '@/components/dashboard/goal-progress';
 export default function Home() {
   const { records, loading: recordsLoading } = useRecords();
   const stocksData = useStocks();
-  const isAppLoading = recordsLoading || !stocksData.initialized;
+  const loansData = useLoans();
+  const isAppLoading = recordsLoading || !stocksData.initialized || loansData.loading;
   
   const { realtimeNetWorth } = useRealtimeNetWorth(records, stocksData.stocks);
+
+  const [activeTab, setActiveTab] = React.useState<'stocks' | 'loans'>('stocks');
 
   // No global loading blocking the layout, allowing individual components to handle loading and preserving animations.
 
@@ -63,9 +67,33 @@ export default function Home() {
              </div>
           </div>
 
-          {/* Stock Portfolio Row */}
-          <div className="flex-1 lg:min-h-0 flex flex-col min-h-[400px] lg:min-h-0">
-            <StockPortfolio stocksData={stocksData} />
+          {/* Portfolio & Loans Tabs */}
+          <div className="flex-1 lg:min-h-0 flex flex-col min-h-[400px] lg:min-h-0 bg-white rounded-xl shadow-sm border overflow-hidden">
+            <div className="flex border-b bg-neutral-50/50 p-1 shrink-0">
+              <button 
+                className={`flex-1 py-2 text-sm font-semibold rounded-md transition-colors ${activeTab === 'stocks' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100/50'}`}
+                onClick={() => setActiveTab('stocks')}
+              >
+                Danh mục Cổ phiếu
+              </button>
+              <button 
+                className={`flex-1 py-2 text-sm font-semibold rounded-md transition-colors ${activeTab === 'loans' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100/50'}`}
+                onClick={() => setActiveTab('loans')}
+              >
+                Quản lý Khoản Vay
+              </button>
+            </div>
+            <div className="flex-1 overflow-hidden relative p-0">
+              {activeTab === 'stocks' ? (
+                <div className="absolute inset-0">
+                  <StockPortfolio stocksData={stocksData} />
+                </div>
+              ) : (
+                <div className="absolute inset-0">
+                  <CashLoansTable loansData={loansData} />
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -73,7 +101,7 @@ export default function Home() {
       
       {/* Floating Action Button for Chốt Sổ */}
       <div className="fixed bottom-6 right-6 z-50">
-        <AddRecordDialog />
+        <AddRecordDialog loans={loansData.loans} />
       </div>
     </div>
   );

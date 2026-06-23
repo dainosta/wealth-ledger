@@ -17,6 +17,7 @@ import { ZapIcon, RefreshCwIcon, CheckCircle2Icon } from 'lucide-react';
 import { useRecords } from '@/hooks/use-records';
 import { useStocks } from '@/hooks/use-stocks';
 import { formatCurrency } from '@/lib/calculations';
+import { CashLoan } from '@/types';
 
 const formatNumberWithCommas = (val: string | number) => {
   if (val === null || val === undefined || val === '') return '';
@@ -27,7 +28,7 @@ const formatNumberWithCommas = (val: string | number) => {
   return num.toLocaleString('en-US');
 };
 
-export function AddRecordDialog() {
+export function AddRecordDialog({ loans = [] }: { loans?: CashLoan[] }) {
   const { addRecord, updateRecord, records } = useRecords();
   const { stocks } = useStocks();
   const [open, setOpen] = useState(false);
@@ -43,6 +44,7 @@ export function AddRecordDialog() {
   const [goldPrice, setGoldPrice] = useState('');
   const [goldDebtQty, setGoldDebtQty] = useState('0');
   const [cashDebt, setCashDebt] = useState('0');
+  const [cashInterestPaid, setCashInterestPaid] = useState('0');
   const [creditCardDebt, setCreditCardDebt] = useState('0');
   const [notes, setNotes] = useState('');
 
@@ -71,19 +73,27 @@ export function AddRecordDialog() {
       if (records.length > 0) {
         const latestRecord = records[records.length - 1];
         setGoldDebtQty(latestRecord.gold_debt_qty ? latestRecord.gold_debt_qty.toString() : '0');
-        setCashDebt(latestRecord.cash_debt ? formatNumberWithCommas(latestRecord.cash_debt) : '0');
+        // Calculate cash debt dynamically from loans if available, else fallback to latest record
+        const liveCashDebt = loans.reduce((sum, loan) => sum + loan.balance, 0);
+        setCashDebt(liveCashDebt > 0 ? formatNumberWithCommas(liveCashDebt) : (latestRecord.cash_debt ? formatNumberWithCommas(latestRecord.cash_debt) : '0'));
         setCreditCardDebt(latestRecord.credit_card_debt ? formatNumberWithCommas(latestRecord.credit_card_debt) : '0');
+        // Default interest paid to 0 or estimated interest
+        const estimatedInterest = loans.reduce((sum, loan) => sum + (loan.balance * loan.interest_rate / 100 / 12), 0);
+        setCashInterestPaid(estimatedInterest > 0 ? formatNumberWithCommas(estimatedInterest) : '0');
       } else {
         setGoldDebtQty('');
-        setCashDebt('');
+        const liveCashDebt = loans.reduce((sum, loan) => sum + loan.balance, 0);
+        setCashDebt(liveCashDebt > 0 ? formatNumberWithCommas(liveCashDebt) : '');
         setCreditCardDebt('');
+        const estimatedInterest = loans.reduce((sum, loan) => sum + (loan.balance * loan.interest_rate / 100 / 12), 0);
+        setCashInterestPaid(estimatedInterest > 0 ? formatNumberWithCommas(estimatedInterest) : '0');
       }
       setNotes('');
       
       // Auto-fetch gold price
       fetchGoldPrice();
     }
-  }, [open, records, totalStockValue]);
+  }, [open, records, totalStockValue, loans]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,6 +107,7 @@ export function AddRecordDialog() {
         gold_price: Number(goldPrice.replace(/,/g, '')),
         gold_debt_qty: Number(goldDebtQty),
         cash_debt: Number(cashDebt.replace(/,/g, '')),
+        cash_interest_paid: Number(cashInterestPaid.replace(/,/g, '')),
         credit_card_debt: Number(creditCardDebt.replace(/,/g, '')),
         notes: notes,
       };
@@ -241,7 +252,28 @@ export function AddRecordDialog() {
                   required
                 />
                 <p className="text-[10px] text-neutral-400 mt-1.5 flex items-center">
-                  Tổng dư nợ tiền mặt
+                  <RefreshCwIcon className="h-3 w-3 mr-1" />
+                  Tổng dư nợ (Cộng dồn tự động)
+                </p>
+              </div>
+            </div>
+
+            {/* Cash Interest Paid */}
+            <div className="grid grid-cols-4 items-start gap-4">
+              <label htmlFor="cash_interest_paid" className="text-right text-sm font-semibold text-neutral-600 mt-2">
+                Lãi tiền mặt (VNĐ)
+              </label>
+              <div className="col-span-3">
+                <Input
+                  id="cash_interest_paid"
+                  type="text"
+                  inputMode="numeric"
+                  className="font-bold text-amber-700 bg-amber-50/50"
+                  value={cashInterestPaid}
+                  onChange={(e) => setCashInterestPaid(formatNumberWithCommas(e.target.value))}
+                />
+                <p className="text-[10px] text-neutral-400 mt-1.5 flex items-center">
+                  Tiền lãi đã trả trong tháng (dự tính từ hệ thống)
                 </p>
               </div>
             </div>
