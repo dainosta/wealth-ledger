@@ -24,8 +24,6 @@ export default function Home() {
   
   const { realtimeNetWorth } = useRealtimeNetWorth(records, stocksData.stocks);
 
-  const [activeTab, setActiveTab] = useState<'stocks' | 'loans'>('stocks');
-
   // No global loading blocking the layout, allowing individual components to handle loading and preserving animations.
 
   return (
@@ -67,33 +65,14 @@ export default function Home() {
              </div>
           </div>
 
-          {/* Portfolio & Loans Tabs */}
-          <div className="flex-1 lg:min-h-0 flex flex-col min-h-[400px] lg:min-h-0 bg-white rounded-xl shadow-sm border overflow-hidden">
-            <div className="flex border-b bg-neutral-50/50 p-1 shrink-0">
-              <button 
-                className={`flex-1 py-2 text-sm font-semibold rounded-md transition-colors ${activeTab === 'stocks' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100/50'}`}
-                onClick={() => setActiveTab('stocks')}
-              >
-                Danh mục Cổ phiếu
-              </button>
-              <button 
-                className={`flex-1 py-2 text-sm font-semibold rounded-md transition-colors ${activeTab === 'loans' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100/50'}`}
-                onClick={() => setActiveTab('loans')}
-              >
-                Quản lý Khoản Vay
-              </button>
-            </div>
-            <div className="flex-1 overflow-hidden relative p-0">
-              {activeTab === 'stocks' ? (
-                <div className="absolute inset-0">
-                  <StockPortfolio stocksData={stocksData} />
-                </div>
-              ) : (
-                <div className="absolute inset-0">
-                  <CashLoansTable loansData={loansData} />
-                </div>
-              )}
-            </div>
+          {/* Stock Portfolio Row */}
+          <div className="flex-1 lg:min-h-[400px] flex flex-col min-h-[400px] mb-3">
+            <StockPortfolio stocksData={stocksData} />
+          </div>
+
+          {/* Cash Loans Row */}
+          <div className="flex-1 lg:min-h-[300px] flex flex-col min-h-[300px]">
+            <CashLoansTable loansData={loansData} />
           </div>
         </div>
 
