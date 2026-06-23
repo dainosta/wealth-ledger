@@ -24,22 +24,24 @@ export default function Home() {
   
   const { realtimeNetWorth } = useRealtimeNetWorth(records, stocksData.stocks);
 
+  const [activeTab, setActiveTab] = useState<'stocks' | 'loans'>('stocks');
+
   // No global loading blocking the layout, allowing individual components to handle loading and preserving animations.
 
   return (
-    <div className="flex min-h-screen flex-col bg-neutral-100/50 p-2 md:p-4 pb-24">
+    <div className="flex lg:h-screen min-h-screen flex-col lg:overflow-hidden overflow-auto bg-neutral-100/50 p-2 md:p-4">
       {/* Main Grid: 2 Columns */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 animate-fade-in-up delay-100">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3 lg:min-h-0 lg:overflow-hidden animate-fade-in-up delay-100">
         
         {/* Left Col: Summary Cards & Ledger (Order 2 on mobile) */}
-        <div className="lg:col-span-4 flex flex-col gap-3 order-2 lg:order-1">
+        <div className="lg:col-span-4 flex flex-col gap-3 lg:min-h-0 order-2 lg:order-1">
           {/* Summary Cards */}
           <div className="shrink-0">
             <SummaryCards data={records} stocks={stocksData.stocks} isLoading={isAppLoading} />
           </div>
 
           {/* Ledger */}
-          <div className="flex-1 flex flex-col bg-white rounded-xl shadow-sm border overflow-hidden min-h-[400px]">
+          <div className="flex-1 flex flex-col bg-white rounded-xl shadow-sm border overflow-hidden min-h-[400px] lg:min-h-0">
             <div className="flex items-center justify-between p-3 border-b bg-neutral-50 shrink-0">
               <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-600">Sổ cái (Ledger)</h3>
             </div>
@@ -52,7 +54,7 @@ export default function Home() {
         </div>
 
         {/* Right Col: Goal Progress, Charts & Stocks (Order 1 on mobile) */}
-        <div className="lg:col-span-8 flex flex-col gap-3 order-1 lg:order-2">
+        <div className="lg:col-span-8 flex flex-col gap-3 lg:min-h-0 order-1 lg:order-2">
           {/* Goal Progress */}
           <div className="shrink-0">
             <GoalProgress currentNetWorth={realtimeNetWorth} isLoading={isAppLoading} />
@@ -65,14 +67,33 @@ export default function Home() {
              </div>
           </div>
 
-          {/* Stock Portfolio Row */}
-          <div className="flex-1 lg:min-h-[400px] flex flex-col min-h-[400px] mb-3">
-            <StockPortfolio stocksData={stocksData} />
-          </div>
-
-          {/* Cash Loans Row */}
-          <div className="flex-1 lg:min-h-[300px] flex flex-col min-h-[300px]">
-            <CashLoansTable loansData={loansData} />
+          {/* Portfolio & Loans Tabs */}
+          <div className="flex-1 lg:min-h-0 flex flex-col min-h-[400px] lg:min-h-0 bg-white rounded-xl shadow-sm border overflow-hidden">
+            <div className="flex border-b bg-neutral-50/50 p-1 shrink-0">
+              <button 
+                className={`flex-1 py-2 text-sm font-semibold rounded-md transition-colors ${activeTab === 'stocks' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100/50'}`}
+                onClick={() => setActiveTab('stocks')}
+              >
+                Danh mục Cổ phiếu
+              </button>
+              <button 
+                className={`flex-1 py-2 text-sm font-semibold rounded-md transition-colors ${activeTab === 'loans' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100/50'}`}
+                onClick={() => setActiveTab('loans')}
+              >
+                Quản lý Khoản Vay
+              </button>
+            </div>
+            <div className="flex-1 overflow-hidden relative p-0">
+              {activeTab === 'stocks' ? (
+                <div className="absolute inset-0">
+                  <StockPortfolio stocksData={stocksData} />
+                </div>
+              ) : (
+                <div className="absolute inset-0">
+                  <CashLoansTable loansData={loansData} />
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
