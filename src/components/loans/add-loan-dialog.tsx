@@ -90,7 +90,7 @@ export function AddLoanDialog({ onAdd }: { onAdd: () => void }) {
                 id="balance"
                 value={balance}
                 onChange={(e) => {
-                  const val = e.target.value.replace(/\\D/g, '');
+                  const val = e.target.value.replace(/\D/g, '');
                   setBalance(val ? Number(val).toLocaleString('en-US') : '');
                 }}
                 placeholder="VNĐ"
