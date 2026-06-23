@@ -1,5 +1,5 @@
 'use client';
-
+import { useState } from 'react';
 import { useRecords } from '@/hooks/use-records';
 import { SummaryCards } from '@/components/dashboard/summary-cards';
 import { NetWorthChart } from '@/components/dashboard/net-worth-chart';
@@ -24,7 +24,7 @@ export default function Home() {
   
   const { realtimeNetWorth } = useRealtimeNetWorth(records, stocksData.stocks);
 
-  const [activeTab, setActiveTab] = React.useState<'stocks' | 'loans'>('stocks');
+  const [activeTab, setActiveTab] = useState<'stocks' | 'loans'>('stocks');
 
   // No global loading blocking the layout, allowing individual components to handle loading and preserving animations.
 
