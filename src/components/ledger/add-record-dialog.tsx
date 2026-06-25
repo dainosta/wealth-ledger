@@ -101,9 +101,12 @@ export function AddRecordDialog({ loans = [] }: { loans?: CashLoan[] }) {
     
     try {
       const existingRecord = records.find(r => r.month_year === monthYear);
+      const stockCostBasis = stocks.reduce((sum, stock) => sum + (stock.quantity * stock.buy_price), 0);
+      
       const payload = {
         month_year: monthYear,
         portfolio_value: Number(portfolioValue.replace(/,/g, '')),
+        stock_cost_basis: stockCostBasis,
         gold_price: Number(goldPrice.replace(/,/g, '')),
         gold_debt_qty: Number(goldDebtQty),
         cash_debt: Number(cashDebt.replace(/,/g, '')),

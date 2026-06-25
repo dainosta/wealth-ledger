@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRecords } from '@/hooks/use-records';
 import { SummaryCards } from '@/components/dashboard/summary-cards';
-import { NetWorthChart } from '@/components/dashboard/net-worth-chart';
+import { DashboardCharts } from '@/components/dashboard/dashboard-charts';
 import { DataTable } from '@/components/ledger/data-table';
 import { columns } from '@/components/ledger/columns';
 import { AddRecordDialog } from '@/components/ledger/add-record-dialog';
@@ -62,9 +62,7 @@ export default function Home() {
 
           {/* Charts Row */}
           <div className="shrink-0 mb-3 h-[450px]">
-             <div className="bg-white rounded-xl shadow-sm border overflow-hidden h-full">
-               <NetWorthChart data={records} />
-             </div>
+             <DashboardCharts data={records} />
           </div>
 
           {/* Portfolio & Loans Tabs */}
