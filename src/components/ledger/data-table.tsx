@@ -158,7 +158,7 @@ export function DataTable<TData, TValue>({
                      ) : null}
                      {record.notes && (
                        <div className="bg-neutral-900 border border-neutral-800 p-1.5 rounded-none text-[9px] text-neutral-400 mt-1 lowercase normal-case font-mono">
-                         > {record.notes}
+                         &gt; {record.notes}
                        </div>
                      )}
                    </div>
