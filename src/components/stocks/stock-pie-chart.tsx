@@ -124,7 +124,7 @@ export const StockPieChart = React.memo(function StockPieChart({ stocks }: { sto
                       <div className="w-3.5 h-3.5 rounded-none relative overflow-hidden bg-neutral-800 flex items-center justify-center text-[8px] text-white">
                         <span className="z-0 relative">{stock.symbol.charAt(0)}</span>
                         <img 
-                          src={`https://static.tcbs.com.vn/company/logo/${stock.symbol}.png`} 
+                          src={stock.custom_logo || `https://static.tcbs.com.vn/company/logo/${stock.symbol}.png`} 
                           alt={stock.symbol} 
                           className="absolute inset-0 w-full h-full object-cover bg-white z-10"
                           onError={(e) => { e.currentTarget.style.display = 'none'; }}

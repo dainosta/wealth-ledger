@@ -7,6 +7,7 @@ export interface StockRecord {
   quantity: number;
   buy_price: number;
   source?: string;
+  custom_logo?: string;
   created_at: string;
 }
 

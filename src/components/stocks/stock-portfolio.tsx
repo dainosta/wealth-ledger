@@ -136,6 +136,30 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
   const [qty, setQty] = useState(stock.quantity.toString());
   const [price, setPrice] = useState(stock.buy_price.toString());
   const [isUpdating, setIsUpdating] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Check size < 1MB
+    if (file.size > 1024 * 1024) {
+      alert('Kích thước ảnh quá lớn. Vui lòng chọn ảnh < 1MB');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      const base64 = event.target?.result as string;
+      setIsUpdating(true);
+      try {
+        await updateStock(stock.id, { custom_logo: base64 });
+      } finally {
+        setIsUpdating(false);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleUpdateQuantity = async (newQty: number) => {
     if (newQty < 0) return;
@@ -181,14 +205,22 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
     <TableRow className={`${isUpdating ? 'opacity-50' : ''} border-neutral-800 hover:bg-neutral-900/50 transition-colors`}>
       <TableCell className="font-medium">
         <div className="flex items-center gap-2">
-          <div className={`relative w-5 h-5 rounded-none flex items-center justify-center text-[10px] font-bold text-white ${bgColorClass} overflow-hidden`}>
+          <div 
+            className={`relative w-5 h-5 rounded-none flex items-center justify-center text-[10px] font-bold text-white ${bgColorClass} overflow-hidden cursor-pointer group`}
+            onClick={() => fileInputRef.current?.click()}
+            title="Tải lên icon tùy chỉnh"
+          >
             <span className="z-0 relative">{stock?.symbol?.charAt(0) || '?'}</span>
             <img 
-              src={`https://static.tcbs.com.vn/company/logo/${stock?.symbol}.png`} 
+              src={stock?.custom_logo || `https://static.tcbs.com.vn/company/logo/${stock?.symbol}.png`} 
               alt={stock?.symbol} 
               className="absolute inset-0 w-full h-full object-cover bg-white z-10"
               onError={(e) => { e.currentTarget.style.display = 'none'; }}
             />
+            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center z-20 transition-opacity">
+               <span className="text-[8px]">⬆️</span>
+            </div>
+            <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleLogoUpload} />
           </div>
           <div className="flex flex-col">
             <span className="text-neutral-200 leading-none">{stock?.symbol}</span>
