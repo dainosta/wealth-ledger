@@ -39,7 +39,7 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
   if (isLoading) {
     return (
       <div className="flex flex-col w-full h-full">
-        <div className="grid grid-cols-2 gap-3 flex-1">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 flex-1">
           {/* Skeleton 1: Net Worth */}
           <Card className="col-span-2 lg:col-span-1 bg-black border-neutral-800 shadow-none rounded-none relative overflow-hidden animate-pulse flex flex-col">
             <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-900 w-24 rounded-none"></div><div className="w-4 h-4 bg-neutral-900 rounded-none"></div></CardHeader>
