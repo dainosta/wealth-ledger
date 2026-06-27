@@ -14,15 +14,15 @@ export function DashboardCharts({ data }: DashboardChartsProps) {
 
   return (
     <div className="bg-white rounded-xl shadow-sm border overflow-hidden h-full flex flex-col">
-      <div className="flex border-b bg-neutral-50/50 p-1 shrink-0">
+      <div className="flex border-b bg-white pt-2 px-4 shrink-0 gap-6">
         <button 
-          className={`flex-1 py-2 text-sm font-semibold rounded-md transition-colors ${activeChart === 'net-worth' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100/50'}`}
+          className={`pb-2.5 px-1 text-sm font-semibold transition-all border-b-2 relative top-[1px] ${activeChart === 'net-worth' ? 'border-blue-600 text-blue-700' : 'border-transparent text-neutral-500 hover:text-neutral-800 hover:border-neutral-300'}`}
           onClick={() => setActiveChart('net-worth')}
         >
           Lịch sử tài sản ròng
         </button>
         <button 
-          className={`flex-1 py-2 text-sm font-semibold rounded-md transition-colors ${activeChart === 'stock-performance' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100/50'}`}
+          className={`pb-2.5 px-1 text-sm font-semibold transition-all border-b-2 relative top-[1px] ${activeChart === 'stock-performance' ? 'border-blue-600 text-blue-700' : 'border-transparent text-neutral-500 hover:text-neutral-800 hover:border-neutral-300'}`}
           onClick={() => setActiveChart('stock-performance')}
         >
           Hiệu quả cổ phiếu

@@ -41,7 +41,7 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
       <div className="flex flex-col w-full h-full">
         <div className="grid grid-cols-2 gap-3 flex-1">
           {/* Skeleton 1: Net Worth */}
-          <Card className="col-span-2 bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
+          <Card className="col-span-2 lg:col-span-1 bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
             <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-200 w-24 rounded"></div><div className="w-4 h-4 bg-neutral-200 rounded-full"></div></CardHeader>
             <CardContent className="pb-3 flex-1 flex flex-col justify-end"><div className="h-7 bg-neutral-200 w-32 rounded mb-1"></div><div className="h-3 bg-neutral-200 w-20 rounded"></div></CardContent>
           </Card>
@@ -55,8 +55,8 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
             <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-200 w-24 rounded"></div><div className="w-4 h-4 bg-neutral-200 rounded-full"></div></CardHeader>
             <CardContent className="pb-3 flex-1 flex flex-col justify-end"><div className="h-7 bg-neutral-200 w-32 rounded mb-1"></div><div className="h-3 bg-neutral-200 w-20 rounded"></div></CardContent>
           </Card>
-          {/* Skeleton 3: Total Debt (Taller, col-span-2) */}
-          <Card className="col-span-2 bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
+          {/* Skeleton 4: Total Debt */}
+          <Card className="col-span-2 lg:col-span-2 bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
             <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-200 w-24 rounded"></div><div className="w-4 h-4 bg-neutral-200 rounded-full"></div></CardHeader>
             <CardContent className="pb-3 flex-1 flex flex-col">
               <div className="h-7 bg-neutral-200 w-32 rounded mb-3 mt-1"></div>
@@ -77,9 +77,9 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
   const debtHistory = data.map(d => ({ value: d.gold_debt_value + (d.cash_debt || 0) + (d.credit_card_debt || 0) }));
   return (
     <div className="flex flex-col w-full h-full">
-      <div className="grid grid-cols-2 gap-3 flex-1">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 flex-1">
         {/* Net Worth Card */}
-      <Card className="col-span-2 bg-emerald-50/60 border-emerald-200/60 shadow-sm relative overflow-hidden">
+      <Card className="col-span-2 lg:col-span-1 bg-emerald-50/60 border-emerald-200/60 shadow-sm relative overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 pt-3 z-10 relative">
           <CardTitle className="text-xs font-semibold text-emerald-800 uppercase">Tài sản ròng</CardTitle>
           <WalletIcon className="h-3.5 w-3.5 text-emerald-600" />
@@ -199,33 +199,23 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
           </div>
           
           <div className="grid grid-cols-3 gap-2 z-20 relative mt-2">
-            <div className="flex flex-col bg-neutral-50/80 p-2 rounded-lg border border-neutral-100 hover:border-rose-200 transition-colors group relative cursor-help">
-              <span className="text-[10px] font-semibold text-neutral-500 uppercase flex items-center">
-                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 mr-1.5"></span>
-                Nợ Vàng
-              </span>
+            <div className="flex flex-col bg-neutral-50/80 p-2 rounded-lg border border-neutral-100 transition-colors relative">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-semibold text-neutral-500 uppercase flex items-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500 mr-1.5"></span>
+                  Nợ Vàng
+                </span>
+                {(currentMonth?.gold_debt_qty || 0) > 0 && goldDebtCostBasis > 0 && (
+                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-sm ${goldDebtProfitLoss < 0 ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}`}>
+                    {goldDebtProfitLoss < 0 ? '' : '+'}{formatCurrency(goldDebtProfitLoss)}
+                  </span>
+                )}
+              </div>
               <span className="font-bold text-rose-700 text-sm mt-0.5">{formatCurrency(liveGoldDebt)}</span>
               <div className="flex items-center justify-between mt-1 text-[9px] text-neutral-500">
                 <span>{currentMonth?.gold_debt_qty || 0} lượng</span>
-                <span>{formatCurrency(displayGoldPrice)}/lượng</span>
+                <span>{formatCurrency(displayGoldPrice)}/l</span>
               </div>
-              {/* Tooltip for Cost Basis */}
-              {(currentMonth?.gold_debt_qty || 0) > 0 && goldDebtCostBasis > 0 && (
-                <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity bg-neutral-800 text-white text-[10px] p-2 rounded -top-12 left-0 min-w-40 z-50 pointer-events-none shadow-xl">
-                  <div className="flex justify-between mb-1">
-                    <span className="text-neutral-300">Giá vốn vay:</span>
-                    <span className="font-semibold">{formatCurrency(goldDebtCostBasis)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-neutral-300">Lãi/Lỗ:</span>
-                    <span className={`font-semibold ${goldDebtProfitLoss < 0 ? 'text-rose-400' : 'text-emerald-400'}`}>
-                      {goldDebtProfitLoss < 0 ? '' : '+'}{formatCurrency(goldDebtProfitLoss)}
-                    </span>
-                  </div>
-                  {/* Arrow */}
-                  <div className="absolute w-2 h-2 bg-neutral-800 rotate-45 -bottom-1 left-4"></div>
-                </div>
-              )}
             </div>
             <div className="flex flex-col bg-neutral-50/80 p-2 rounded-lg border border-neutral-100 hover:border-amber-200 transition-colors">
               <span className="text-[10px] font-semibold text-neutral-500 uppercase flex items-center">

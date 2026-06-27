@@ -30,16 +30,16 @@ export default function Home() {
 
   return (
     <div className="flex lg:h-screen min-h-screen flex-col lg:overflow-hidden overflow-auto bg-neutral-100/50 p-2 md:p-4">
+      {/* Top Widgets Row */}
+      <div className="shrink-0 mb-3 animate-fade-in-down">
+        <SummaryCards data={records} stocks={stocksData.stocks} isLoading={isAppLoading} />
+      </div>
+
       {/* Main Grid: 2 Columns */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3 lg:min-h-0 lg:overflow-hidden animate-fade-in-up delay-100">
         
-        {/* Left Col: Summary Cards & Ledger (Order 2 on mobile) */}
-        <div className="lg:col-span-4 flex flex-col gap-3 lg:min-h-0 order-2 lg:order-1">
-          {/* Summary Cards */}
-          <div className="shrink-0">
-            <SummaryCards data={records} stocks={stocksData.stocks} isLoading={isAppLoading} />
-          </div>
-
+        {/* Left Col: Ledger (Order 2 on mobile) */}
+        <div className="lg:col-span-3 flex flex-col gap-3 lg:min-h-0 order-2 lg:order-1">
           {/* Ledger */}
           <div className="flex-1 flex flex-col bg-white rounded-xl shadow-sm border overflow-hidden min-h-[400px] lg:min-h-0">
             <div className="flex items-center justify-between p-3 border-b bg-neutral-50 shrink-0">
@@ -54,7 +54,7 @@ export default function Home() {
         </div>
 
         {/* Right Col: Goal Progress, Charts & Stocks (Order 1 on mobile) */}
-        <div className="lg:col-span-8 flex flex-col gap-3 lg:min-h-0 order-1 lg:order-2">
+        <div className="lg:col-span-9 flex flex-col gap-3 lg:min-h-0 order-1 lg:order-2">
           {/* Goal Progress */}
           <div className="shrink-0">
             <GoalProgress currentNetWorth={realtimeNetWorth} isLoading={isAppLoading} />
@@ -67,15 +67,15 @@ export default function Home() {
 
           {/* Portfolio & Loans Tabs */}
           <div className="flex-1 lg:min-h-0 flex flex-col min-h-[400px] lg:min-h-0 bg-white rounded-xl shadow-sm border overflow-hidden">
-            <div className="flex border-b bg-neutral-50/50 p-1 shrink-0">
+            <div className="flex border-b bg-white pt-2 px-4 shrink-0 gap-6">
               <button 
-                className={`flex-1 py-2 text-sm font-semibold rounded-md transition-colors ${activeTab === 'stocks' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100/50'}`}
+                className={`pb-2.5 px-1 text-sm font-semibold transition-all border-b-2 relative top-[1px] ${activeTab === 'stocks' ? 'border-blue-600 text-blue-700' : 'border-transparent text-neutral-500 hover:text-neutral-800 hover:border-neutral-300'}`}
                 onClick={() => setActiveTab('stocks')}
               >
                 Danh mục Cổ phiếu
               </button>
               <button 
-                className={`flex-1 py-2 text-sm font-semibold rounded-md transition-colors ${activeTab === 'loans' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100/50'}`}
+                className={`pb-2.5 px-1 text-sm font-semibold transition-all border-b-2 relative top-[1px] ${activeTab === 'loans' ? 'border-blue-600 text-blue-700' : 'border-transparent text-neutral-500 hover:text-neutral-800 hover:border-neutral-300'}`}
                 onClick={() => setActiveTab('loans')}
               >
                 Quản lý Khoản Vay

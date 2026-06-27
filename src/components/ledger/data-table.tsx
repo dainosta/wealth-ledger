@@ -138,30 +138,30 @@ export function DataTable<TData, TValue>({
                 {(record.gold_debt_qty > 0 || (record.cash_debt && record.cash_debt > 0) || (record.credit_card_debt && record.credit_card_debt > 0) || record.notes) && (
                    <div className="mt-2 pt-2 border-t border-neutral-100 flex flex-col gap-1.5 text-xs text-neutral-500">
                      {record.gold_debt_qty > 0 && (
-                       <div className="flex items-center justify-between">
-                         <div className="flex items-center">
+                       <div className="flex items-center justify-end gap-3 w-full">
+                         <div className="flex items-center text-neutral-500">
                            <CoinsIcon className="w-3.5 h-3.5 mr-1 text-amber-500"/>
-                           Nợ vàng: <span className="font-semibold text-amber-600 ml-1">{record.gold_debt_qty} lượng</span>
+                           Nợ vàng <span className="font-semibold text-amber-600 ml-1">({record.gold_debt_qty} lượng):</span>
                          </div>
-                         <span className="font-medium text-rose-500">- {formatCurrency(record.gold_debt_value)}</span>
+                         <span className="font-medium text-rose-500 min-w-[90px] text-right">- {formatCurrency(record.gold_debt_value)}</span>
                        </div>
                      )}
                      {(record.cash_debt && record.cash_debt > 0) ? (
-                       <div className="flex items-center justify-between">
-                         <div className="flex items-center">
+                       <div className="flex items-center justify-end gap-3 w-full">
+                         <div className="flex items-center text-neutral-500">
                            <CoinsIcon className="w-3.5 h-3.5 mr-1 text-amber-600"/>
                            Nợ tiền mặt:
                          </div>
-                         <span className="font-medium text-rose-500">- {formatCurrency(record.cash_debt)}</span>
+                         <span className="font-medium text-rose-500 min-w-[90px] text-right">- {formatCurrency(record.cash_debt)}</span>
                        </div>
                      ) : null}
                      {(record.credit_card_debt && record.credit_card_debt > 0) ? (
-                       <div className="flex items-center justify-between">
-                         <div className="flex items-center">
+                       <div className="flex items-center justify-end gap-3 w-full">
+                         <div className="flex items-center text-neutral-500">
                            <CoinsIcon className="w-3.5 h-3.5 mr-1 text-violet-500"/>
                            Nợ thẻ tín dụng:
                          </div>
-                         <span className="font-medium text-rose-500">- {formatCurrency(record.credit_card_debt)}</span>
+                         <span className="font-medium text-rose-500 min-w-[90px] text-right">- {formatCurrency(record.credit_card_debt)}</span>
                        </div>
                      ) : null}
                      {record.notes && (

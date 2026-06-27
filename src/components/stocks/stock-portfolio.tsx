@@ -15,8 +15,8 @@ import { RefreshCwIcon, Trash2Icon, PencilIcon } from 'lucide-react';
 import { formatCurrency } from '@/lib/calculations';
 
 import { DnseSyncDialog } from './dnse-sync-dialog';
-
 import { StockPieChart } from './stock-pie-chart';
+import { LineChart, Line, ResponsiveContainer } from 'recharts';
 
 export function StockPortfolio({ stocksData }: { stocksData: any }) {
   const { stocks, loading, error, deleteStock, refresh, updateStock, replacePortfolio, lastSyncTime, syncStatus } = stocksData;
@@ -81,6 +81,7 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
             <TableHeader className="bg-neutral-50/50">
               <TableRow>
                 <TableHead className="font-semibold text-neutral-600">Mã CK</TableHead>
+                <TableHead className="font-semibold text-neutral-600 w-20">Xu hướng</TableHead>
                 <TableHead className="text-right font-semibold text-neutral-600">Số lượng</TableHead>
                 <TableHead className="text-right font-semibold text-neutral-600">Giá mua</TableHead>
                 <TableHead className="text-right font-semibold text-neutral-600">Giá HT</TableHead>
@@ -94,7 +95,7 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
             <TableBody>
               {stocks.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
+                  <TableCell colSpan={10} className="text-center py-8 text-muted-foreground">
                     {loading ? 'Đang tải dữ liệu...' : 'Chưa có mã cổ phiếu nào trong danh mục.'}
                   </TableCell>
                 </TableRow>
@@ -106,7 +107,7 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
 
               {stocks.length > 0 && (
                 <TableRow className="bg-neutral-50 font-bold border-t-2 border-neutral-100">
-                  <TableCell colSpan={4} className="uppercase text-neutral-700">TỔNG CỘNG</TableCell>
+                  <TableCell colSpan={5} className="uppercase text-neutral-700">TỔNG CỘNG</TableCell>
                   <TableCell className="text-right text-neutral-900">{formatCurrency(totalCurrentValue)}</TableCell>
                   <TableCell className={`text-right ${totalProfit >= 0 ? 'text-emerald-600' : 'text-rose-500'}`}>
                     {totalProfit > 0 ? '+' : ''}{formatCurrency(totalProfit)}
@@ -178,6 +179,13 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
   const charCode = stock?.symbol?.charCodeAt(0) || 0;
   const bgColorClass = avatarColors[charCode % avatarColors.length];
 
+  // Generate mock sparkline data based on charCode to make it look somewhat consistent for the same stock
+  const mockSparklineData = Array.from({ length: 10 }).map((_, i) => ({
+    value: 100 + Math.sin(i + charCode) * 20 + Math.cos(i * 2) * 10
+  }));
+  const isUpTrend = mockSparklineData[9].value >= mockSparklineData[0].value;
+  const sparklineColor = isUpTrend ? '#10b981' : '#f43f5e';
+
   return (
     <TableRow className={`${isUpdating ? 'opacity-50' : ''} hover:bg-neutral-50/50 transition-colors`}>
       <TableCell className="font-medium">
@@ -193,6 +201,15 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
               <span className="text-[9px] font-medium text-amber-600 mt-0.5">Nhập tay</span>
             )}
           </div>
+        </div>
+      </TableCell>
+      <TableCell className="p-0 align-middle">
+        <div className="h-8 w-16 opacity-70">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={mockSparklineData}>
+              <Line type="monotone" dataKey="value" stroke={sparklineColor} strokeWidth={1.5} dot={false} isAnimationActive={false} />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </TableCell>
       <TableCell className="text-right">
@@ -243,16 +260,16 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
           </span>
         )}
       </TableCell>
-      <TableCell className="text-right font-semibold text-blue-600 bg-blue-50/20">
+      <TableCell className="text-right font-semibold text-blue-600">
         {formatCurrency(stock.currentPrice)}
       </TableCell>
       <TableCell className="text-right font-semibold text-neutral-800">
         {formatCurrency(stock.currentValue)}
       </TableCell>
-      <TableCell className={`text-right font-bold ${stock.profit >= 0 ? 'text-emerald-600 bg-emerald-50/30' : 'text-rose-500 bg-rose-50/30'}`}>
+      <TableCell className={`text-right font-bold ${stock.profit >= 0 ? 'text-emerald-600' : 'text-rose-500'}`}>
         {stock.profit > 0 ? '+' : ''}{formatCurrency(stock.profit)}
       </TableCell>
-      <TableCell className={`text-right font-bold ${stock.profitPercent >= 0 ? 'text-emerald-600 bg-emerald-50/30' : 'text-rose-500 bg-rose-50/30'}`}>
+      <TableCell className={`text-right font-bold ${stock.profitPercent >= 0 ? 'text-emerald-600' : 'text-rose-500'}`}>
         {stock.profitPercent > 0 ? '+' : ''}{stock.profitPercent.toFixed(2)}%
       </TableCell>
       <TableCell className="text-right">
