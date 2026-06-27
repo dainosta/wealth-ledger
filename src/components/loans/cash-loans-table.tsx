@@ -15,7 +15,7 @@ import { formatCurrency } from '@/lib/calculations';
 import { AddLoanDialog } from './add-loan-dialog';
 import { CashLoan } from '@/types';
 
-export function CashLoansTable({ loansData, goldPrice = 0 }: { loansData: any, goldPrice?: number }) {
+export function CashLoansTable({ loansData, goldPrice = 0, goldDebtQty = 0, goldDebtCostBasis = 0 }: { loansData: any, goldPrice?: number, goldDebtQty?: number, goldDebtCostBasis?: number }) {
   const { loans, loading, error, deleteLoan, refresh, updateLoan } = loansData;
 
   const totalBalanceVND = loans.reduce((sum: number, loan: CashLoan) => {
@@ -23,7 +23,7 @@ export function CashLoansTable({ loansData, goldPrice = 0 }: { loansData: any, g
       return sum + (loan.balance * goldPrice);
     }
     return sum + loan.balance;
-  }, 0);
+  }, 0) + (goldDebtQty * goldPrice);
 
   return (
     <Card className="h-full flex flex-col border-0 shadow-none rounded-none overflow-hidden bg-black">
@@ -59,17 +59,42 @@ export function CashLoansTable({ loansData, goldPrice = 0 }: { loansData: any, g
                 <TableHead className="font-bold text-neutral-500">Tên Khoản Vay</TableHead>
                 <TableHead className="text-center font-bold text-neutral-500">Loại</TableHead>
                 <TableHead className="text-right font-bold text-neutral-500">Dư nợ gốc</TableHead>
-                <TableHead className="text-right font-bold text-neutral-500">Lãi suất (%/năm)</TableHead>
-                <TableHead className="text-right font-bold text-neutral-500">Tiền lãi/tháng (ước tính)</TableHead>
-                <TableHead className="text-center font-bold text-neutral-500">Ngày trả lãi</TableHead>
-                <TableHead className="text-center font-bold text-neutral-500">Ngày đáo hạn</TableHead>
+                <TableHead className="text-right font-bold text-neutral-500">Thông tin thêm</TableHead>
+                <TableHead className="text-center font-bold text-neutral-500">Ngày trả lãi / Đáo hạn</TableHead>
                 <TableHead className="text-right font-bold text-neutral-500">Thao tác</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {loans.length === 0 ? (
+              {goldDebtQty > 0 && (
+                <TableRow className="bg-amber-900/10 border-neutral-800 transition-colors">
+                  <TableCell className="font-bold text-amber-500">Nợ Vàng (Chốt sổ)</TableCell>
+                  <TableCell className="text-center">
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 uppercase tracking-widest bg-amber-500/20 text-amber-500">
+                      Vàng
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-right font-mono font-bold text-amber-500">
+                    <div className="flex flex-col items-end">
+                      <span>{goldDebtQty} lg</span>
+                      <span className="text-[10px] text-neutral-500 mt-1">{formatCurrency(goldDebtQty * goldPrice)}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right font-mono text-xs text-neutral-400">
+                    <div className="flex flex-col items-end gap-1">
+                      <div className="flex justify-between w-32"><span className="text-neutral-500">Giá vốn:</span> <span>{formatCurrency(goldDebtCostBasis)}/l</span></div>
+                      <div className="flex justify-between w-32"><span className="text-neutral-500">Giá TT:</span> <span className="text-amber-400">{formatCurrency(goldPrice)}/l</span></div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-center font-mono text-neutral-500 text-xs">
+                    Cập nhật qua Chốt sổ
+                  </TableCell>
+                  <TableCell className="text-right">
+                  </TableCell>
+                </TableRow>
+              )}
+              {loans.length === 0 && goldDebtQty === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                  <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
                     {loading ? 'Đang tải dữ liệu...' : 'Chưa có khoản vay nào.'}
                   </TableCell>
                 </TableRow>
@@ -83,7 +108,7 @@ export function CashLoansTable({ loansData, goldPrice = 0 }: { loansData: any, g
                 <TableRow className="bg-[#0a0a0a] font-bold border-t border-neutral-800 hover:bg-transparent">
                   <TableCell colSpan={2} className="uppercase text-neutral-500">TỔNG CỘNG (Quy đổi VNĐ)</TableCell>
                   <TableCell className="text-right text-rose-500 font-mono">{formatCurrency(totalBalanceVND)}</TableCell>
-                  <TableCell colSpan={5}></TableCell>
+                  <TableCell colSpan={3}></TableCell>
                 </TableRow>
               )}
             </TableBody>
@@ -110,19 +135,22 @@ function LoanTableRow({ loan, goldPrice, updateLoan, deleteLoan }: { loan: CashL
         </span>
       </TableCell>
       <TableCell className={`text-right font-mono font-bold ${isGold ? 'text-amber-500' : 'text-rose-500'}`}>
-        {isGold ? `${loan.balance} lg` : formatCurrency(loan.balance)}
+        <div className="flex flex-col items-end">
+          <span>{isGold ? `${loan.balance} lg` : formatCurrency(loan.balance)}</span>
+          {isGold && <span className="text-[10px] text-neutral-500 mt-1">{formatCurrency(principalVND)}</span>}
+        </div>
       </TableCell>
-      <TableCell className="text-right font-mono font-bold text-amber-500">
-        {loan.interest_rate}%
+      <TableCell className="text-right font-mono text-xs text-neutral-400">
+        <div className="flex flex-col items-end gap-1">
+          <div className="flex justify-between w-32"><span className="text-neutral-500">Lãi suất:</span> <span>{loan.interest_rate}%</span></div>
+          <div className="flex justify-between w-32"><span className="text-neutral-500">Tiền lãi:</span> <span>{formatCurrency(estimatedMonthlyInterest)}</span></div>
+        </div>
       </TableCell>
-      <TableCell className="text-right font-mono font-bold text-neutral-400 bg-neutral-900/30">
-        {formatCurrency(estimatedMonthlyInterest)}
-      </TableCell>
-      <TableCell className="text-center font-mono text-neutral-400">
-        {loan.interest_payment_day ? `Ngày ${loan.interest_payment_day}` : '-'}
-      </TableCell>
-      <TableCell className="text-center font-mono text-neutral-400">
-        {loan.maturity_date ? new Date(loan.maturity_date).toLocaleDateString('vi-VN') : '-'}
+      <TableCell className="text-center font-mono text-xs text-neutral-400">
+        <div className="flex flex-col items-center gap-1">
+          <div>{loan.interest_payment_day ? `Ngày ${loan.interest_payment_day}` : '-'}</div>
+          <div className="text-neutral-500">{loan.maturity_date ? new Date(loan.maturity_date).toLocaleDateString('vi-VN') : '-'}</div>
+        </div>
       </TableCell>
       <TableCell className="text-right">
         <div className="flex items-center justify-end gap-1">

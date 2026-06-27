@@ -74,18 +74,18 @@ export function AddLoanDialog({ onAdd }: { onAdd: () => void }) {
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label className="text-right">Loại</Label>
-              <div className="col-span-3 flex gap-2">
+              <div className="col-span-3 grid grid-cols-2 gap-2">
                 <Button 
                   type="button" 
                   variant={loanType === 'cash' ? 'default' : 'outline'} 
                   onClick={() => setLoanType('cash')}
-                  className="flex-1 text-xs"
+                  className="text-xs"
                 >Tiền mặt</Button>
                 <Button 
                   type="button" 
                   variant={loanType === 'gold' ? 'default' : 'outline'} 
                   onClick={() => setLoanType('gold')}
-                  className="flex-1 text-xs"
+                  className="text-xs"
                 >Vàng</Button>
               </div>
             </div>

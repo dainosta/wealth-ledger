@@ -37,7 +37,7 @@ export default function Home() {
   const loansData = useLoans();
   const isAppLoading = recordsLoading || !stocksData.initialized || loansData.loading;
   
-  const { realtimeNetWorth, liveGoldPrice } = useRealtimeNetWorth(records, stocksData.stocks);
+  const { realtimeNetWorth, liveGoldPrice, goldDebtCostBasis, goldDebtProfitLoss, currentMonth } = useRealtimeNetWorth(records, stocksData.stocks);
 
   const [activeTab, setActiveTab] = useState<'net-worth' | 'stocks' | 'loans'>('net-worth');
 
@@ -130,7 +130,13 @@ export default function Home() {
               )}
               {activeTab === 'loans' && (
                 <div className="absolute inset-0">
-                  <CashLoansTable loansData={loansData} goldPrice={liveGoldPrice} />
+                  <CashLoansTable 
+                    loansData={loansData} 
+                    goldPrice={liveGoldPrice} 
+                    goldDebtCostBasis={goldDebtCostBasis} 
+                    goldDebtProfitLoss={goldDebtProfitLoss}
+                    goldDebtQty={currentMonth?.gold_debt_qty || 0}
+                  />
                 </div>
               )}
             </div>
