@@ -220,7 +220,7 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center z-20 transition-opacity">
                <span className="text-[8px]">⬆️</span>
             </div>
-            <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleLogoUpload} />
+            <input type="file" ref={fileInputRef} className="hidden" accept="image/*, .svg, image/svg+xml" onChange={handleLogoUpload} />
           </div>
           <div className="flex flex-col">
             <span className="text-neutral-200 leading-none">{stock?.symbol}</span>
