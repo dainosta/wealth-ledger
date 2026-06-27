@@ -73,21 +73,28 @@ export function AddRecordDialog({ loans = [] }: { loans?: CashLoan[] }) {
       
       if (records.length > 0) {
         const latestRecord = records[records.length - 1];
-        setGoldDebtQty(latestRecord.gold_debt_qty ? latestRecord.gold_debt_qty.toString() : '0');
-        const liveCashDebt = loans.reduce((sum, loan) => sum + loan.balance, 0);
+        
+        const liveCashDebt = loans.filter(l => l.loan_type !== 'gold').reduce((sum, loan) => sum + loan.balance, 0);
+        const liveGoldDebtQty = loans.filter(l => l.loan_type === 'gold').reduce((sum, loan) => sum + loan.balance, 0);
+        
+        setGoldDebtQty(liveGoldDebtQty > 0 ? liveGoldDebtQty.toString() : (latestRecord.gold_debt_qty ? latestRecord.gold_debt_qty.toString() : '0'));
         setCashDebt(liveCashDebt > 0 ? formatNumberWithCommas(liveCashDebt) : (latestRecord.cash_debt ? formatNumberWithCommas(latestRecord.cash_debt) : '0'));
         setCreditCardDebt(latestRecord.credit_card_debt ? formatNumberWithCommas(latestRecord.credit_card_debt) : '0');
         setCashBalance(latestRecord.cash_balance ? formatNumberWithCommas(latestRecord.cash_balance) : '0');
-        // Default interest paid to 0 or estimated interest
-        const estimatedInterest = loans.reduce((sum, loan) => sum + (loan.balance * loan.interest_rate / 100 / 12), 0);
+        
+        // Default interest paid to 0 or estimated interest (for cash loans only)
+        const estimatedInterest = loans.filter(l => l.loan_type !== 'gold').reduce((sum, loan) => sum + (loan.balance * loan.interest_rate / 100 / 12), 0);
         setCashInterestPaid(estimatedInterest > 0 ? formatNumberWithCommas(estimatedInterest) : '0');
       } else {
-        setGoldDebtQty('');
-        const liveCashDebt = loans.reduce((sum, loan) => sum + loan.balance, 0);
+        const liveCashDebt = loans.filter(l => l.loan_type !== 'gold').reduce((sum, loan) => sum + loan.balance, 0);
+        const liveGoldDebtQty = loans.filter(l => l.loan_type === 'gold').reduce((sum, loan) => sum + loan.balance, 0);
+        
+        setGoldDebtQty(liveGoldDebtQty > 0 ? liveGoldDebtQty.toString() : '');
         setCashDebt(liveCashDebt > 0 ? formatNumberWithCommas(liveCashDebt) : '');
         setCreditCardDebt('');
         setCashBalance('0');
-        const estimatedInterest = loans.reduce((sum, loan) => sum + (loan.balance * loan.interest_rate / 100 / 12), 0);
+        
+        const estimatedInterest = loans.filter(l => l.loan_type !== 'gold').reduce((sum, loan) => sum + (loan.balance * loan.interest_rate / 100 / 12), 0);
         setCashInterestPaid(estimatedInterest > 0 ? formatNumberWithCommas(estimatedInterest) : '0');
       }
       setNotes('');

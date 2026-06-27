@@ -79,13 +79,13 @@ export function AddLoanDialog({ onAdd }: { onAdd: () => void }) {
                   type="button" 
                   variant={loanType === 'cash' ? 'default' : 'outline'} 
                   onClick={() => setLoanType('cash')}
-                  className="w-full text-xs"
+                  className="flex-1 text-xs"
                 >Tiền mặt</Button>
                 <Button 
                   type="button" 
                   variant={loanType === 'gold' ? 'default' : 'outline'} 
                   onClick={() => setLoanType('gold')}
-                  className="w-full text-xs"
+                  className="flex-1 text-xs"
                 >Vàng</Button>
               </div>
             </div>
