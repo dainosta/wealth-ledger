@@ -94,53 +94,62 @@ export default function Home() {
           </div>
 
           {/* Main Workspace Tabs */}
-          <div className="flex-1 lg:min-h-0 flex flex-col min-h-[400px] lg:min-h-0 bg-[#0a0a0a] rounded-none shadow-none border border-neutral-800 overflow-hidden">
-            <div className="flex border-b border-neutral-800 bg-[#0a0a0a] pt-2 px-2 shrink-0 gap-4 overflow-x-auto whitespace-nowrap scrollbar-hide">
-              <button 
-                className={`pb-2 px-2 text-[10px] font-bold uppercase tracking-widest transition-all border-b-2 relative top-[1px] ${activeTab === 'net-worth' ? 'border-emerald-500 text-emerald-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
-                onClick={() => setActiveTab('net-worth')}
-              >
-                Lịch sử tài sản ròng
-              </button>
-
-              <button 
-                className={`pb-2 px-2 text-[10px] font-bold uppercase tracking-widest transition-all border-b-2 relative top-[1px] ${activeTab === 'stocks' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
-                onClick={() => setActiveTab('stocks')}
-              >
-                Danh mục Cổ phiếu
-              </button>
-              <button 
-                className={`pb-2 px-2 text-[10px] font-bold uppercase tracking-widest transition-all border-b-2 relative top-[1px] ${activeTab === 'loans' ? 'border-amber-500 text-amber-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
-                onClick={() => setActiveTab('loans')}
-              >
-                Quản lý Khoản Vay
-              </button>
+          {isAppLoading ? (
+            <div className="flex-1 lg:min-h-0 flex flex-col min-h-[400px] lg:min-h-0 bg-black rounded-none shadow-none border border-neutral-800 overflow-hidden animate-pulse">
+              <div className="h-10 bg-neutral-900/50 border-b border-neutral-800 shrink-0"></div>
+              <div className="flex-1 bg-black p-4">
+                <div className="h-full w-full bg-neutral-900/20"></div>
+              </div>
             </div>
-            <div className="flex-1 overflow-hidden relative p-0 bg-black">
-              {activeTab === 'net-worth' && (
-                <div className="absolute inset-0">
-                  <NetWorthChart data={records} embedded={true} />
-                </div>
-              )}
+          ) : (
+            <div className="flex-1 lg:min-h-0 flex flex-col min-h-[400px] lg:min-h-0 bg-[#0a0a0a] rounded-none shadow-none border border-neutral-800 overflow-hidden">
+              <div className="flex border-b border-neutral-800 bg-[#0a0a0a] pt-2 px-2 shrink-0 gap-4 overflow-x-auto whitespace-nowrap scrollbar-hide">
+                <button 
+                  className={`pb-2 px-2 text-[10px] font-bold uppercase tracking-widest transition-all border-b-2 relative top-[1px] ${activeTab === 'net-worth' ? 'border-emerald-500 text-emerald-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
+                  onClick={() => setActiveTab('net-worth')}
+                >
+                  Lịch sử tài sản ròng
+                </button>
 
-              {activeTab === 'stocks' && (
-                <div className="absolute inset-0">
-                  <StockPortfolio stocksData={stocksData} />
-                </div>
-              )}
-              {activeTab === 'loans' && (
-                <div className="absolute inset-0">
-                  <CashLoansTable 
-                    loansData={loansData} 
-                    goldPrice={liveGoldPrice} 
-                    goldDebtCostBasis={goldDebtCostBasis} 
-                    goldDebtProfitLoss={goldDebtProfitLoss}
-                    goldDebtQty={currentMonth?.gold_debt_qty || 0}
-                  />
-                </div>
-              )}
+                <button 
+                  className={`pb-2 px-2 text-[10px] font-bold uppercase tracking-widest transition-all border-b-2 relative top-[1px] ${activeTab === 'stocks' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
+                  onClick={() => setActiveTab('stocks')}
+                >
+                  Danh mục Cổ phiếu
+                </button>
+                <button 
+                  className={`pb-2 px-2 text-[10px] font-bold uppercase tracking-widest transition-all border-b-2 relative top-[1px] ${activeTab === 'loans' ? 'border-amber-500 text-amber-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
+                  onClick={() => setActiveTab('loans')}
+                >
+                  Quản lý Khoản Vay
+                </button>
+              </div>
+              <div className="flex-1 overflow-hidden relative p-0 bg-black">
+                {activeTab === 'net-worth' && (
+                  <div className="absolute inset-0">
+                    <NetWorthChart data={records} embedded={true} />
+                  </div>
+                )}
+
+                {activeTab === 'stocks' && (
+                  <div className="absolute inset-0">
+                    <StockPortfolio stocksData={stocksData} />
+                  </div>
+                )}
+                {activeTab === 'loans' && (
+                  <div className="absolute inset-0">
+                    <CashLoansTable 
+                      loansData={loansData} 
+                      goldPrice={liveGoldPrice} 
+                      goldDebtCostBasis={goldDebtCostBasis} 
+                      goldDebtProfitLoss={goldDebtProfitLoss}
+                      goldDebtQty={currentMonth?.gold_debt_qty || 0}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
       </div>
