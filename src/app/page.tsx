@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import { useRecords } from '@/hooks/use-records';
 import { SummaryCards } from '@/components/dashboard/summary-cards';
-import { DashboardCharts } from '@/components/dashboard/dashboard-charts';
+import { NetWorthChart } from '@/components/dashboard/net-worth-chart';
+import { StockPerformanceChart } from '@/components/dashboard/stock-performance-chart';
 import { DataTable } from '@/components/ledger/data-table';
 import { columns } from '@/components/ledger/columns';
 import { AddRecordDialog } from '@/components/ledger/add-record-dialog';
@@ -24,7 +25,7 @@ export default function Home() {
   
   const { realtimeNetWorth } = useRealtimeNetWorth(records, stocksData.stocks);
 
-  const [activeTab, setActiveTab] = useState<'stocks' | 'loans'>('stocks');
+  const [activeTab, setActiveTab] = useState<'net-worth' | 'stock-performance' | 'stocks' | 'loans'>('net-worth');
 
   // No global loading blocking the layout, allowing individual components to handle loading and preserving animations.
 
@@ -60,33 +61,51 @@ export default function Home() {
             <GoalProgress currentNetWorth={realtimeNetWorth} isLoading={isAppLoading} />
           </div>
 
-          {/* Charts Row */}
-          <div className="shrink-0 mb-3 h-[450px]">
-             <DashboardCharts data={records} />
-          </div>
-
-          {/* Portfolio & Loans Tabs */}
+          {/* Main Workspace Tabs */}
           <div className="flex-1 lg:min-h-0 flex flex-col min-h-[400px] lg:min-h-0 bg-[#0a0a0a] rounded-none shadow-none border border-neutral-800 overflow-hidden">
-            <div className="flex border-b border-neutral-800 bg-[#0a0a0a] pt-1 px-2 shrink-0 gap-4">
+            <div className="flex border-b border-neutral-800 bg-[#0a0a0a] pt-2 px-2 shrink-0 gap-4 overflow-x-auto whitespace-nowrap scrollbar-hide">
               <button 
-                className={`pb-1.5 px-2 text-xs font-bold uppercase tracking-wider transition-all border-b-2 relative top-[1px] ${activeTab === 'stocks' ? 'border-emerald-500 text-emerald-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
+                className={`pb-2 px-2 text-[10px] font-bold uppercase tracking-widest transition-all border-b-2 relative top-[1px] ${activeTab === 'net-worth' ? 'border-emerald-500 text-emerald-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
+                onClick={() => setActiveTab('net-worth')}
+              >
+                Lịch sử tài sản ròng
+              </button>
+              <button 
+                className={`pb-2 px-2 text-[10px] font-bold uppercase tracking-widest transition-all border-b-2 relative top-[1px] ${activeTab === 'stock-performance' ? 'border-emerald-500 text-emerald-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
+                onClick={() => setActiveTab('stock-performance')}
+              >
+                Hiệu quả cổ phiếu
+              </button>
+              <button 
+                className={`pb-2 px-2 text-[10px] font-bold uppercase tracking-widest transition-all border-b-2 relative top-[1px] ${activeTab === 'stocks' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
                 onClick={() => setActiveTab('stocks')}
               >
                 Danh mục Cổ phiếu
               </button>
               <button 
-                className={`pb-1.5 px-2 text-xs font-bold uppercase tracking-wider transition-all border-b-2 relative top-[1px] ${activeTab === 'loans' ? 'border-amber-500 text-amber-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
+                className={`pb-2 px-2 text-[10px] font-bold uppercase tracking-widest transition-all border-b-2 relative top-[1px] ${activeTab === 'loans' ? 'border-amber-500 text-amber-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
                 onClick={() => setActiveTab('loans')}
               >
                 Quản lý Khoản Vay
               </button>
             </div>
-            <div className="flex-1 overflow-hidden relative p-0">
-              {activeTab === 'stocks' ? (
+            <div className="flex-1 overflow-hidden relative p-0 bg-black">
+              {activeTab === 'net-worth' && (
+                <div className="absolute inset-0">
+                  <NetWorthChart data={records} embedded={true} />
+                </div>
+              )}
+              {activeTab === 'stock-performance' && (
+                <div className="absolute inset-0">
+                  <StockPerformanceChart data={records} />
+                </div>
+              )}
+              {activeTab === 'stocks' && (
                 <div className="absolute inset-0">
                   <StockPortfolio stocksData={stocksData} />
                 </div>
-              ) : (
+              )}
+              {activeTab === 'loans' && (
                 <div className="absolute inset-0">
                   <CashLoansTable loansData={loansData} />
                 </div>

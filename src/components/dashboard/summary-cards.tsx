@@ -41,28 +41,28 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
       <div className="flex flex-col w-full h-full">
         <div className="grid grid-cols-2 gap-3 flex-1">
           {/* Skeleton 1: Net Worth */}
-          <Card className="col-span-2 lg:col-span-1 bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
-            <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-200 w-24 rounded"></div><div className="w-4 h-4 bg-neutral-200 rounded-full"></div></CardHeader>
-            <CardContent className="pb-3 flex-1 flex flex-col justify-end"><div className="h-7 bg-neutral-200 w-32 rounded mb-1"></div><div className="h-3 bg-neutral-200 w-20 rounded"></div></CardContent>
+          <Card className="col-span-2 lg:col-span-1 bg-black border-neutral-800 shadow-none rounded-none relative overflow-hidden animate-pulse flex flex-col">
+            <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-900 w-24 rounded-none"></div><div className="w-4 h-4 bg-neutral-900 rounded-none"></div></CardHeader>
+            <CardContent className="pb-3 flex-1 flex flex-col justify-end"><div className="h-7 bg-neutral-900 w-32 rounded-none mb-1"></div><div className="h-3 bg-neutral-900 w-20 rounded-none"></div></CardContent>
           </Card>
           {/* Skeleton 2: Stocks */}
-          <Card className="col-span-1 bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
-            <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-200 w-24 rounded"></div><div className="w-4 h-4 bg-neutral-200 rounded-full"></div></CardHeader>
-            <CardContent className="pb-3 flex-1 flex flex-col justify-end"><div className="h-7 bg-neutral-200 w-32 rounded mb-1"></div><div className="h-3 bg-neutral-200 w-20 rounded"></div></CardContent>
+          <Card className="col-span-1 bg-black border-neutral-800 shadow-none rounded-none relative overflow-hidden animate-pulse flex flex-col">
+            <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-900 w-24 rounded-none"></div><div className="w-4 h-4 bg-neutral-900 rounded-none"></div></CardHeader>
+            <CardContent className="pb-3 flex-1 flex flex-col justify-end"><div className="h-7 bg-neutral-900 w-32 rounded-none mb-1"></div><div className="h-3 bg-neutral-900 w-20 rounded-none"></div></CardContent>
           </Card>
           {/* Skeleton 3: Cash */}
-          <Card className="col-span-1 bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
-            <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-200 w-24 rounded"></div><div className="w-4 h-4 bg-neutral-200 rounded-full"></div></CardHeader>
-            <CardContent className="pb-3 flex-1 flex flex-col justify-end"><div className="h-7 bg-neutral-200 w-32 rounded mb-1"></div><div className="h-3 bg-neutral-200 w-20 rounded"></div></CardContent>
+          <Card className="col-span-1 bg-black border-neutral-800 shadow-none rounded-none relative overflow-hidden animate-pulse flex flex-col">
+            <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-900 w-24 rounded-none"></div><div className="w-4 h-4 bg-neutral-900 rounded-none"></div></CardHeader>
+            <CardContent className="pb-3 flex-1 flex flex-col justify-end"><div className="h-7 bg-neutral-900 w-32 rounded-none mb-1"></div><div className="h-3 bg-neutral-900 w-20 rounded-none"></div></CardContent>
           </Card>
           {/* Skeleton 4: Total Debt */}
-          <Card className="col-span-2 lg:col-span-2 bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
-            <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-200 w-24 rounded"></div><div className="w-4 h-4 bg-neutral-200 rounded-full"></div></CardHeader>
+          <Card className="col-span-2 lg:col-span-2 bg-black border-neutral-800 shadow-none rounded-none relative overflow-hidden animate-pulse flex flex-col">
+            <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-900 w-24 rounded-none"></div><div className="w-4 h-4 bg-neutral-900 rounded-none"></div></CardHeader>
             <CardContent className="pb-3 flex-1 flex flex-col">
-              <div className="h-7 bg-neutral-200 w-32 rounded mb-3 mt-1"></div>
+              <div className="h-7 bg-neutral-900 w-32 rounded-none mb-3 mt-1"></div>
               <div className="flex flex-col gap-2 mt-auto">
-                <div className="flex justify-between"><div className="h-3 bg-neutral-200 w-20 rounded"></div><div className="h-3 bg-neutral-200 w-16 rounded"></div></div>
-                <div className="h-6 bg-neutral-200 w-full rounded mt-1"></div>
+                <div className="flex justify-between"><div className="h-3 bg-neutral-900 w-20 rounded-none"></div><div className="h-3 bg-neutral-900 w-16 rounded-none"></div></div>
+                <div className="h-6 bg-neutral-900 w-full rounded-none mt-1"></div>
               </div>
             </CardContent>
           </Card>

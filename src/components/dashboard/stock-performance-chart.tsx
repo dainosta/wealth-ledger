@@ -59,8 +59,8 @@ export const StockPerformanceChart = React.memo(function StockPerformanceChart({
 
   if (!data || data.length === 0) {
     return (
-      <div className="h-full flex flex-col p-4 bg-white animate-pulse">
-        <div className="h-full w-full bg-neutral-200/50 rounded-xl"></div>
+      <div className="h-full flex flex-col p-4 bg-black animate-pulse border border-neutral-800">
+        <div className="h-full w-full bg-neutral-900 rounded-none"></div>
       </div>
     );
   }
