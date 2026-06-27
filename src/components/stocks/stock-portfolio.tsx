@@ -81,10 +81,10 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
             <TableHeader className="bg-neutral-50/50">
               <TableRow>
                 <TableHead className="font-semibold text-neutral-600">Mã CK</TableHead>
-                <TableHead className="font-semibold text-neutral-600 w-20">Xu hướng</TableHead>
                 <TableHead className="text-right font-semibold text-neutral-600">Số lượng</TableHead>
                 <TableHead className="text-right font-semibold text-neutral-600">Giá mua</TableHead>
                 <TableHead className="text-right font-semibold text-neutral-600">Giá HT</TableHead>
+                <TableHead className="font-semibold text-neutral-600 w-20">Xu hướng</TableHead>
                 <TableHead className="text-right font-semibold text-neutral-600">Thành tiền</TableHead>
                 <TableHead className="text-right font-semibold text-neutral-600">Lỗ/Lãi</TableHead>
                 <TableHead className="text-right font-semibold text-neutral-600">%</TableHead>
@@ -107,12 +107,12 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
 
               {stocks.length > 0 && (
                 <TableRow className="bg-neutral-50 font-bold border-t-2 border-neutral-100">
-                  <TableCell colSpan={5} className="uppercase text-neutral-700">TỔNG CỘNG</TableCell>
+                  <TableCell colSpan={6} className="uppercase text-neutral-700">TỔNG CỘNG</TableCell>
                   <TableCell className="text-right text-neutral-900">{formatCurrency(totalCurrentValue)}</TableCell>
-                  <TableCell className={`text-right ${totalProfit >= 0 ? 'text-emerald-600' : 'text-rose-500'}`}>
+                  <TableCell className={`text-right ${totalProfit >= 0 ? 'text-emerald-700' : 'text-rose-600'}`}>
                     {totalProfit > 0 ? '+' : ''}{formatCurrency(totalProfit)}
                   </TableCell>
-                  <TableCell className={`text-right ${totalProfitPercent >= 0 ? 'text-emerald-600' : 'text-rose-500'}`}>
+                  <TableCell className={`text-right ${totalProfitPercent >= 0 ? 'text-emerald-700' : 'text-rose-600'}`}>
                     {totalProfitPercent > 0 ? '+' : ''}{totalProfitPercent.toFixed(2)}%
                   </TableCell>
                   <TableCell></TableCell>
@@ -203,15 +203,6 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
           </div>
         </div>
       </TableCell>
-      <TableCell className="p-0 align-middle">
-        <div className="h-8 w-16 opacity-70">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={mockSparklineData}>
-              <Line type="monotone" dataKey="value" stroke={sparklineColor} strokeWidth={1.5} dot={false} isAnimationActive={false} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </TableCell>
       <TableCell className="text-right">
         {isEditingQty ? (
           <input
@@ -263,13 +254,22 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
       <TableCell className="text-right font-semibold text-blue-600">
         {formatCurrency(stock.currentPrice)}
       </TableCell>
+      <TableCell className="p-0 align-middle">
+        <div className="h-8 w-16 opacity-70">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={mockSparklineData}>
+              <Line type="monotone" dataKey="value" stroke={sparklineColor} strokeWidth={1.5} dot={false} isAnimationActive={false} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </TableCell>
       <TableCell className="text-right font-semibold text-neutral-800">
         {formatCurrency(stock.currentValue)}
       </TableCell>
-      <TableCell className={`text-right font-bold ${stock.profit >= 0 ? 'text-emerald-600' : 'text-rose-500'}`}>
+      <TableCell className={`text-right font-bold ${stock.profit >= 0 ? 'text-emerald-700' : 'text-rose-600'}`}>
         {stock.profit > 0 ? '+' : ''}{formatCurrency(stock.profit)}
       </TableCell>
-      <TableCell className={`text-right font-bold ${stock.profitPercent >= 0 ? 'text-emerald-600' : 'text-rose-500'}`}>
+      <TableCell className={`text-right font-bold ${stock.profitPercent >= 0 ? 'text-emerald-700' : 'text-rose-600'}`}>
         {stock.profitPercent > 0 ? '+' : ''}{stock.profitPercent.toFixed(2)}%
       </TableCell>
       <TableCell className="text-right">

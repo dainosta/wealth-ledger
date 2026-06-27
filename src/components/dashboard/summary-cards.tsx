@@ -85,7 +85,7 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
           <WalletIcon className="h-3.5 w-3.5 text-emerald-600" />
         </CardHeader>
         <CardContent className="pb-3 z-10 relative">
-          <div className="text-xl font-bold text-emerald-700">
+          <div className="text-2xl md:text-3xl lg:text-4xl font-black text-emerald-700 tracking-tight">
             <CountUp end={realtimeNetWorth} separator="." decimal="," suffix=" ₫" duration={1.5} preserveValue />
           </div>
           <div className="mt-0.5">
@@ -193,7 +193,7 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
         </CardHeader>
         <CardContent className="pb-3 z-10 relative">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-2">
-            <div className="text-2xl font-bold text-neutral-900 z-20 relative flex flex-col">
+            <div className="text-xl font-bold text-neutral-800 z-20 relative flex flex-col">
               <CountUp end={liveGoldDebt + liveCashDebt + liveCreditCardDebt} separator="." decimal="," suffix=" ₫" duration={1.5} preserveValue />
             </div>
           </div>
@@ -206,7 +206,7 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
                   Nợ Vàng
                 </span>
                 {(currentMonth?.gold_debt_qty || 0) > 0 && goldDebtCostBasis > 0 && (
-                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-sm ${goldDebtProfitLoss < 0 ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}`}>
+                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-sm ${goldDebtProfitLoss < 0 ? 'bg-rose-100 text-rose-700' : 'bg-rose-500 text-white'}`}>
                     {goldDebtProfitLoss < 0 ? '' : '+'}{formatCurrency(goldDebtProfitLoss)}
                   </span>
                 )}
