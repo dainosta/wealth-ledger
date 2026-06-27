@@ -46,6 +46,7 @@ export function AddRecordDialog({ loans = [] }: { loans?: CashLoan[] }) {
   const [cashDebt, setCashDebt] = useState('0');
   const [cashInterestPaid, setCashInterestPaid] = useState('0');
   const [creditCardDebt, setCreditCardDebt] = useState('0');
+  const [cashBalance, setCashBalance] = useState('0');
   const [notes, setNotes] = useState('');
 
   const fetchGoldPrice = async () => {
@@ -73,10 +74,10 @@ export function AddRecordDialog({ loans = [] }: { loans?: CashLoan[] }) {
       if (records.length > 0) {
         const latestRecord = records[records.length - 1];
         setGoldDebtQty(latestRecord.gold_debt_qty ? latestRecord.gold_debt_qty.toString() : '0');
-        // Calculate cash debt dynamically from loans if available, else fallback to latest record
         const liveCashDebt = loans.reduce((sum, loan) => sum + loan.balance, 0);
         setCashDebt(liveCashDebt > 0 ? formatNumberWithCommas(liveCashDebt) : (latestRecord.cash_debt ? formatNumberWithCommas(latestRecord.cash_debt) : '0'));
         setCreditCardDebt(latestRecord.credit_card_debt ? formatNumberWithCommas(latestRecord.credit_card_debt) : '0');
+        setCashBalance(latestRecord.cash_balance ? formatNumberWithCommas(latestRecord.cash_balance) : '0');
         // Default interest paid to 0 or estimated interest
         const estimatedInterest = loans.reduce((sum, loan) => sum + (loan.balance * loan.interest_rate / 100 / 12), 0);
         setCashInterestPaid(estimatedInterest > 0 ? formatNumberWithCommas(estimatedInterest) : '0');
@@ -85,6 +86,7 @@ export function AddRecordDialog({ loans = [] }: { loans?: CashLoan[] }) {
         const liveCashDebt = loans.reduce((sum, loan) => sum + loan.balance, 0);
         setCashDebt(liveCashDebt > 0 ? formatNumberWithCommas(liveCashDebt) : '');
         setCreditCardDebt('');
+        setCashBalance('0');
         const estimatedInterest = loans.reduce((sum, loan) => sum + (loan.balance * loan.interest_rate / 100 / 12), 0);
         setCashInterestPaid(estimatedInterest > 0 ? formatNumberWithCommas(estimatedInterest) : '0');
       }
@@ -107,6 +109,7 @@ export function AddRecordDialog({ loans = [] }: { loans?: CashLoan[] }) {
         month_year: monthYear,
         portfolio_value: Number(portfolioValue.replace(/,/g, '')),
         stock_cost_basis: stockCostBasis,
+        cash_balance: Number(cashBalance.replace(/,/g, '')),
         gold_price: Number(goldPrice.replace(/,/g, '')),
         gold_debt_qty: Number(goldDebtQty),
         cash_debt: Number(cashDebt.replace(/,/g, '')),
@@ -185,6 +188,27 @@ export function AddRecordDialog({ loans = [] }: { loans?: CashLoan[] }) {
                 <p className="text-[10px] text-neutral-400 mt-1.5 flex items-center">
                   <RefreshCwIcon className="h-3 w-3 mr-1" />
                   Tự động đồng bộ từ Danh mục Cổ phiếu
+                </p>
+              </div>
+            </div>
+
+            {/* Cash Balance */}
+            <div className="grid grid-cols-4 items-start gap-4">
+              <label htmlFor="cash_balance" className="text-right text-sm font-semibold text-neutral-600 mt-2">
+                Tiền mặt hiện có
+              </label>
+              <div className="col-span-3">
+                <Input
+                  id="cash_balance"
+                  type="text"
+                  inputMode="numeric"
+                  className="font-bold text-emerald-700 bg-emerald-50/50"
+                  value={cashBalance}
+                  onChange={(e) => setCashBalance(formatNumberWithCommas(e.target.value))}
+                  required
+                />
+                <p className="text-[10px] text-neutral-400 mt-1.5">
+                  Ví, tiền gửi ngân hàng, sổ tiết kiệm...
                 </p>
               </div>
             </div>

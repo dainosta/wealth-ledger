@@ -25,6 +25,7 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
     liveGoldDebt,
     liveCashDebt,
     liveCreditCardDebt,
+    liveCashBalance,
     realtimeMoMChange,
     goldDebtCostBasis,
     goldDebtProfitLoss,
@@ -40,12 +41,17 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
       <div className="flex flex-col w-full h-full">
         <div className="grid grid-cols-2 gap-3 flex-1">
           {/* Skeleton 1: Net Worth */}
-          <Card className="bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
+          <Card className="col-span-2 bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
             <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-200 w-24 rounded"></div><div className="w-4 h-4 bg-neutral-200 rounded-full"></div></CardHeader>
             <CardContent className="pb-3 flex-1 flex flex-col justify-end"><div className="h-7 bg-neutral-200 w-32 rounded mb-1"></div><div className="h-3 bg-neutral-200 w-20 rounded"></div></CardContent>
           </Card>
           {/* Skeleton 2: Stocks */}
-          <Card className="bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
+          <Card className="col-span-1 bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
+            <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-200 w-24 rounded"></div><div className="w-4 h-4 bg-neutral-200 rounded-full"></div></CardHeader>
+            <CardContent className="pb-3 flex-1 flex flex-col justify-end"><div className="h-7 bg-neutral-200 w-32 rounded mb-1"></div><div className="h-3 bg-neutral-200 w-20 rounded"></div></CardContent>
+          </Card>
+          {/* Skeleton 3: Cash */}
+          <Card className="col-span-1 bg-neutral-100 border-neutral-200 shadow-sm relative overflow-hidden animate-pulse flex flex-col">
             <CardHeader className="pb-0 pt-3 flex-row items-center justify-between"><div className="h-4 bg-neutral-200 w-24 rounded"></div><div className="w-4 h-4 bg-neutral-200 rounded-full"></div></CardHeader>
             <CardContent className="pb-3 flex-1 flex flex-col justify-end"><div className="h-7 bg-neutral-200 w-32 rounded mb-1"></div><div className="h-3 bg-neutral-200 w-20 rounded"></div></CardContent>
           </Card>
@@ -73,7 +79,7 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
     <div className="flex flex-col w-full h-full">
       <div className="grid grid-cols-2 gap-3 flex-1">
         {/* Net Worth Card */}
-      <Card className="bg-emerald-50/60 border-emerald-200/60 shadow-sm relative overflow-hidden">
+      <Card className="col-span-2 bg-emerald-50/60 border-emerald-200/60 shadow-sm relative overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 pt-3 z-10 relative">
           <CardTitle className="text-xs font-semibold text-emerald-800 uppercase">Tài sản ròng</CardTitle>
           <WalletIcon className="h-3.5 w-3.5 text-emerald-600" />
@@ -122,9 +128,9 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
       </Card>
       
       {/* Stock Portfolio Card */}
-      <Card className="bg-blue-50/60 border-blue-200/60 shadow-sm relative overflow-hidden">
+      <Card className="col-span-1 bg-blue-50/60 border-blue-200/60 shadow-sm relative overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 pt-3 z-10 relative">
-          <CardTitle className="text-xs font-semibold text-blue-800 uppercase">Danh mục Cổ phiếu</CardTitle>
+          <CardTitle className="text-xs font-semibold text-blue-800 uppercase">Cổ phiếu</CardTitle>
           <TrendingUpIcon className="h-3.5 w-3.5 text-blue-600" />
         </CardHeader>
         <CardContent className="pb-3 z-10 relative">
@@ -159,6 +165,24 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
             </AreaChart>
           </ResponsiveContainer>
         </div>
+      </Card>
+
+      {/* Cash Balance Card */}
+      <Card className="col-span-1 bg-teal-50/60 border-teal-200/60 shadow-sm relative overflow-hidden">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 pt-3 z-10 relative">
+          <CardTitle className="text-xs font-semibold text-teal-800 uppercase">Tiền mặt</CardTitle>
+          <WalletIcon className="h-3.5 w-3.5 text-teal-600" />
+        </CardHeader>
+        <CardContent className="pb-3 z-10 relative">
+          <div className="text-xl font-bold text-teal-700">
+            <CountUp end={liveCashBalance} separator="." decimal="," suffix=" ₫" duration={1.5} preserveValue />
+          </div>
+          <div className="mt-0.5">
+            <p className="text-[10px] text-teal-600 opacity-80 font-medium">
+              Ví, ATM, Tiết kiệm...
+            </p>
+          </div>
+        </CardContent>
       </Card>
 
       {/* Total Debt Card */}

@@ -3,6 +3,7 @@ export interface MonthlyRecord {
   month_year: string; // Format: MM-YYYY
   portfolio_value: number; // Tổng giá trị danh mục đầu tư
   stock_cost_basis?: number; // Tổng vốn đầu tư cổ phiếu
+  cash_balance?: number; // Tiền mặt hiện có
   gold_price: number; // Giá vàng tại thời điểm
   gold_debt_qty: number; // Số lượng vàng nợ (lượng/chỉ)
   cash_debt: number; // Tổng nợ tiền mặt (VNĐ)
