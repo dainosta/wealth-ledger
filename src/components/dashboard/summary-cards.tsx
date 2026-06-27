@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CalculatedMonthlyRecord } from '@/types';
 import { formatCurrency, formatPercent } from '@/lib/calculations';
-import { CoinsIcon, TrendingUpIcon, WalletIcon } from 'lucide-react';
+import { CoinsIcon, TrendingUpIcon, WalletIcon, LandmarkIcon } from 'lucide-react';
 import { StockWithQuote } from '@/hooks/use-stocks';
 import { useGold } from '@/hooks/use-gold';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
