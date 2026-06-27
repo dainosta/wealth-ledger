@@ -16,7 +16,6 @@ import { formatCurrency } from '@/lib/calculations';
 
 import { DnseSyncDialog } from './dnse-sync-dialog';
 import { StockPieChart } from './stock-pie-chart';
-import { LineChart, Line, ResponsiveContainer } from 'recharts';
 
 export function StockPortfolio({ stocksData }: { stocksData: any }) {
   const { stocks, loading, error, deleteStock, refresh, updateStock, replacePortfolio, lastSyncTime, syncStatus } = stocksData;
@@ -77,25 +76,24 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
 
         {viewMode === 'table' ? (
         <div className="absolute inset-0">
-          <Table>
-            <TableHeader className="bg-neutral-50/50">
-              <TableRow>
-                <TableHead className="font-semibold text-neutral-600">Mã CK</TableHead>
-                <TableHead className="text-right font-semibold text-neutral-600">Số lượng</TableHead>
-                <TableHead className="text-right font-semibold text-neutral-600">Giá mua</TableHead>
-                <TableHead className="text-right font-semibold text-neutral-600">Giá HT</TableHead>
-                <TableHead className="font-semibold text-neutral-600 w-20">Xu hướng</TableHead>
-                <TableHead className="text-right font-semibold text-neutral-600">Thành tiền</TableHead>
-                <TableHead className="text-right font-semibold text-neutral-600">Lỗ/Lãi</TableHead>
-                <TableHead className="text-right font-semibold text-neutral-600">%</TableHead>
-                <TableHead className="text-right font-semibold text-neutral-600 w-24">Tỷ trọng</TableHead>
-                <TableHead className="text-right font-semibold text-neutral-600">Thao tác</TableHead>
+          <Table className="[&_td]:py-1.5 [&_td]:px-2 [&_th]:py-2 [&_th]:px-2 border-b border-neutral-800">
+            <TableHeader className="bg-[#0a0a0a] border-b border-neutral-800">
+              <TableRow className="border-neutral-800 hover:bg-transparent">
+                <TableHead className="font-bold text-neutral-500">Mã CK</TableHead>
+                <TableHead className="text-right font-bold text-neutral-500">Số lượng</TableHead>
+                <TableHead className="text-right font-bold text-neutral-500">Giá mua</TableHead>
+                <TableHead className="text-right font-bold text-neutral-500">Giá HT</TableHead>
+                <TableHead className="text-right font-bold text-neutral-500">Thành tiền</TableHead>
+                <TableHead className="text-right font-bold text-neutral-500">Lỗ/Lãi</TableHead>
+                <TableHead className="text-right font-bold text-neutral-500">%</TableHead>
+                <TableHead className="text-right font-bold text-neutral-500 w-24">Tỷ trọng</TableHead>
+                <TableHead className="text-right font-bold text-neutral-500">Thao tác</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {stocks.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={10} className="text-center py-8 text-muted-foreground">
+                  <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
                     {loading ? 'Đang tải dữ liệu...' : 'Chưa có mã cổ phiếu nào trong danh mục.'}
                   </TableCell>
                 </TableRow>
@@ -106,13 +104,13 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
               )}
 
               {stocks.length > 0 && (
-                <TableRow className="bg-neutral-50 font-bold border-t-2 border-neutral-100">
-                  <TableCell colSpan={6} className="uppercase text-neutral-700">TỔNG CỘNG</TableCell>
-                  <TableCell className="text-right text-neutral-900">{formatCurrency(totalCurrentValue)}</TableCell>
-                  <TableCell className={`text-right ${totalProfit >= 0 ? 'text-emerald-700' : 'text-rose-600'}`}>
+                <TableRow className="bg-[#0a0a0a] font-bold border-t border-neutral-800 hover:bg-transparent">
+                  <TableCell colSpan={4} className="uppercase text-neutral-500">TỔNG CỘNG</TableCell>
+                  <TableCell className="text-right font-mono text-neutral-200">{formatCurrency(totalCurrentValue)}</TableCell>
+                  <TableCell className={`text-right font-mono ${totalProfit >= 0 ? 'text-emerald-400' : 'text-rose-500'}`}>
                     {totalProfit > 0 ? '+' : ''}{formatCurrency(totalProfit)}
                   </TableCell>
-                  <TableCell className={`text-right ${totalProfitPercent >= 0 ? 'text-emerald-700' : 'text-rose-600'}`}>
+                  <TableCell className={`text-right font-mono ${totalProfitPercent >= 0 ? 'text-emerald-400' : 'text-rose-500'}`}>
                     {totalProfitPercent > 0 ? '+' : ''}{totalProfitPercent.toFixed(2)}%
                   </TableCell>
                   <TableCell></TableCell>
@@ -179,26 +177,19 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
   const charCode = stock?.symbol?.charCodeAt(0) || 0;
   const bgColorClass = avatarColors[charCode % avatarColors.length];
 
-  // Generate mock sparkline data based on charCode to make it look somewhat consistent for the same stock
-  const mockSparklineData = Array.from({ length: 10 }).map((_, i) => ({
-    value: 100 + Math.sin(i + charCode) * 20 + Math.cos(i * 2) * 10
-  }));
-  const isUpTrend = mockSparklineData[9].value >= mockSparklineData[0].value;
-  const sparklineColor = isUpTrend ? '#10b981' : '#f43f5e';
-
   return (
-    <TableRow className={`${isUpdating ? 'opacity-50' : ''} hover:bg-neutral-50/50 transition-colors`}>
+    <TableRow className={`${isUpdating ? 'opacity-50' : ''} border-neutral-800 hover:bg-neutral-900/50 transition-colors`}>
       <TableCell className="font-medium">
         <div className="flex items-center gap-2">
-          <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-sm ${bgColorClass}`}>
+          <div className={`w-5 h-5 rounded-none flex items-center justify-center text-[10px] font-bold text-white ${bgColorClass}`}>
             {stock?.symbol?.charAt(0) || '?'}
           </div>
           <div className="flex flex-col">
-            <span className="text-neutral-800 leading-none">{stock?.symbol}</span>
+            <span className="text-neutral-200 leading-none">{stock?.symbol}</span>
             {stock?.source === 'DNSE' ? (
-              <span className="text-[9px] font-medium text-emerald-600 mt-0.5">DNSE</span>
+              <span className="text-[9px] font-bold text-emerald-500 mt-0.5">DNSE</span>
             ) : (
-              <span className="text-[9px] font-medium text-amber-600 mt-0.5">Nhập tay</span>
+              <span className="text-[9px] font-bold text-amber-500 mt-0.5">NHẬP TAY</span>
             )}
           </div>
         </div>
@@ -207,7 +198,7 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
         {isEditingQty ? (
           <input
             autoFocus
-            className="w-20 text-right border border-blue-400 rounded px-1 py-0.5 outline-none focus:ring-2 focus:ring-blue-100"
+            className="w-20 text-right font-mono bg-black border border-blue-500 rounded-none px-1 py-0.5 outline-none focus:ring-1 focus:ring-blue-500 text-neutral-200"
             value={qty}
             onChange={(e) => setQty(e.target.value)}
             onBlur={saveQuantity}
@@ -216,17 +207,17 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
         ) : (
           <div className="flex items-center justify-end space-x-1 group">
             <button 
-              className="px-1 text-[10px] font-semibold text-neutral-300 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="px-1 text-[10px] font-bold text-neutral-600 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity"
               onClick={() => handleUpdateQuantity(stock.quantity - 100)}
             >-100</button>
             <span 
-              className="cursor-pointer hover:underline border-b border-transparent hover:border-neutral-300 text-neutral-700" 
+              className="cursor-pointer font-mono hover:underline border-b border-transparent hover:border-neutral-500 text-neutral-300" 
               onClick={() => setIsEditingQty(true)}
             >
               {stock.quantity.toLocaleString()}
             </span>
             <button 
-              className="px-1 text-[10px] font-semibold text-neutral-300 hover:text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="px-1 text-[10px] font-bold text-neutral-600 hover:text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity"
               onClick={() => handleUpdateQuantity(stock.quantity + 100)}
             >+100</button>
           </div>
@@ -236,7 +227,7 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
         {isEditingPrice ? (
           <input
             autoFocus
-            className="w-24 text-right border border-blue-400 rounded px-1 py-0.5 outline-none focus:ring-2 focus:ring-blue-100"
+            className="w-24 text-right font-mono bg-black border border-blue-500 rounded-none px-1 py-0.5 outline-none focus:ring-1 focus:ring-blue-500 text-neutral-200"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             onBlur={savePrice}
@@ -244,45 +235,36 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
           />
         ) : (
           <span 
-            className="cursor-pointer hover:underline border-b border-transparent hover:border-neutral-300 text-neutral-600" 
+            className="cursor-pointer font-mono hover:underline border-b border-transparent hover:border-neutral-500 text-neutral-400" 
             onClick={() => setIsEditingPrice(true)}
           >
             {formatCurrency(stock.buy_price)}
           </span>
         )}
       </TableCell>
-      <TableCell className="text-right font-semibold text-blue-600">
+      <TableCell className="text-right font-mono font-bold text-blue-400">
         {formatCurrency(stock.currentPrice)}
       </TableCell>
-      <TableCell className="p-0 align-middle">
-        <div className="h-8 w-16 opacity-70">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={mockSparklineData}>
-              <Line type="monotone" dataKey="value" stroke={sparklineColor} strokeWidth={1.5} dot={false} isAnimationActive={false} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </TableCell>
-      <TableCell className="text-right font-semibold text-neutral-800">
+      <TableCell className="text-right font-mono font-bold text-neutral-200">
         {formatCurrency(stock.currentValue)}
       </TableCell>
-      <TableCell className={`text-right font-bold ${stock.profit >= 0 ? 'text-emerald-700' : 'text-rose-600'}`}>
+      <TableCell className={`text-right font-mono font-bold ${stock.profit >= 0 ? 'text-emerald-400' : 'text-rose-500'}`}>
         {stock.profit > 0 ? '+' : ''}{formatCurrency(stock.profit)}
       </TableCell>
-      <TableCell className={`text-right font-bold ${stock.profitPercent >= 0 ? 'text-emerald-700' : 'text-rose-600'}`}>
+      <TableCell className={`text-right font-mono font-bold ${stock.profitPercent >= 0 ? 'text-emerald-400' : 'text-rose-500'}`}>
         {stock.profitPercent > 0 ? '+' : ''}{stock.profitPercent.toFixed(2)}%
       </TableCell>
-      <TableCell className="text-right">
-        <div className="flex flex-col items-end gap-1 w-full justify-end">
-          <span className="text-[10px] font-bold text-neutral-600">
-            {((stock.currentValue / totalValue) * 100).toFixed(1)}%
-          </span>
-          <div className="w-16 h-1.5 bg-neutral-100 rounded-full overflow-hidden flex justify-end">
+      <TableCell className="text-right text-neutral-500 text-xs w-24">
+        <div className="flex items-center justify-end gap-2 w-full">
+          <div className="w-10 bg-neutral-800 rounded-none h-1.5 overflow-hidden flex-shrink-0">
             <div 
-              className="h-full bg-blue-500 rounded-full" 
+              className="h-full bg-blue-500 rounded-none" 
               style={{ width: `${(stock.currentValue / totalValue) * 100}%` }}
             />
           </div>
+          <span className="w-9 text-right font-mono font-bold text-neutral-400">
+            {((stock.currentValue / totalValue) * 100).toFixed(1)}%
+          </span>
         </div>
       </TableCell>
       <TableCell className="text-right">

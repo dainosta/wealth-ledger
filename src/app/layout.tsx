@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-import { Inter, Roboto_Mono } from 'next/font/google';
+import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/header';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
-const robotoMono = Roboto_Mono({ subsets: ['latin'], variable: '--font-mono' });
+const jetBrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 
 export const metadata: Metadata = {
   title: 'Wealth Ledger - Tài Sản Của Tôi',
@@ -17,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" suppressHydrationWarning>
-      <body className={`${inter.variable} ${robotoMono.variable} font-sans antialiased min-h-screen bg-slate-50 dark:bg-zinc-950`}>
+    <html lang="vi" className="dark" suppressHydrationWarning>
+      <body className={`${inter.variable} ${jetBrainsMono.variable} font-sans antialiased min-h-screen bg-[#0a0a0a] text-neutral-200 selection:bg-emerald-500/30`}>
         <div className="flex flex-col min-h-screen">
           <Header />
           <main className="flex-1">

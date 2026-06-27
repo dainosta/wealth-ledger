@@ -23,14 +23,14 @@ interface NetWorthChartProps {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white p-3 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-neutral-100 text-sm z-50">
-        <p className="font-semibold text-neutral-500 mb-2 text-xs">{label}</p>
+      <div className="bg-black p-3 rounded-none border border-neutral-800 text-sm z-50 shadow-none">
+        <p className="font-bold text-neutral-500 mb-2 text-xs uppercase tracking-widest">{label}</p>
         <div className="space-y-2">
           {payload.map((entry: any, index: number) => (
             <div key={index} className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }}></span>
-              <span className="text-neutral-600 font-medium">{entry.name}</span>
-              <span className="font-bold text-neutral-900 ml-auto pl-4">{formatCurrency(entry.value)}</span>
+              <span className="w-1.5 h-1.5 rounded-none" style={{ backgroundColor: entry.color }}></span>
+              <span className="text-neutral-400 font-bold uppercase text-[10px] tracking-widest">{entry.name}</span>
+              <span className="font-mono font-bold text-neutral-100 ml-auto pl-4">{formatCurrency(entry.value)}</span>
             </div>
           ))}
         </div>
@@ -45,12 +45,12 @@ export const NetWorthChart = React.memo(function NetWorthChart({ data, embedded 
 
   if (!data || data.length === 0) {
     return (
-      <Card className="h-full flex flex-col shadow-sm border-0 bg-neutral-100 animate-pulse">
+      <Card className="h-full flex flex-col shadow-none border-0 bg-black animate-pulse rounded-none">
         <CardHeader className="flex flex-row items-center justify-between pb-2 shrink-0">
-          <div className="h-4 bg-neutral-200 w-32 rounded"></div>
+          <div className="h-4 bg-neutral-900 w-32 rounded-none"></div>
         </CardHeader>
         <CardContent className="flex-1 pb-4">
-          <div className="h-full w-full bg-neutral-200/50 rounded-xl"></div>
+          <div className="h-full w-full bg-neutral-900 rounded-none"></div>
         </CardContent>
       </Card>
     );
@@ -101,49 +101,16 @@ export const NetWorthChart = React.memo(function NetWorthChart({ data, embedded 
     <Card className="h-full flex flex-col border-0 shadow-none rounded-none relative">
       <CardHeader className="py-3 px-4 shrink-0 flex flex-row items-center justify-between border-b border-transparent">
         {!embedded && <CardTitle className="text-sm">Lịch sử tài sản</CardTitle>}
-        <div className={`flex gap-1 bg-neutral-100/80 p-1 rounded-lg ${embedded ? 'ml-auto' : ''}`}>
-          <button 
-            onClick={() => setFilter('6M')}
-            className={`text-[10px] font-bold px-3 py-1 rounded-md transition-all ${filter === '6M' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700'}`}
-          >
-            6M
-          </button>
-          <button 
-            onClick={() => setFilter('YTD')}
-            className={`text-[10px] font-bold px-3 py-1 rounded-md transition-all ${filter === 'YTD' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700'}`}
-          >
-            YTD
-          </button>
-          <button 
-            onClick={() => setFilter('1Y')}
-            className={`text-[10px] font-bold px-3 py-1 rounded-md transition-all ${filter === '1Y' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700'}`}
-          >
-            1Y
-          </button>
-          <button 
-            onClick={() => setFilter('2Y')}
-            className={`text-[10px] font-bold px-3 py-1 rounded-md transition-all ${filter === '2Y' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700'}`}
-          >
-            2Y
-          </button>
-          <button 
-            onClick={() => setFilter('3Y')}
-            className={`text-[10px] font-bold px-3 py-1 rounded-md transition-all ${filter === '3Y' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700'}`}
-          >
-            3Y
-          </button>
-          <button 
-            onClick={() => setFilter('5Y')}
-            className={`text-[10px] font-bold px-3 py-1 rounded-md transition-all ${filter === '5Y' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700'}`}
-          >
-            5Y
-          </button>
-          <button 
-            onClick={() => setFilter('ALL')}
-            className={`text-[10px] font-bold px-3 py-1 rounded-md transition-all ${filter === 'ALL' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700'}`}
-          >
-            ALL
-          </button>
+        <div className="flex gap-0 bg-neutral-900 border border-neutral-800 p-0.5 rounded-none">
+          {['6M', 'YTD', '1Y', '2Y', '3Y', '5Y', 'ALL'].map((f) => (
+            <button 
+              key={f}
+              onClick={() => setFilter(f as any)}
+              className={`text-[9px] font-bold px-3 py-1 rounded-none transition-all uppercase tracking-widest ${filter === f ? 'bg-black text-neutral-100 border border-neutral-700' : 'text-neutral-500 hover:text-neutral-300 border border-transparent'}`}
+            >
+              {f}
+            </button>
+          ))}
         </div>
       </CardHeader>
       <CardContent className="flex-1 min-h-0 px-4 pb-4 pt-2">
@@ -163,7 +130,7 @@ export const NetWorthChart = React.memo(function NetWorthChart({ data, embedded 
                   <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={true} stroke="#f3f4f6" />
+              <CartesianGrid strokeDasharray="3 3" vertical={true} stroke="#262626" />
               <XAxis 
                 dataKey="name" 
                 stroke="#9ca3af"

@@ -79,23 +79,23 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
     <div className="flex flex-col w-full h-full">
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 flex-1">
         {/* Net Worth Card */}
-      <Card className="col-span-2 lg:col-span-1 bg-emerald-50/60 border-emerald-200/60 shadow-sm relative overflow-hidden">
+      <Card className="col-span-2 lg:col-span-1 bg-black border-neutral-800 rounded-none shadow-none relative overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 pt-3 z-10 relative">
-          <CardTitle className="text-xs font-semibold text-emerald-800 uppercase">Tài sản ròng</CardTitle>
-          <WalletIcon className="h-3.5 w-3.5 text-emerald-600" />
+          <CardTitle className="text-xs font-bold text-neutral-400 uppercase">Tài sản ròng</CardTitle>
+          <WalletIcon className="h-5 w-5 text-emerald-500" />
         </CardHeader>
         <CardContent className="pb-3 z-10 relative">
-          <div className="text-2xl md:text-3xl lg:text-4xl font-black text-emerald-700 tracking-tight">
+          <div className="text-2xl md:text-3xl lg:text-4xl font-mono font-bold text-emerald-400 tracking-tight">
             <CountUp end={realtimeNetWorth} separator="." decimal="," suffix=" ₫" duration={1.5} preserveValue />
           </div>
           <div className="mt-0.5">
-            <p className="text-[10px] text-emerald-600 font-medium flex items-center">
+            <p className="text-[10px] text-neutral-500 font-bold flex items-center">
               {previousMonth ? (
                 <>
-                  <span className={`flex items-center ${realtimeMoMChange >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+                  <span className={`flex items-center font-mono ${realtimeMoMChange >= 0 ? 'text-emerald-400' : 'text-rose-500'}`}>
                     {formatPercent(realtimeMoMChange)}
                   </span>
-                  <span className="ml-1 opacity-80">so với tháng trước</span>
+                  <span className="ml-1 opacity-80 uppercase tracking-widest">so với tháng trước</span>
                 </>
               ) : (
                 <span className="opacity-80">Không có dữ liệu</span>
@@ -128,13 +128,13 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
       </Card>
       
       {/* Stock Portfolio Card */}
-      <Card className="col-span-1 bg-blue-50/60 border-blue-200/60 shadow-sm relative overflow-hidden">
+      <Card className="col-span-1 bg-black border-neutral-800 rounded-none shadow-none relative overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 pt-3 z-10 relative">
-          <CardTitle className="text-xs font-semibold text-blue-800 uppercase">Cổ phiếu</CardTitle>
-          <TrendingUpIcon className="h-3.5 w-3.5 text-blue-600" />
+          <CardTitle className="text-xs font-bold text-neutral-400 uppercase">Cổ phiếu</CardTitle>
+          <TrendingUpIcon className="h-5 w-5 text-blue-500" />
         </CardHeader>
         <CardContent className="pb-3 z-10 relative">
-          <div className="text-xl font-bold text-blue-700">
+          <div className="text-xl font-mono font-bold text-neutral-100">
             <CountUp end={totalStockValue} separator="." decimal="," suffix=" ₫" duration={1.5} preserveValue />
           </div>
           <div className="mt-0.5">
@@ -168,17 +168,17 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
       </Card>
 
       {/* Cash Balance Card */}
-      <Card className="col-span-1 bg-teal-50/60 border-teal-200/60 shadow-sm relative overflow-hidden">
+      <Card className="col-span-1 bg-black border-neutral-800 rounded-none shadow-none relative overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 pt-3 z-10 relative">
-          <CardTitle className="text-xs font-semibold text-teal-800 uppercase">Tiền mặt</CardTitle>
-          <WalletIcon className="h-3.5 w-3.5 text-teal-600" />
+          <CardTitle className="text-xs font-bold text-neutral-400 uppercase">Tiền mặt</CardTitle>
+          <LandmarkIcon className="h-5 w-5 text-emerald-500" />
         </CardHeader>
         <CardContent className="pb-3 z-10 relative">
-          <div className="text-xl font-bold text-teal-700">
+          <div className="text-xl font-mono font-bold text-neutral-100">
             <CountUp end={liveCashBalance} separator="." decimal="," suffix=" ₫" duration={1.5} preserveValue />
           </div>
           <div className="mt-0.5">
-            <p className="text-[10px] text-teal-600 opacity-80 font-medium">
+            <p className="text-[10px] text-neutral-500 opacity-80 font-medium">
               Ví, ATM, Tiết kiệm...
             </p>
           </div>
@@ -186,50 +186,47 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
       </Card>
 
       {/* Total Debt Card */}
-      <Card className="col-span-2 bg-white border-neutral-200 shadow-sm relative overflow-hidden">
+      <Card className="col-span-2 bg-black border-neutral-800 rounded-none shadow-none relative overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 pt-3 z-10 relative">
-          <CardTitle className="text-xs font-semibold text-neutral-800 uppercase">Tổng Nợ</CardTitle>
-          <CoinsIcon className="h-3.5 w-3.5 text-neutral-500" />
+          <CardTitle className="text-xs font-bold text-neutral-400 uppercase">Tổng Nợ</CardTitle>
+          <CoinsIcon className="h-5 w-5 text-neutral-400" />
         </CardHeader>
         <CardContent className="pb-3 z-10 relative">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-2">
-            <div className="text-xl font-bold text-neutral-800 z-20 relative flex flex-col">
+            <div className="text-xl font-mono font-bold text-neutral-100 z-20 relative flex flex-col">
               <CountUp end={liveGoldDebt + liveCashDebt + liveCreditCardDebt} separator="." decimal="," suffix=" ₫" duration={1.5} preserveValue />
             </div>
           </div>
           
-          <div className="grid grid-cols-3 gap-2 z-20 relative mt-2">
-            <div className="flex flex-col bg-neutral-50/80 p-2 rounded-lg border border-neutral-100 transition-colors relative">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-semibold text-neutral-500 uppercase flex items-center">
-                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500 mr-1.5"></span>
-                  Nợ Vàng
-                </span>
-                {(currentMonth?.gold_debt_qty || 0) > 0 && goldDebtCostBasis > 0 && (
-                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-sm ${goldDebtProfitLoss < 0 ? 'bg-rose-100 text-rose-700' : 'bg-rose-500 text-white'}`}>
-                    {goldDebtProfitLoss < 0 ? '' : '+'}{formatCurrency(goldDebtProfitLoss)}
+          <div className="grid grid-cols-3 gap-0 z-20 relative mt-2 border border-neutral-800">
+            <div className="flex flex-col bg-neutral-900/50 p-2 border-r border-neutral-800 relative">
+              <span className="text-[10px] font-bold text-amber-500/80 uppercase flex items-center tracking-widest">
+                Nợ Vàng
+              </span>
+              <span className="font-mono font-bold text-amber-400 text-sm mt-0.5">{formatCurrency(liveGoldDebt)}</span>
+              {(currentMonth?.gold_debt_qty || 0) > 0 && goldDebtCostBasis > 0 && (
+                <div className="mt-0.5">
+                  <span className={`inline-block font-mono text-[9px] font-bold px-1.5 py-0.5 rounded-none ${goldDebtProfitLoss > 0 ? 'bg-rose-500 text-white' : 'bg-emerald-500/20 text-emerald-400'}`}>
+                    {goldDebtProfitLoss > 0 ? '+' : ''}{formatCurrency(goldDebtProfitLoss)}
                   </span>
-                )}
-              </div>
-              <span className="font-bold text-rose-700 text-sm mt-0.5">{formatCurrency(liveGoldDebt)}</span>
-              <div className="flex items-center justify-between mt-1 text-[9px] text-neutral-500">
-                <span>{currentMonth?.gold_debt_qty || 0} lượng</span>
+                </div>
+              )}
+              <div className="flex items-center justify-between mt-1 text-[9px] font-mono text-neutral-500">
+                <span>{currentMonth?.gold_debt_qty || 0} lg</span>
                 <span>{formatCurrency(displayGoldPrice)}/l</span>
               </div>
             </div>
-            <div className="flex flex-col bg-neutral-50/80 p-2 rounded-lg border border-neutral-100 hover:border-amber-200 transition-colors">
-              <span className="text-[10px] font-semibold text-neutral-500 uppercase flex items-center">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5"></span>
+            <div className="flex flex-col bg-neutral-900/50 p-2 border-r border-neutral-800">
+              <span className="text-[10px] font-bold text-neutral-500 uppercase flex items-center tracking-widest">
                 Vay Tiền mặt
               </span>
-              <span className="font-bold text-amber-700 text-sm mt-0.5">{formatCurrency(liveCashDebt)}</span>
+              <span className="font-mono font-bold text-neutral-300 text-sm mt-0.5">{formatCurrency(liveCashDebt)}</span>
             </div>
-            <div className="flex flex-col bg-neutral-50/80 p-2 rounded-lg border border-neutral-100 hover:border-violet-200 transition-colors">
-              <span className="text-[10px] font-semibold text-neutral-500 uppercase flex items-center">
-                <span className="w-1.5 h-1.5 rounded-full bg-violet-500 mr-1.5"></span>
+            <div className="flex flex-col bg-neutral-900/50 p-2">
+              <span className="text-[10px] font-bold text-neutral-500 uppercase flex items-center tracking-widest">
                 Thẻ tín dụng
               </span>
-              <span className="font-bold text-violet-700 text-sm mt-0.5">{formatCurrency(liveCreditCardDebt)}</span>
+              <span className="font-mono font-bold text-neutral-300 text-sm mt-0.5">{formatCurrency(liveCreditCardDebt)}</span>
             </div>
           </div>
         </CardContent>

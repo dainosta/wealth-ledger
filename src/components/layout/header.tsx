@@ -19,18 +19,18 @@ export function Header() {
   };
 
   return (
-    <header className="flex h-14 items-center justify-between border-b px-4 lg:px-8 bg-white">
-      <div className="flex items-center space-x-2 font-bold text-lg text-emerald-600">
-        <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center">W</div>
+    <header className="flex h-14 items-center justify-between border-b border-neutral-800 px-4 lg:px-8 bg-[#0a0a0a]">
+      <div className="flex items-center space-x-2 font-bold text-lg text-emerald-500 tracking-widest uppercase">
+        <div className="w-8 h-8 rounded-none border border-emerald-500 bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-mono">W</div>
         <span>Wealth Ledger</span>
       </div>
       <div className="flex items-center space-x-2">
         <BackupManager />
         <ImportCsvButton />
         <ExportCsvButton />
-        <div className="w-px h-6 bg-neutral-200 mx-2" />
-        <Button variant="ghost" size="sm" onClick={handleLogout} className="text-neutral-500 hover:text-neutral-700">
-          <LogOutIcon className="h-4 w-4 mr-2" /> Đăng xuất
+        <div className="w-px h-6 bg-neutral-800 mx-2" />
+        <Button variant="ghost" size="sm" onClick={handleLogout} className="text-neutral-400 hover:text-white rounded-none hover:bg-neutral-900 font-mono text-xs">
+          <LogOutIcon className="h-4 w-4 mr-2" /> EXIT
         </Button>
       </div>
     </header>

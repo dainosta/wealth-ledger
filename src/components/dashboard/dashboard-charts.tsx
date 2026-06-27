@@ -13,16 +13,16 @@ export function DashboardCharts({ data }: DashboardChartsProps) {
   const [activeChart, setActiveChart] = useState<'net-worth' | 'stock-performance'>('net-worth');
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border overflow-hidden h-full flex flex-col">
-      <div className="flex border-b bg-white pt-2 px-4 shrink-0 gap-6">
+    <div className="bg-[#0a0a0a] rounded-none shadow-none border border-neutral-800 overflow-hidden h-full flex flex-col">
+      <div className="flex border-b border-neutral-800 bg-[#0a0a0a] pt-1 px-2 shrink-0 gap-4">
         <button 
-          className={`pb-2.5 px-1 text-sm font-semibold transition-all border-b-2 relative top-[1px] ${activeChart === 'net-worth' ? 'border-blue-600 text-blue-700' : 'border-transparent text-neutral-500 hover:text-neutral-800 hover:border-neutral-300'}`}
+          className={`pb-1.5 px-2 text-xs font-bold uppercase tracking-wider transition-all border-b-2 relative top-[1px] ${activeChart === 'net-worth' ? 'border-emerald-500 text-emerald-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
           onClick={() => setActiveChart('net-worth')}
         >
           Lịch sử tài sản ròng
         </button>
         <button 
-          className={`pb-2.5 px-1 text-sm font-semibold transition-all border-b-2 relative top-[1px] ${activeChart === 'stock-performance' ? 'border-blue-600 text-blue-700' : 'border-transparent text-neutral-500 hover:text-neutral-800 hover:border-neutral-300'}`}
+          className={`pb-1.5 px-2 text-xs font-bold uppercase tracking-wider transition-all border-b-2 relative top-[1px] ${activeChart === 'stock-performance' ? 'border-amber-500 text-amber-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
           onClick={() => setActiveChart('stock-performance')}
         >
           Hiệu quả cổ phiếu

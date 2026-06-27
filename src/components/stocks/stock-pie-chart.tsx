@@ -30,18 +30,18 @@ const CustomTooltip = ({ active, payload }: any) => {
     if (!data) return null;
 
     return (
-      <div className="bg-neutral-900 text-neutral-100 p-3 rounded-xl text-xs shadow-xl border border-neutral-800 z-50">
-        <div className="flex items-center font-bold mb-1 text-sm">
-          <span className="w-2 h-2 rounded-full mr-2 inline-block" style={{ backgroundColor: color }}></span>
+      <div className="bg-black text-neutral-100 p-2 rounded-none text-xs shadow-none border border-neutral-800 z-50">
+        <div className="flex items-center font-bold mb-1 text-xs uppercase tracking-widest text-neutral-500">
+          <span className="w-1.5 h-1.5 rounded-none mr-2 inline-block" style={{ backgroundColor: color }}></span>
           {data.symbol}
         </div>
-        <div className={`font-semibold mb-2 text-sm ${data.profit >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+        <div className={`font-mono font-bold mb-1.5 text-xs ${data.profit >= 0 ? 'text-emerald-400' : 'text-rose-500'}`}>
           {data.profit > 0 ? '+' : ''}{formatCurrency(data.profit)} ({data.profitPercent > 0 ? '+' : ''}{data.profitPercent.toFixed(2)}%)
         </div>
-        <div className="text-neutral-400 space-y-1">
-          <div>Tỷ trọng: <span className="text-white font-medium">{data.weight}%</span></div>
-          <div>GT hiện tại: <span className="text-white font-medium">{formatCurrency(data.currentValue)}</span></div>
-          <div>KL mở: <span className="text-white font-medium">{data.quantity.toLocaleString()}</span></div>
+        <div className="text-neutral-500 space-y-0.5 text-[10px] uppercase tracking-widest font-bold">
+          <div className="flex justify-between gap-4">Tỷ trọng: <span className="text-neutral-300 font-mono">{data.weight}%</span></div>
+          <div className="flex justify-between gap-4">GT hiện tại: <span className="text-neutral-300 font-mono">{formatCurrency(data.currentValue)}</span></div>
+          <div className="flex justify-between gap-4">KL mở: <span className="text-neutral-300 font-mono">{data.quantity.toLocaleString()}</span></div>
         </div>
       </div>
     );
@@ -52,9 +52,8 @@ const CustomTooltip = ({ active, payload }: any) => {
 export const StockPieChart = React.memo(function StockPieChart({ stocks }: { stocks: StockWithQuote[] }) {
   if (!stocks || stocks.length === 0) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center h-full min-h-[300px] bg-neutral-50/50 p-6 text-center">
-        <p className="text-sm font-medium text-neutral-500 mb-1">Chưa có cổ phiếu</p>
-        <p className="text-xs text-neutral-400">Hãy thêm cổ phiếu vào danh mục để xem biểu đồ phân bổ</p>
+      <div className="flex-1 flex flex-col items-center justify-center h-full min-h-[300px] bg-black p-6 text-center border border-neutral-800 rounded-none">
+        <p className="text-xs font-mono font-bold text-neutral-600">NO STOCKS</p>
       </div>
     );
   }

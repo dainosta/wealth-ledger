@@ -26,24 +26,24 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     const roi = costBasis > 0 ? (profit / costBasis) * 100 : 0;
 
     return (
-      <div className="bg-white p-3 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-neutral-100 text-sm z-50">
-        <p className="font-semibold text-neutral-500 mb-2 text-xs">{label}</p>
+      <div className="bg-black p-3 rounded-none border border-neutral-800 text-sm z-50 shadow-none">
+        <p className="font-bold text-neutral-500 mb-2 text-xs uppercase tracking-widest">{label}</p>
         <div className="space-y-2">
           {payload.map((entry: any, index: number) => (
             <div key={index} className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }}></span>
-              <span className="text-neutral-600 font-medium">{entry.name}</span>
-              <span className="font-bold text-neutral-900 ml-auto pl-4">{formatCurrency(entry.value)}</span>
+              <span className="w-1.5 h-1.5 rounded-none" style={{ backgroundColor: entry.color }}></span>
+              <span className="text-neutral-400 font-bold uppercase text-[10px] tracking-widest">{entry.name}</span>
+              <span className="font-mono font-bold text-neutral-100 ml-auto pl-4">{formatCurrency(entry.value)}</span>
             </div>
           ))}
         </div>
-        <div className="mt-3 pt-3 border-t border-neutral-100 flex items-center justify-between">
-          <span className="text-neutral-600 font-medium text-xs">Lỗ/Lãi:</span>
+        <div className="mt-3 pt-3 border-t border-neutral-800 flex items-center justify-between">
+          <span className="text-neutral-500 font-bold uppercase text-[10px] tracking-widest">Lỗ/Lãi:</span>
           <div className="text-right">
-            <span className={`font-bold ${profit >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+            <span className={`font-mono font-bold ${profit >= 0 ? 'text-emerald-400' : 'text-rose-500'}`}>
               {profit >= 0 ? '+' : ''}{formatCurrency(profit)}
             </span>
-            <span className={`text-[10px] ml-1 font-semibold ${profit >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+            <span className={`font-mono text-[10px] ml-1 font-bold ${profit >= 0 ? 'text-emerald-400' : 'text-rose-500'}`}>
               ({profit >= 0 ? '+' : ''}{roi.toFixed(2)}%)
             </span>
           </div>
@@ -99,18 +99,18 @@ export const StockPerformanceChart = React.memo(function StockPerformanceChart({
   }));
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="py-3 px-4 shrink-0 flex flex-row items-center justify-end border-b border-transparent">
-        <div className="flex gap-1 bg-neutral-100/80 p-1 rounded-lg">
+    <div className="h-full flex flex-col bg-black text-white">
+      <div className="py-3 px-4 shrink-0 flex flex-row items-center justify-end border-b border-neutral-900">
+        <div className="flex gap-1 bg-neutral-900 p-1 rounded-none">
           <button 
             onClick={() => setFilter('6M')}
-            className={`text-[10px] font-bold px-3 py-1 rounded-md transition-all ${filter === '6M' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700'}`}
+            className={`text-[10px] font-bold px-3 py-1 rounded-none transition-all ${filter === '6M' ? 'bg-neutral-800 text-white' : 'text-neutral-500 hover:text-neutral-300'}`}
           >
             6M
           </button>
           <button 
             onClick={() => setFilter('YTD')}
-            className={`text-[10px] font-bold px-3 py-1 rounded-md transition-all ${filter === 'YTD' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700'}`}
+            className={`text-[10px] font-bold px-3 py-1 rounded-none transition-all ${filter === 'YTD' ? 'bg-neutral-800 text-white' : 'text-neutral-500 hover:text-neutral-300'}`}
           >
             YTD
           </button>
@@ -151,7 +151,7 @@ export const StockPerformanceChart = React.memo(function StockPerformanceChart({
                   <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={true} stroke="#f3f4f6" />
+              <CartesianGrid strokeDasharray="3 3" vertical={true} stroke="#262626" />
               <XAxis 
                 dataKey="name" 
                 stroke="#9ca3af"

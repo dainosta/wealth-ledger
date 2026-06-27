@@ -29,7 +29,7 @@ export default function Home() {
   // No global loading blocking the layout, allowing individual components to handle loading and preserving animations.
 
   return (
-    <div className="flex lg:h-screen min-h-screen flex-col lg:overflow-hidden overflow-auto bg-neutral-100/50 p-2 md:p-4">
+    <div className="flex lg:h-screen min-h-screen flex-col lg:overflow-hidden overflow-auto p-2 md:p-4">
       {/* Top Widgets Row */}
       <div className="shrink-0 mb-3 animate-fade-in-down">
         <SummaryCards data={records} stocks={stocksData.stocks} isLoading={isAppLoading} />
@@ -41,9 +41,9 @@ export default function Home() {
         {/* Left Col: Ledger (Order 2 on mobile) */}
         <div className="lg:col-span-3 flex flex-col gap-3 lg:min-h-0 order-2 lg:order-1">
           {/* Ledger */}
-          <div className="flex-1 flex flex-col bg-white rounded-xl shadow-sm border overflow-hidden min-h-[400px] lg:min-h-0">
-            <div className="flex items-center justify-between p-3 border-b bg-neutral-50 shrink-0">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-600">Sổ cái (Ledger)</h3>
+          <div className="flex-1 flex flex-col bg-[#0a0a0a] rounded-none shadow-none border border-neutral-800 overflow-hidden min-h-[400px] lg:min-h-0">
+            <div className="flex items-center justify-between p-2 border-b border-neutral-800 bg-neutral-900/50 shrink-0">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">Sổ cái (Ledger)</h3>
             </div>
             <div className="flex-1 overflow-auto p-0 relative">
               <div className="absolute inset-0">
@@ -66,16 +66,16 @@ export default function Home() {
           </div>
 
           {/* Portfolio & Loans Tabs */}
-          <div className="flex-1 lg:min-h-0 flex flex-col min-h-[400px] lg:min-h-0 bg-white rounded-xl shadow-sm border overflow-hidden">
-            <div className="flex border-b bg-white pt-2 px-4 shrink-0 gap-6">
+          <div className="flex-1 lg:min-h-0 flex flex-col min-h-[400px] lg:min-h-0 bg-[#0a0a0a] rounded-none shadow-none border border-neutral-800 overflow-hidden">
+            <div className="flex border-b border-neutral-800 bg-[#0a0a0a] pt-1 px-2 shrink-0 gap-4">
               <button 
-                className={`pb-2.5 px-1 text-sm font-semibold transition-all border-b-2 relative top-[1px] ${activeTab === 'stocks' ? 'border-blue-600 text-blue-700' : 'border-transparent text-neutral-500 hover:text-neutral-800 hover:border-neutral-300'}`}
+                className={`pb-1.5 px-2 text-xs font-bold uppercase tracking-wider transition-all border-b-2 relative top-[1px] ${activeTab === 'stocks' ? 'border-emerald-500 text-emerald-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
                 onClick={() => setActiveTab('stocks')}
               >
                 Danh mục Cổ phiếu
               </button>
               <button 
-                className={`pb-2.5 px-1 text-sm font-semibold transition-all border-b-2 relative top-[1px] ${activeTab === 'loans' ? 'border-blue-600 text-blue-700' : 'border-transparent text-neutral-500 hover:text-neutral-800 hover:border-neutral-300'}`}
+                className={`pb-1.5 px-2 text-xs font-bold uppercase tracking-wider transition-all border-b-2 relative top-[1px] ${activeTab === 'loans' ? 'border-amber-500 text-amber-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
                 onClick={() => setActiveTab('loans')}
               >
                 Quản lý Khoản Vay
