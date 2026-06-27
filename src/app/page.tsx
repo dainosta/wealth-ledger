@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRecords } from '@/hooks/use-records';
 import { SummaryCards } from '@/components/dashboard/summary-cards';
 import { NetWorthChart } from '@/components/dashboard/net-worth-chart';
-import { StockPerformanceChart } from '@/components/dashboard/stock-performance-chart';
+
 import { DataTable } from '@/components/ledger/data-table';
 import { columns } from '@/components/ledger/columns';
 import { AddRecordDialog } from '@/components/ledger/add-record-dialog';
@@ -16,21 +16,52 @@ import { useLoans } from '@/hooks/use-loans';
 
 import { useRealtimeNetWorth } from '@/hooks/use-realtime-net-worth';
 import { GoalProgress } from '@/components/dashboard/goal-progress';
+import { BackupManager } from '@/components/ledger/backup-manager';
+import { ImportCsvButton } from '@/components/ledger/import-csv-button';
+import { ExportCsvButton } from '@/components/ledger/export-csv-button';
+import { Button } from '@/components/ui/button';
+import { createClient } from '@/utils/supabase/client';
+import { LogOutIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
+  const supabase = createClient();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.refresh();
+  };
   const { records, loading: recordsLoading } = useRecords();
   const stocksData = useStocks();
   const loansData = useLoans();
   const isAppLoading = recordsLoading || !stocksData.initialized || loansData.loading;
   
-  const { realtimeNetWorth } = useRealtimeNetWorth(records, stocksData.stocks);
+  const { realtimeNetWorth, liveGoldPrice } = useRealtimeNetWorth(records, stocksData.stocks);
 
-  const [activeTab, setActiveTab] = useState<'net-worth' | 'stock-performance' | 'stocks' | 'loans'>('net-worth');
+  const [activeTab, setActiveTab] = useState<'net-worth' | 'stocks' | 'loans'>('net-worth');
 
   // No global loading blocking the layout, allowing individual components to handle loading and preserving animations.
 
   return (
     <div className="flex lg:h-screen min-h-screen flex-col lg:overflow-hidden overflow-auto p-2 md:p-4">
+      {/* Top Bar with Brand and Actions */}
+      <div className="flex items-center justify-between mb-3 shrink-0">
+        <div className="flex items-center space-x-2 font-bold text-lg text-emerald-500 tracking-widest uppercase">
+          <div className="w-8 h-8 rounded-none border border-emerald-500 bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-mono">W</div>
+          <span className="hidden sm:inline">Wealth Ledger</span>
+        </div>
+        <div className="flex items-center space-x-1 sm:space-x-2 overflow-x-auto scrollbar-hide">
+          <BackupManager />
+          <ImportCsvButton />
+          <ExportCsvButton />
+          <div className="w-px h-6 bg-neutral-800 mx-1 sm:mx-2 shrink-0" />
+          <Button variant="ghost" size="sm" onClick={handleLogout} className="text-neutral-400 hover:text-white rounded-none hover:bg-neutral-900 font-mono text-xs shrink-0">
+            <LogOutIcon className="h-4 w-4 mr-2" /> EXIT
+          </Button>
+        </div>
+      </div>
+
       {/* Top Widgets Row */}
       <div className="shrink-0 mb-3 animate-fade-in-down">
         <SummaryCards data={records} stocks={stocksData.stocks} isLoading={isAppLoading} />
@@ -45,6 +76,7 @@ export default function Home() {
           <div className="flex-1 flex flex-col bg-[#0a0a0a] rounded-none shadow-none border border-neutral-800 overflow-hidden min-h-[400px] lg:min-h-0">
             <div className="flex items-center justify-between p-2 border-b border-neutral-800 bg-neutral-900/50 shrink-0">
               <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">Sổ cái (Ledger)</h3>
+              <AddRecordDialog loans={loansData.loans} />
             </div>
             <div className="flex-1 overflow-auto p-0 relative">
               <div className="absolute inset-0">
@@ -70,12 +102,7 @@ export default function Home() {
               >
                 Lịch sử tài sản ròng
               </button>
-              <button 
-                className={`pb-2 px-2 text-[10px] font-bold uppercase tracking-widest transition-all border-b-2 relative top-[1px] ${activeTab === 'stock-performance' ? 'border-emerald-500 text-emerald-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
-                onClick={() => setActiveTab('stock-performance')}
-              >
-                Hiệu quả cổ phiếu
-              </button>
+
               <button 
                 className={`pb-2 px-2 text-[10px] font-bold uppercase tracking-widest transition-all border-b-2 relative top-[1px] ${activeTab === 'stocks' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
                 onClick={() => setActiveTab('stocks')}
@@ -95,11 +122,7 @@ export default function Home() {
                   <NetWorthChart data={records} embedded={true} />
                 </div>
               )}
-              {activeTab === 'stock-performance' && (
-                <div className="absolute inset-0">
-                  <StockPerformanceChart data={records} />
-                </div>
-              )}
+
               {activeTab === 'stocks' && (
                 <div className="absolute inset-0">
                   <StockPortfolio stocksData={stocksData} />
@@ -107,18 +130,13 @@ export default function Home() {
               )}
               {activeTab === 'loans' && (
                 <div className="absolute inset-0">
-                  <CashLoansTable loansData={loansData} />
+                  <CashLoansTable loansData={loansData} goldPrice={liveGoldPrice} />
                 </div>
               )}
             </div>
           </div>
         </div>
 
-      </div>
-      
-      {/* Floating Action Button for Chốt Sổ */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <AddRecordDialog loans={loansData.loans} />
       </div>
     </div>
   );

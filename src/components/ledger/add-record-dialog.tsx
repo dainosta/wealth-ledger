@@ -140,9 +140,9 @@ export function AddRecordDialog({ loans = [] }: { loans?: CashLoan[] }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className={`${buttonVariants({ size: 'default', variant: 'outline' })} rounded-full shadow-lg shadow-blue-500/20 hover:shadow-xl hover:-translate-y-1 transition-all h-14 px-6 border-2 border-blue-600 text-blue-600 hover:bg-blue-50 bg-white`}>
-        <ZapIcon className="mr-2 h-5 w-5 fill-yellow-400 text-yellow-500" />
-        <span className="font-bold text-base">Chốt sổ tháng này</span>
+      <DialogTrigger className="flex items-center text-[10px] font-bold text-neutral-400 uppercase tracking-widest border border-neutral-700 bg-neutral-900 px-2 py-1 hover:bg-neutral-800 hover:text-white transition-colors">
+        <ZapIcon className="mr-1.5 h-3 w-3 fill-amber-400 text-amber-500" />
+        <span>Chốt sổ tháng này</span>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[450px]">
         <form onSubmit={handleSubmit}>

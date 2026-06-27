@@ -15,10 +15,15 @@ import { formatCurrency } from '@/lib/calculations';
 import { AddLoanDialog } from './add-loan-dialog';
 import { CashLoan } from '@/types';
 
-export function CashLoansTable({ loansData }: { loansData: any }) {
+export function CashLoansTable({ loansData, goldPrice = 0 }: { loansData: any, goldPrice?: number }) {
   const { loans, loading, error, deleteLoan, refresh, updateLoan } = loansData;
 
-  const totalBalance = loans.reduce((sum: number, loan: CashLoan) => sum + loan.balance, 0);
+  const totalBalanceVND = loans.reduce((sum: number, loan: CashLoan) => {
+    if (loan.loan_type === 'gold') {
+      return sum + (loan.balance * goldPrice);
+    }
+    return sum + loan.balance;
+  }, 0);
 
   return (
     <Card className="h-full flex flex-col border-0 shadow-none rounded-none overflow-hidden bg-black">
@@ -52,6 +57,7 @@ export function CashLoansTable({ loansData }: { loansData: any }) {
             <TableHeader className="bg-[#0a0a0a] border-b border-neutral-800">
               <TableRow className="border-neutral-800 hover:bg-transparent">
                 <TableHead className="font-bold text-neutral-500">Tên Khoản Vay</TableHead>
+                <TableHead className="text-center font-bold text-neutral-500">Loại</TableHead>
                 <TableHead className="text-right font-bold text-neutral-500">Dư nợ gốc</TableHead>
                 <TableHead className="text-right font-bold text-neutral-500">Lãi suất (%/năm)</TableHead>
                 <TableHead className="text-right font-bold text-neutral-500">Tiền lãi/tháng (ước tính)</TableHead>
@@ -69,14 +75,14 @@ export function CashLoansTable({ loansData }: { loansData: any }) {
                 </TableRow>
               ) : (
                 loans.map((loan: CashLoan) => (
-                  <LoanTableRow key={loan.id} loan={loan} updateLoan={updateLoan} deleteLoan={deleteLoan} />
+                  <LoanTableRow key={loan.id} loan={loan} goldPrice={goldPrice} updateLoan={updateLoan} deleteLoan={deleteLoan} />
                 ))
               )}
 
               {loans.length > 0 && (
                 <TableRow className="bg-[#0a0a0a] font-bold border-t border-neutral-800 hover:bg-transparent">
-                  <TableCell className="uppercase text-neutral-500">TỔNG CỘNG</TableCell>
-                  <TableCell className="text-right text-rose-500 font-mono">{formatCurrency(totalBalance)}</TableCell>
+                  <TableCell colSpan={2} className="uppercase text-neutral-500">TỔNG CỘNG (Quy đổi VNĐ)</TableCell>
+                  <TableCell className="text-right text-rose-500 font-mono">{formatCurrency(totalBalanceVND)}</TableCell>
                   <TableCell colSpan={5}></TableCell>
                 </TableRow>
               )}
@@ -88,16 +94,23 @@ export function CashLoansTable({ loansData }: { loansData: any }) {
   );
 }
 
-function LoanTableRow({ loan, updateLoan, deleteLoan }: { loan: CashLoan, updateLoan: any, deleteLoan: any }) {
+function LoanTableRow({ loan, goldPrice, updateLoan, deleteLoan }: { loan: CashLoan, goldPrice: number, updateLoan: any, deleteLoan: any }) {
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const estimatedMonthlyInterest = (loan.balance * loan.interest_rate) / 100 / 12;
+  const isGold = loan.loan_type === 'gold';
+  const principalVND = isGold ? loan.balance * goldPrice : loan.balance;
+  const estimatedMonthlyInterest = (principalVND * loan.interest_rate) / 100 / 12;
 
   return (
     <TableRow className={`hover:bg-neutral-900/50 border-neutral-800 transition-colors ${isUpdating ? 'opacity-50' : ''}`}>
       <TableCell className="font-bold text-neutral-200">{loan.name}</TableCell>
-      <TableCell className="text-right font-mono font-bold text-rose-500">
-        {formatCurrency(loan.balance)}
+      <TableCell className="text-center">
+        <span className={`text-[9px] font-bold px-1.5 py-0.5 uppercase tracking-widest ${isGold ? 'bg-amber-500/20 text-amber-500' : 'bg-rose-500/20 text-rose-400'}`}>
+          {isGold ? 'Vàng' : 'Tiền mặt'}
+        </span>
+      </TableCell>
+      <TableCell className={`text-right font-mono font-bold ${isGold ? 'text-amber-500' : 'text-rose-500'}`}>
+        {isGold ? `${loan.balance} lg` : formatCurrency(loan.balance)}
       </TableCell>
       <TableCell className="text-right font-mono font-bold text-amber-500">
         {loan.interest_rate}%

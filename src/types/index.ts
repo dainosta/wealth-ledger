@@ -26,6 +26,7 @@ export interface CashLoan {
   name: string;
   balance: number;
   interest_rate: number;
+  loan_type?: 'cash' | 'gold';
   interest_payment_day: number | null;
   maturity_date: string | null;
   created_at?: string;

@@ -21,6 +21,7 @@ export function AddLoanDialog({ onAdd }: { onAdd: () => void }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
+  const [loanType, setLoanType] = useState<'cash'|'gold'>('cash');
   const [balance, setBalance] = useState('');
   const [interestRate, setInterestRate] = useState('');
   const [interestPaymentDay, setInterestPaymentDay] = useState('');
@@ -34,13 +35,15 @@ export function AddLoanDialog({ onAdd }: { onAdd: () => void }) {
     try {
       await addLoan({
         name,
-        balance: Number(balance.replace(/,/g, '')),
+        loan_type: loanType,
+        balance: loanType === 'gold' ? Number(balance.replace(/,/g, '')) : Number(balance.replace(/,/g, '')),
         interest_rate: Number(interestRate.replace(/,/g, '')) || 0,
         interest_payment_day: interestPaymentDay ? parseInt(interestPaymentDay) : null,
         maturity_date: maturityDate || null,
       });
       setOpen(false);
       setName('');
+      setLoanType('cash');
       setBalance('');
       setInterestRate('');
       setInterestPaymentDay('');
@@ -63,12 +66,29 @@ export function AddLoanDialog({ onAdd }: { onAdd: () => void }) {
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Thêm Khoản Vay Tiền Mặt</DialogTitle>
+            <DialogTitle>Thêm Khoản Vay</DialogTitle>
             <DialogDescription>
               Nhập chi tiết khoản vay để theo dõi dư nợ và tính toán tiền lãi.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label className="text-right">Loại</Label>
+              <div className="col-span-3 flex gap-2">
+                <Button 
+                  type="button" 
+                  variant={loanType === 'cash' ? 'default' : 'outline'} 
+                  onClick={() => setLoanType('cash')}
+                  className="w-full text-xs"
+                >Tiền mặt</Button>
+                <Button 
+                  type="button" 
+                  variant={loanType === 'gold' ? 'default' : 'outline'} 
+                  onClick={() => setLoanType('gold')}
+                  className="w-full text-xs"
+                >Vàng</Button>
+              </div>
+            </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="name" className="text-right">
                 Tên khoản vay
@@ -88,12 +108,20 @@ export function AddLoanDialog({ onAdd }: { onAdd: () => void }) {
               </Label>
               <Input
                 id="balance"
+                type="text"
+                inputMode="decimal"
                 value={balance}
                 onChange={(e) => {
-                  const val = e.target.value.replace(/\D/g, '');
-                  setBalance(val ? Number(val).toLocaleString('en-US') : '');
+                  if (loanType === 'gold') {
+                    // Allow decimal for gold
+                    const val = e.target.value.replace(/[^0-9.]/g, '');
+                    setBalance(val);
+                  } else {
+                    const val = e.target.value.replace(/\D/g, '');
+                    setBalance(val ? Number(val).toLocaleString('en-US') : '');
+                  }
                 }}
-                placeholder="VNĐ"
+                placeholder={loanType === 'gold' ? 'VD: 2.5 (lượng)' : 'VNĐ'}
                 className="col-span-3 font-semibold text-rose-600"
                 required
               />

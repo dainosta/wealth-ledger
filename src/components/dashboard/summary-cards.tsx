@@ -134,7 +134,7 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
           <TrendingUpIcon className="h-5 w-5 text-blue-500" />
         </CardHeader>
         <CardContent className="pb-3 z-10 relative">
-          <div className="text-xl font-mono font-bold text-neutral-100">
+          <div className="text-xl font-mono font-bold text-blue-400">
             <CountUp end={totalStockValue} separator="." decimal="," suffix=" ₫" duration={1.5} preserveValue />
           </div>
           <div className="mt-0.5">
@@ -174,7 +174,7 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
           <LandmarkIcon className="h-5 w-5 text-emerald-500" />
         </CardHeader>
         <CardContent className="pb-3 z-10 relative">
-          <div className="text-xl font-mono font-bold text-neutral-100">
+          <div className="text-xl font-mono font-bold text-emerald-400">
             <CountUp end={liveCashBalance} separator="." decimal="," suffix=" ₫" duration={1.5} preserveValue />
           </div>
           <div className="mt-0.5">
@@ -217,16 +217,16 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
               </div>
             </div>
             <div className="flex flex-col bg-neutral-900/50 p-2 border-r border-neutral-800">
-              <span className="text-[10px] font-bold text-neutral-500 uppercase flex items-center tracking-widest">
+              <span className="text-[10px] font-bold text-rose-500 uppercase flex items-center tracking-widest">
                 Vay Tiền mặt
               </span>
-              <span className="font-mono font-bold text-neutral-300 text-sm mt-0.5">{formatCurrency(liveCashDebt)}</span>
+              <span className="font-mono font-bold text-rose-400 text-sm mt-0.5">{formatCurrency(liveCashDebt)}</span>
             </div>
             <div className="flex flex-col bg-neutral-900/50 p-2">
-              <span className="text-[10px] font-bold text-neutral-500 uppercase flex items-center tracking-widest">
+              <span className="text-[10px] font-bold text-rose-500 uppercase flex items-center tracking-widest">
                 Thẻ tín dụng
               </span>
-              <span className="font-mono font-bold text-neutral-300 text-sm mt-0.5">{formatCurrency(liveCreditCardDebt)}</span>
+              <span className="font-mono font-bold text-rose-400 text-sm mt-0.5">{formatCurrency(liveCreditCardDebt)}</span>
             </div>
           </div>
         </CardContent>

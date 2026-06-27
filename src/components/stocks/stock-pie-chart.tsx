@@ -120,7 +120,18 @@ export const StockPieChart = React.memo(function StockPieChart({ stocks }: { sto
               <div className="flex flex-col gap-1.5 overflow-y-auto max-h-[150px] pr-2">
                 {topStocks.map((stock, index) => (
                   <div key={stock.symbol} className="flex justify-between items-center text-xs">
-                    <span className="font-semibold text-neutral-700">{stock.symbol}</span>
+                    <span className="font-semibold text-neutral-400 flex items-center gap-1.5">
+                      <div className="w-3.5 h-3.5 rounded-none relative overflow-hidden bg-neutral-800 flex items-center justify-center text-[8px] text-white">
+                        <span className="z-0 relative">{stock.symbol.charAt(0)}</span>
+                        <img 
+                          src={`https://static.tcbs.com.vn/company/logo/${stock.symbol}.png`} 
+                          alt={stock.symbol} 
+                          className="absolute inset-0 w-full h-full object-cover bg-white z-10"
+                          onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                        />
+                      </div>
+                      {stock.symbol}
+                    </span>
                     <span className="text-neutral-500 font-medium">{stock.weight}%</span>
                   </div>
                 ))}

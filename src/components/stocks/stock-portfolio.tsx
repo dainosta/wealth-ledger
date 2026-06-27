@@ -181,8 +181,14 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
     <TableRow className={`${isUpdating ? 'opacity-50' : ''} border-neutral-800 hover:bg-neutral-900/50 transition-colors`}>
       <TableCell className="font-medium">
         <div className="flex items-center gap-2">
-          <div className={`w-5 h-5 rounded-none flex items-center justify-center text-[10px] font-bold text-white ${bgColorClass}`}>
-            {stock?.symbol?.charAt(0) || '?'}
+          <div className={`relative w-5 h-5 rounded-none flex items-center justify-center text-[10px] font-bold text-white ${bgColorClass} overflow-hidden`}>
+            <span className="z-0 relative">{stock?.symbol?.charAt(0) || '?'}</span>
+            <img 
+              src={`https://static.tcbs.com.vn/company/logo/${stock?.symbol}.png`} 
+              alt={stock?.symbol} 
+              className="absolute inset-0 w-full h-full object-cover bg-white z-10"
+              onError={(e) => { e.currentTarget.style.display = 'none'; }}
+            />
           </div>
           <div className="flex flex-col">
             <span className="text-neutral-200 leading-none">{stock?.symbol}</span>
