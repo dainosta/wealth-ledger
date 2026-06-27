@@ -21,10 +21,10 @@ export function CashLoansTable({ loansData }: { loansData: any }) {
   const totalBalance = loans.reduce((sum: number, loan: CashLoan) => sum + loan.balance, 0);
 
   return (
-    <Card className="h-full flex flex-col border-0 shadow-sm rounded-xl overflow-hidden bg-white">
-      <CardHeader className="flex flex-row items-center justify-between shrink-0 py-3 border-b border-neutral-100 flex-wrap gap-2">
+    <Card className="h-full flex flex-col border-0 shadow-none rounded-none overflow-hidden bg-black">
+      <CardHeader className="flex flex-row items-center justify-between shrink-0 py-2 px-3 border-b border-neutral-800 flex-wrap gap-2">
         <div className="flex items-center gap-4">
-          <CardTitle className="text-sm font-bold uppercase tracking-wider text-neutral-700">Quản lý Khoản Vay</CardTitle>
+          <CardTitle className="text-xs font-bold uppercase tracking-widest text-neutral-300">QUẢN LÝ KHOẢN VAY</CardTitle>
         </div>
         <div className="flex items-center space-x-2">
           <Button 
@@ -32,7 +32,7 @@ export function CashLoansTable({ loansData }: { loansData: any }) {
             size="sm" 
             onClick={() => refresh()} 
             disabled={loading}
-            className="h-8 text-xs font-semibold"
+            className="h-7 text-[10px] font-bold uppercase tracking-widest rounded-none border-neutral-800 bg-transparent text-neutral-400 hover:bg-neutral-900 hover:text-white"
           >
             <RefreshCwIcon className={`w-3.5 h-3.5 mr-1 ${loading ? 'animate-spin text-blue-500' : 'text-neutral-500'}`} />
             Làm mới
@@ -48,16 +48,16 @@ export function CashLoansTable({ loansData }: { loansData: any }) {
         )}
 
         <div className="absolute inset-0">
-          <Table>
-            <TableHeader className="bg-neutral-50/50">
-              <TableRow>
-                <TableHead className="font-semibold text-neutral-600">Tên Khoản Vay</TableHead>
-                <TableHead className="text-right font-semibold text-neutral-600">Dư nợ gốc</TableHead>
-                <TableHead className="text-right font-semibold text-neutral-600">Lãi suất (%/năm)</TableHead>
-                <TableHead className="text-right font-semibold text-neutral-600">Tiền lãi/tháng (ước tính)</TableHead>
-                <TableHead className="text-center font-semibold text-neutral-600">Ngày trả lãi</TableHead>
-                <TableHead className="text-center font-semibold text-neutral-600">Ngày đáo hạn</TableHead>
-                <TableHead className="text-right font-semibold text-neutral-600">Thao tác</TableHead>
+          <Table className="[&_td]:py-1.5 [&_td]:px-2 [&_th]:py-2 [&_th]:px-2 border-b border-neutral-800">
+            <TableHeader className="bg-[#0a0a0a] border-b border-neutral-800">
+              <TableRow className="border-neutral-800 hover:bg-transparent">
+                <TableHead className="font-bold text-neutral-500">Tên Khoản Vay</TableHead>
+                <TableHead className="text-right font-bold text-neutral-500">Dư nợ gốc</TableHead>
+                <TableHead className="text-right font-bold text-neutral-500">Lãi suất (%/năm)</TableHead>
+                <TableHead className="text-right font-bold text-neutral-500">Tiền lãi/tháng (ước tính)</TableHead>
+                <TableHead className="text-center font-bold text-neutral-500">Ngày trả lãi</TableHead>
+                <TableHead className="text-center font-bold text-neutral-500">Ngày đáo hạn</TableHead>
+                <TableHead className="text-right font-bold text-neutral-500">Thao tác</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -74,9 +74,9 @@ export function CashLoansTable({ loansData }: { loansData: any }) {
               )}
 
               {loans.length > 0 && (
-                <TableRow className="bg-neutral-50 font-bold border-t-2 border-neutral-100">
-                  <TableCell className="uppercase text-neutral-700">TỔNG CỘNG</TableCell>
-                  <TableCell className="text-right text-rose-700">{formatCurrency(totalBalance)}</TableCell>
+                <TableRow className="bg-[#0a0a0a] font-bold border-t border-neutral-800 hover:bg-transparent">
+                  <TableCell className="uppercase text-neutral-500">TỔNG CỘNG</TableCell>
+                  <TableCell className="text-right text-rose-500 font-mono">{formatCurrency(totalBalance)}</TableCell>
                   <TableCell colSpan={5}></TableCell>
                 </TableRow>
               )}
@@ -94,21 +94,21 @@ function LoanTableRow({ loan, updateLoan, deleteLoan }: { loan: CashLoan, update
   const estimatedMonthlyInterest = (loan.balance * loan.interest_rate) / 100 / 12;
 
   return (
-    <TableRow className={`hover:bg-neutral-50 transition-colors ${isUpdating ? 'opacity-50' : ''}`}>
-      <TableCell className="font-medium">{loan.name}</TableCell>
-      <TableCell className="text-right font-semibold text-rose-600">
+    <TableRow className={`hover:bg-neutral-900/50 border-neutral-800 transition-colors ${isUpdating ? 'opacity-50' : ''}`}>
+      <TableCell className="font-bold text-neutral-200">{loan.name}</TableCell>
+      <TableCell className="text-right font-mono font-bold text-rose-500">
         {formatCurrency(loan.balance)}
       </TableCell>
-      <TableCell className="text-right font-semibold text-amber-600">
+      <TableCell className="text-right font-mono font-bold text-amber-500">
         {loan.interest_rate}%
       </TableCell>
-      <TableCell className="text-right font-medium text-neutral-600 bg-neutral-50/50">
+      <TableCell className="text-right font-mono font-bold text-neutral-400 bg-neutral-900/30">
         {formatCurrency(estimatedMonthlyInterest)}
       </TableCell>
-      <TableCell className="text-center text-neutral-600">
+      <TableCell className="text-center font-mono text-neutral-400">
         {loan.interest_payment_day ? `Ngày ${loan.interest_payment_day}` : '-'}
       </TableCell>
-      <TableCell className="text-center text-neutral-600">
+      <TableCell className="text-center font-mono text-neutral-400">
         {loan.maturity_date ? new Date(loan.maturity_date).toLocaleDateString('vi-VN') : '-'}
       </TableCell>
       <TableCell className="text-right">
@@ -116,7 +116,7 @@ function LoanTableRow({ loan, updateLoan, deleteLoan }: { loan: CashLoan, update
           <Button 
             variant="ghost" 
             size="icon" 
-            className="h-7 w-7 text-rose-400 hover:text-rose-600 hover:bg-rose-50"
+            className="h-6 w-6 text-rose-400 hover:text-rose-500 hover:bg-rose-500/10 rounded-none"
             onClick={async () => {
               if (confirm('Bạn có chắc chắn muốn xóa khoản vay này?')) {
                 setIsUpdating(true);

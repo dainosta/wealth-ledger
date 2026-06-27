@@ -27,29 +27,29 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
   const totalProfitPercent = totalBuyValue > 0 ? (totalProfit / totalBuyValue) * 100 : 0;
 
   return (
-    <Card className="h-full flex flex-col border-0 shadow-sm rounded-xl overflow-hidden bg-white">
-      <CardHeader className="flex flex-row items-center justify-between shrink-0 py-3 border-b border-neutral-100 flex-wrap gap-2">
+    <Card className="h-full flex flex-col border-0 shadow-none rounded-none overflow-hidden bg-black">
+      <CardHeader className="flex flex-row items-center justify-between shrink-0 py-2 px-3 border-b border-neutral-800 flex-wrap gap-2">
         <div className="flex items-center gap-4">
-          <CardTitle className="text-sm font-bold uppercase tracking-wider text-neutral-700">Danh mục Cổ phiếu</CardTitle>
-          <div className="flex items-center bg-neutral-100 rounded-lg p-0.5">
+          <CardTitle className="text-xs font-bold uppercase tracking-widest text-neutral-300">DANH MỤC CỔ PHIẾU</CardTitle>
+          <div className="flex items-center bg-neutral-900 border border-neutral-800 rounded-none p-0.5">
             <button
               onClick={() => setViewMode('table')}
-              className={`px-3 py-1 text-xs font-semibold rounded-md transition-all ${viewMode === 'table' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700'}`}
+              className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-none transition-all ${viewMode === 'table' ? 'bg-black border border-neutral-700 text-neutral-100' : 'text-neutral-500 hover:text-neutral-300 border border-transparent'}`}
             >
-              Dữ liệu bảng
+              DỮ LIỆU BẢNG
             </button>
             <button
               onClick={() => setViewMode('chart')}
-              className={`px-3 py-1 text-xs font-semibold rounded-md transition-all ${viewMode === 'chart' ? 'bg-white shadow-sm text-neutral-800' : 'text-neutral-500 hover:text-neutral-700'}`}
+              className={`px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-none transition-all ${viewMode === 'chart' ? 'bg-black border border-neutral-700 text-neutral-100' : 'text-neutral-500 hover:text-neutral-300 border border-transparent'}`}
             >
-              Phân bổ
+              PHÂN BỔ
             </button>
           </div>
         </div>
         <div className="flex items-center space-x-2">
           {lastSyncTime && (
-            <div className="hidden md:flex items-center text-[10px] text-neutral-400 mr-2 bg-neutral-50 px-2 py-1 rounded-md border">
-              <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${syncStatus === 'error' ? 'bg-rose-500' : 'bg-emerald-500 animate-pulse'}`}></span>
+            <div className="hidden md:flex items-center text-[9px] font-mono font-bold uppercase tracking-widest text-neutral-500 mr-2 bg-neutral-900 px-2 py-1 rounded-none border border-neutral-800">
+              <span className={`w-1.5 h-1.5 rounded-none mr-1.5 ${syncStatus === 'error' ? 'bg-rose-500' : 'bg-emerald-500 animate-pulse'}`}></span>
               Cập nhật lúc: {lastSyncTime.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
             </div>
           )}
@@ -58,7 +58,7 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
             size="sm" 
             onClick={() => refresh()} 
             disabled={loading}
-            className="h-8 text-xs font-semibold"
+            className="h-7 text-[10px] font-bold uppercase tracking-widest rounded-none border-neutral-800 bg-transparent text-neutral-400 hover:bg-neutral-900 hover:text-white"
           >
             <RefreshCwIcon className={`w-3.5 h-3.5 mr-1 ${loading ? 'animate-spin text-blue-500' : 'text-neutral-500'}`} />
             Làm mới
