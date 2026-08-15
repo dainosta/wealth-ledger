@@ -158,7 +158,7 @@ export function EditRecordDialog({ record, open, onOpenChange }: EditRecordDialo
               <Input
                 id="edit_credit_card_debt"
                 type="number"
-                className="col-span-3 text-rose-700 bg-rose-50"
+                className="col-span-3 text-rose-500 bg-rose-50"
                 value={creditCardDebt}
                 onChange={(e) => setCreditCardDebt(e.target.value)}
               />

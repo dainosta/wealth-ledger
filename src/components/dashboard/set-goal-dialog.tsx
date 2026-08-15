@@ -63,14 +63,14 @@ export function SetGoalDialog() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className={buttonVariants({ size: 'icon', variant: 'ghost', className: 'h-8 w-8 text-neutral-400 hover:text-emerald-600' })}>
+      <DialogTrigger className={buttonVariants({ size: 'icon', variant: 'ghost', className: 'h-8 w-8 text-neutral-400 hover:text-emerald-400' })}>
         <TargetIcon className="h-4 w-4" />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[400px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader className="mb-4">
             <DialogTitle className="text-xl flex items-center">
-              <TargetIcon className="mr-2 h-5 w-5 text-emerald-600" />
+              <TargetIcon className="mr-2 h-5 w-5 text-emerald-400" />
               Thiết lập Mục tiêu
             </DialogTitle>
             <DialogDescription>
@@ -86,7 +86,7 @@ export function SetGoalDialog() {
                 id="target_net_worth"
                 type="text"
                 inputMode="numeric"
-                className="font-bold text-lg text-emerald-700 bg-emerald-50/50"
+                className="font-bold text-lg text-emerald-500 bg-emerald-50/50"
                 placeholder="Ví dụ: 1,000,000,000"
                 value={targetNetWorth}
                 onChange={(e) => setTargetNetWorth(formatNumberWithCommas(e.target.value))}

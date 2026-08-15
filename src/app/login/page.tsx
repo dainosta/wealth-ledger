@@ -35,7 +35,7 @@ export default function LoginPage({ searchParams }: { searchParams: { message: s
             </div>
             
             {searchParams?.message && (
-              <div className="p-3 bg-rose-50 text-rose-500 text-sm rounded-md border border-rose-100">
+              <div className="p-3 bg-rose-50 text-rose-400 text-sm rounded-md border border-rose-100">
                 {searchParams.message}
               </div>
             )}

@@ -20,7 +20,7 @@ export default function Error({
     <div className="flex flex-col items-center justify-center min-h-screen bg-neutral-100 p-4">
       <div className="bg-white p-6 rounded-2xl shadow-xl max-w-md w-full text-center flex flex-col items-center">
         <div className="bg-rose-100 p-3 rounded-full mb-4">
-          <AlertTriangleIcon className="w-8 h-8 text-rose-600" />
+          <AlertTriangleIcon className="w-8 h-8 text-rose-400" />
         </div>
         <h2 className="text-xl font-bold text-neutral-800 mb-2">Đã xảy ra lỗi!</h2>
         <p className="text-sm text-neutral-600 mb-4 text-left p-3 bg-neutral-50 rounded-lg w-full overflow-auto max-h-40 border font-mono">

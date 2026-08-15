@@ -107,7 +107,7 @@ export function CashLoansTable({ loansData, goldPrice = 0, goldDebtQty = 0, gold
               {loans.length > 0 && (
                 <TableRow className="bg-[#0a0a0a] font-bold border-t border-neutral-800 hover:bg-transparent">
                   <TableCell colSpan={2} className="uppercase text-neutral-500">TỔNG CỘNG (Quy đổi VNĐ)</TableCell>
-                  <TableCell className="text-right text-rose-500 font-mono">{formatCurrency(totalBalanceVND)}</TableCell>
+                  <TableCell className="text-right text-rose-400 font-mono">{formatCurrency(totalBalanceVND)}</TableCell>
                   <TableCell colSpan={3}></TableCell>
                 </TableRow>
               )}
@@ -134,7 +134,7 @@ function LoanTableRow({ loan, goldPrice, updateLoan, deleteLoan }: { loan: CashL
           {isGold ? 'Vàng' : 'Tiền mặt'}
         </span>
       </TableCell>
-      <TableCell className={`text-right font-mono font-bold ${isGold ? 'text-amber-500' : 'text-rose-500'}`}>
+      <TableCell className={`text-right font-mono font-bold ${isGold ? 'text-amber-500' : 'text-rose-400'}`}>
         <div className="flex flex-col items-end">
           <span>{isGold ? `${loan.balance} lg` : formatCurrency(loan.balance)}</span>
           {isGold && <span className="text-[10px] text-neutral-500 mt-1">{formatCurrency(principalVND)}</span>}
@@ -157,7 +157,7 @@ function LoanTableRow({ loan, goldPrice, updateLoan, deleteLoan }: { loan: CashL
           <Button 
             variant="ghost" 
             size="icon" 
-            className="h-6 w-6 text-rose-400 hover:text-rose-500 hover:bg-rose-500/10 rounded-none"
+            className="h-6 w-6 text-rose-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-none"
             onClick={async () => {
               if (confirm('Bạn có chắc chắn muốn xóa khoản vay này?')) {
                 setIsUpdating(true);

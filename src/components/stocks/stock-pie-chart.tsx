@@ -35,7 +35,7 @@ const CustomTooltip = ({ active, payload }: any) => {
           <span className="w-1.5 h-1.5 rounded-none mr-2 inline-block" style={{ backgroundColor: color }}></span>
           {data.symbol}
         </div>
-        <div className={`font-mono font-bold mb-1.5 text-xs ${data.profit >= 0 ? 'text-emerald-400' : 'text-rose-500'}`}>
+        <div className={`font-mono font-bold mb-1.5 text-xs ${data.profit >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
           {data.profit > 0 ? '+' : ''}{formatCurrency(data.profit)} ({data.profitPercent > 0 ? '+' : ''}{data.profitPercent.toFixed(2)}%)
         </div>
         <div className="text-neutral-500 space-y-0.5 text-[10px] uppercase tracking-widest font-bold">

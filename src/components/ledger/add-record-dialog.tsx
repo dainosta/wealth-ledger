@@ -209,7 +209,7 @@ export function AddRecordDialog({ loans = [] }: { loans?: CashLoan[] }) {
                   id="cash_balance"
                   type="text"
                   inputMode="numeric"
-                  className="font-bold text-emerald-700 bg-emerald-50/50"
+                  className="font-bold text-emerald-500 bg-emerald-50/50"
                   value={cashBalance}
                   onChange={(e) => setCashBalance(formatNumberWithCommas(e.target.value))}
                   required
@@ -230,16 +230,16 @@ export function AddRecordDialog({ loans = [] }: { loans?: CashLoan[] }) {
                   id="gold_price"
                   type="text"
                   inputMode="numeric"
-                  className="font-bold pr-10 text-emerald-700 bg-emerald-50/50"
+                  className="font-bold pr-10 text-emerald-500 bg-emerald-50/50"
                   value={goldPrice}
                   onChange={(e) => setGoldPrice(formatNumberWithCommas(e.target.value))}
                   required
                 />
                 <div className="absolute top-2 right-3">
                   {fetchingGold ? (
-                    <RefreshCwIcon className="h-5 w-5 text-emerald-500 animate-spin" />
+                    <RefreshCwIcon className="h-5 w-5 text-emerald-400 animate-spin" />
                   ) : (
-                    <CheckCircle2Icon className="h-5 w-5 text-emerald-500" />
+                    <CheckCircle2Icon className="h-5 w-5 text-emerald-400" />
                   )}
                 </div>
                 <p className="text-[10px] text-neutral-400 mt-1.5 flex items-center">
@@ -259,7 +259,7 @@ export function AddRecordDialog({ loans = [] }: { loans?: CashLoan[] }) {
                   id="gold_debt_qty"
                   type="number"
                   step="0.01"
-                  className="font-bold text-rose-700 bg-rose-50/50"
+                  className="font-bold text-rose-500 bg-rose-50/50"
                   value={goldDebtQty}
                   onChange={(e) => setGoldDebtQty(e.target.value)}
                   required
@@ -280,7 +280,7 @@ export function AddRecordDialog({ loans = [] }: { loans?: CashLoan[] }) {
                   id="cash_debt"
                   type="text"
                   inputMode="numeric"
-                  className="font-bold text-rose-700 bg-rose-50/50"
+                  className="font-bold text-rose-500 bg-rose-50/50"
                   value={cashDebt}
                   onChange={(e) => setCashDebt(formatNumberWithCommas(e.target.value))}
                   required
@@ -322,7 +322,7 @@ export function AddRecordDialog({ loans = [] }: { loans?: CashLoan[] }) {
                   id="credit_card_debt"
                   type="text"
                   inputMode="numeric"
-                  className="font-bold text-rose-700 bg-rose-50/50"
+                  className="font-bold text-rose-500 bg-rose-50/50"
                   value={creditCardDebt}
                   onChange={(e) => setCreditCardDebt(formatNumberWithCommas(e.target.value))}
                   required

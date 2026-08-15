@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRecords } from '@/hooks/use-records';
 import { SummaryCards } from '@/components/dashboard/summary-cards';
 import { NetWorthChart } from '@/components/dashboard/net-worth-chart';
+import { AssetAllocationChart } from '@/components/dashboard/asset-allocation-chart';
 
 import { DataTable } from '@/components/ledger/data-table';
 import { columns } from '@/components/ledger/columns';
@@ -37,9 +38,9 @@ export default function Home() {
   const loansData = useLoans();
   const isAppLoading = recordsLoading || !stocksData.initialized || loansData.loading;
   
-  const { realtimeNetWorth, liveGoldPrice, goldDebtCostBasis, goldDebtProfitLoss, currentMonth } = useRealtimeNetWorth(records, stocksData.stocks);
+  const { realtimeNetWorth, totalStockValue, liveCashBalance, liveGoldDebt, liveGoldPrice, goldDebtCostBasis, goldDebtProfitLoss, currentMonth } = useRealtimeNetWorth(records, stocksData.stocks);
 
-  const [activeTab, setActiveTab] = useState<'net-worth' | 'stocks' | 'loans'>('net-worth');
+  const [activeTab, setActiveTab] = useState<'net-worth' | 'allocation' | 'stocks' | 'loans'>('net-worth');
 
   // No global loading blocking the layout, allowing individual components to handle loading and preserving animations.
 
@@ -47,8 +48,8 @@ export default function Home() {
     <div className="flex lg:h-screen min-h-screen flex-col lg:overflow-hidden overflow-auto p-2 md:p-4">
       {/* Top Bar with Brand and Actions */}
       <div className="flex items-center justify-between mb-3 shrink-0">
-        <div className="flex items-center space-x-2 font-bold text-lg text-emerald-500 tracking-widest uppercase">
-          <div className="w-8 h-8 rounded-none border border-emerald-500 bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-mono">W</div>
+        <div className="flex items-center space-x-2 font-bold text-lg text-emerald-400 tracking-widest uppercase">
+          <div className="w-8 h-8 rounded-none border border-emerald-500 bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-mono">W</div>
           <span className="hidden sm:inline">Wealth Ledger</span>
         </div>
         <div className="flex items-center space-x-1 sm:space-x-2 overflow-x-auto scrollbar-hide">
@@ -110,6 +111,12 @@ export default function Home() {
                 >
                   Lịch sử tài sản ròng
                 </button>
+                <button 
+                  className={`pb-2 px-2 text-[10px] font-bold uppercase tracking-widest transition-all border-b-2 relative top-[1px] ${activeTab === 'allocation' ? 'border-purple-500 text-purple-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
+                  onClick={() => setActiveTab('allocation')}
+                >
+                  Cơ cấu tài sản
+                </button>
 
                 <button 
                   className={`pb-2 px-2 text-[10px] font-bold uppercase tracking-widest transition-all border-b-2 relative top-[1px] ${activeTab === 'stocks' ? 'border-blue-500 text-blue-400' : 'border-transparent text-neutral-500 hover:text-neutral-300'}`}
@@ -128,6 +135,15 @@ export default function Home() {
                 {activeTab === 'net-worth' && (
                   <div className="absolute inset-0">
                     <NetWorthChart data={records} embedded={true} />
+                  </div>
+                )}
+                {activeTab === 'allocation' && (
+                  <div className="absolute inset-0 p-4">
+                    <AssetAllocationChart 
+                      cash={liveCashBalance} 
+                      stocks={totalStockValue} 
+                      gold={liveGoldDebt} 
+                    />
                   </div>
                 )}
 

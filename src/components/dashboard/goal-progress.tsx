@@ -56,7 +56,7 @@ export function GoalProgress({ currentNetWorth, isLoading = false }: GoalProgres
     <Card className="bg-[#0a0a0a] border-neutral-800 shadow-none rounded-none relative overflow-hidden mb-3">
       <div className="flex flex-col md:flex-row items-center justify-between p-3 gap-4">
         <div className="flex items-center gap-3 w-full md:w-auto shrink-0">
-          <div className={`p-2 rounded-none border ${isCompleted ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500' : 'bg-blue-500/10 border-blue-500/30 text-blue-500'}`}>
+          <div className={`p-2 rounded-none border ${isCompleted ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-blue-500/10 border-blue-500/30 text-blue-500'}`}>
             <FlagIcon className="w-4 h-4" />
           </div>
           <div>
@@ -64,7 +64,7 @@ export function GoalProgress({ currentNetWorth, isLoading = false }: GoalProgres
               Mục tiêu Tài chính: <span className="font-mono">{goal.target_date}</span>
             </h3>
             <p className="text-[10px] font-bold text-neutral-500 mt-0.5 uppercase tracking-widest">
-              <span className={`font-mono ${isCompleted ? 'text-emerald-500' : 'text-neutral-200'}`}>
+              <span className={`font-mono ${isCompleted ? 'text-emerald-400' : 'text-neutral-200'}`}>
                 {formatCurrency(currentNetWorth)}
               </span>
               {' / '}

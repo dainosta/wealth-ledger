@@ -122,7 +122,7 @@ export function AddLoanDialog({ onAdd }: { onAdd: () => void }) {
                   }
                 }}
                 placeholder={loanType === 'gold' ? 'VD: 2.5 (lượng)' : 'VNĐ'}
-                className="col-span-3 font-semibold text-rose-600"
+                className="col-span-3 font-semibold text-rose-400"
                 required
               />
             </div>

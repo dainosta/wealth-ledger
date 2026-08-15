@@ -20,8 +20,8 @@ export function Header() {
 
   return (
     <header className="flex h-14 items-center justify-between border-b border-neutral-800 px-4 lg:px-8 bg-[#0a0a0a]">
-      <div className="flex items-center space-x-2 font-bold text-lg text-emerald-500 tracking-widest uppercase">
-        <div className="w-8 h-8 rounded-none border border-emerald-500 bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-mono">W</div>
+      <div className="flex items-center space-x-2 font-bold text-lg text-emerald-400 tracking-widest uppercase">
+        <div className="w-8 h-8 rounded-none border border-emerald-500 bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-mono">W</div>
         <span>Wealth Ledger</span>
       </div>
       <div className="flex items-center space-x-2">

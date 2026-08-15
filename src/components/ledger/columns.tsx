@@ -13,6 +13,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuGroup,
 } from '@/components/ui/dropdown-menu';
 import { useRecords } from '@/hooks/use-records';
 import { EditRecordDialog } from '@/components/ledger/edit-record-dialog';
@@ -35,12 +36,14 @@ export const ActionsCell = ({ record }: { record: CalculatedMonthlyRecord }) => 
           <MoreHorizontal className="h-4 w-4" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Hành động</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => setIsEditDialogOpen(true)}>
-            Sửa bản ghi
-          </DropdownMenuItem>
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>Hành động</DropdownMenuLabel>
+            <DropdownMenuItem onClick={() => setIsEditDialogOpen(true)}>
+              Sửa bản ghi
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleDelete} className="text-rose-500">
+          <DropdownMenuItem onClick={handleDelete} className="text-rose-400">
             Xóa
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -89,7 +92,7 @@ export const columns: ColumnDef<CalculatedMonthlyRecord>[] = [
     header: () => <div className="text-right whitespace-nowrap">Giá trị nợ vàng</div>,
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue('gold_debt_value'));
-      return <div className="text-right font-mono text-rose-500">{formatCurrency(amount)}</div>;
+      return <div className="text-right font-mono text-rose-400">{formatCurrency(amount)}</div>;
     },
   },
   {
@@ -109,7 +112,7 @@ export const columns: ColumnDef<CalculatedMonthlyRecord>[] = [
       if (amount === 0) return <div className="text-right font-mono text-muted-foreground">-</div>;
       
       return (
-        <div className={`text-right font-mono flex items-center justify-end ${isPositive ? 'text-emerald-500' : 'text-rose-500'}`}>
+        <div className={`text-right font-mono flex items-center justify-end ${isPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
           {isPositive ? <ArrowUpIcon className="mr-1 h-3 w-3" /> : <ArrowDownIcon className="mr-1 h-3 w-3" />}
           {formatCurrency(Math.abs(amount))}
         </div>
@@ -125,7 +128,7 @@ export const columns: ColumnDef<CalculatedMonthlyRecord>[] = [
       if (amount === 0) return <div className="text-right font-mono text-muted-foreground">-</div>;
       
       return (
-        <div className={`text-right font-mono ${isPositive ? 'text-emerald-500' : 'text-rose-500'}`}>
+        <div className={`text-right font-mono ${isPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
           {formatPercent(amount)}
         </div>
       );

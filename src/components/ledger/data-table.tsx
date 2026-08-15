@@ -118,7 +118,7 @@ export function DataTable<TData, TValue>({
                     <span className="font-mono font-bold text-[14px] text-emerald-400">{formatCurrency(record.net_worth)}</span>
                     
                     {hasChangeData ? (
-                      <div className={`text-[10px] flex items-center font-mono mt-0.5 ${isPositive ? 'text-emerald-400' : 'text-rose-500'}`}>
+                      <div className={`text-[10px] flex items-center font-mono mt-0.5 ${isPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
                         {isPositive ? '+' : ''}{formatCurrency(record.net_worth_change_value)} ({formatPercent(record.net_worth_change_percent)})
                       </div>
                     ) : (

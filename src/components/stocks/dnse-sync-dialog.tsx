@@ -66,13 +66,13 @@ export function DnseSyncDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className={buttonVariants({ variant: "outline", size: "sm", className: "h-8 text-xs font-semibold bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 hover:text-emerald-800" })}>
+      <DialogTrigger className={buttonVariants({ variant: "outline", size: "sm", className: "h-8 text-xs font-semibold bg-emerald-50 text-emerald-500 border-emerald-200 hover:bg-emerald-100 hover:text-emerald-800" })}>
         <CloudDownloadIcon className="mr-2 h-3.5 w-3.5" />
         Đồng bộ DNSE
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="flex items-center text-emerald-700">
+          <DialogTitle className="flex items-center text-emerald-500">
             <CloudDownloadIcon className="w-5 h-5 mr-2" />
             Đồng bộ từ DNSE
           </DialogTitle>
@@ -90,14 +90,14 @@ export function DnseSyncDialog({
           </div>
 
           <div className="bg-emerald-50/50 border border-emerald-100 p-3 rounded-lg flex gap-3 items-start">
-            <ShieldCheckIcon className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+            <ShieldCheckIcon className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
             <div className="text-xs text-emerald-800 font-medium leading-relaxed">
               Thông tin đăng nhập được gửi thẳng tới máy chủ Entrade để lấy phiên làm việc (Token) một lần duy nhất và <strong>không được lưu trữ dưới bất kỳ hình thức nào</strong>.
             </div>
           </div>
 
           {error && (
-            <div className="text-sm font-medium text-rose-600 bg-rose-50 p-2 rounded-md">
+            <div className="text-sm font-medium text-rose-400 bg-rose-50 p-2 rounded-md">
               {error}
             </div>
           )}

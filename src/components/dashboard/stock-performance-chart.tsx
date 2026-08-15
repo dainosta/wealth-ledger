@@ -40,10 +40,10 @@ const CustomTooltip = ({ active, payload, label }: any) => {
         <div className="mt-3 pt-3 border-t border-neutral-800 flex items-center justify-between">
           <span className="text-neutral-500 font-bold uppercase text-[10px] tracking-widest">Lỗ/Lãi:</span>
           <div className="text-right">
-            <span className={`font-mono font-bold ${profit >= 0 ? 'text-emerald-400' : 'text-rose-500'}`}>
+            <span className={`font-mono font-bold ${profit >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
               {profit >= 0 ? '+' : ''}{formatCurrency(profit)}
             </span>
-            <span className={`font-mono text-[10px] ml-1 font-bold ${profit >= 0 ? 'text-emerald-400' : 'text-rose-500'}`}>
+            <span className={`font-mono text-[10px] ml-1 font-bold ${profit >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
               ({profit >= 0 ? '+' : ''}{roi.toFixed(2)}%)
             </span>
           </div>

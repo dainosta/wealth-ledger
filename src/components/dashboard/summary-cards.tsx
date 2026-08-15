@@ -82,7 +82,7 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
       <Card className="col-span-2 lg:col-span-1 bg-black border-neutral-800 rounded-none shadow-none relative overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 pt-3 z-10 relative">
           <CardTitle className="text-xs font-bold text-neutral-400 uppercase">Tài sản ròng</CardTitle>
-          <WalletIcon className="h-5 w-5 text-emerald-500" />
+          <WalletIcon className="h-5 w-5 text-emerald-400" />
         </CardHeader>
         <CardContent className="pb-3 z-10 relative">
           <div className="text-2xl md:text-3xl lg:text-4xl font-mono font-bold text-emerald-400 tracking-tight">
@@ -92,7 +92,7 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
             <p className="text-[10px] text-neutral-500 font-bold flex items-center">
               {previousMonth ? (
                 <>
-                  <span className={`flex items-center font-mono ${realtimeMoMChange >= 0 ? 'text-emerald-400' : 'text-rose-500'}`}>
+                  <span className={`flex items-center font-mono ${realtimeMoMChange >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                     {formatPercent(realtimeMoMChange)}
                   </span>
                   <span className="ml-1 opacity-80 uppercase tracking-widest">so với tháng trước</span>
@@ -171,7 +171,7 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
       <Card className="col-span-1 bg-black border-neutral-800 rounded-none shadow-none relative overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0 pt-3 z-10 relative">
           <CardTitle className="text-xs font-bold text-neutral-400 uppercase">Tiền mặt</CardTitle>
-          <LandmarkIcon className="h-5 w-5 text-emerald-500" />
+          <LandmarkIcon className="h-5 w-5 text-emerald-400" />
         </CardHeader>
         <CardContent className="pb-3 z-10 relative">
           <div className="text-xl font-mono font-bold text-emerald-400">
@@ -217,13 +217,13 @@ export function SummaryCards({ data, stocks, isLoading = false }: SummaryCardsPr
               </div>
             </div>
             <div className="flex flex-col bg-neutral-900/50 p-2 border-r border-neutral-800">
-              <span className="text-[10px] font-bold text-rose-500 uppercase flex items-center tracking-widest">
+              <span className="text-[10px] font-bold text-rose-400 uppercase flex items-center tracking-widest">
                 Vay Tiền mặt
               </span>
               <span className="font-mono font-bold text-rose-400 text-sm mt-0.5">{formatCurrency(liveCashDebt)}</span>
             </div>
             <div className="flex flex-col bg-neutral-900/50 p-2">
-              <span className="text-[10px] font-bold text-rose-500 uppercase flex items-center tracking-widest">
+              <span className="text-[10px] font-bold text-rose-400 uppercase flex items-center tracking-widest">
                 Thẻ tín dụng
               </span>
               <span className="font-mono font-bold text-rose-400 text-sm mt-0.5">{formatCurrency(liveCreditCardDebt)}</span>

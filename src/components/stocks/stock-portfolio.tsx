@@ -107,10 +107,10 @@ export function StockPortfolio({ stocksData }: { stocksData: any }) {
                 <TableRow className="bg-[#0a0a0a] font-bold border-t border-neutral-800 hover:bg-transparent">
                   <TableCell colSpan={4} className="uppercase text-neutral-500">TỔNG CỘNG</TableCell>
                   <TableCell className="text-right font-mono text-neutral-200">{formatCurrency(totalCurrentValue)}</TableCell>
-                  <TableCell className={`text-right font-mono ${totalProfit >= 0 ? 'text-emerald-400' : 'text-rose-500'}`}>
+                  <TableCell className={`text-right font-mono ${totalProfit >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                     {totalProfit > 0 ? '+' : ''}{formatCurrency(totalProfit)}
                   </TableCell>
-                  <TableCell className={`text-right font-mono ${totalProfitPercent >= 0 ? 'text-emerald-400' : 'text-rose-500'}`}>
+                  <TableCell className={`text-right font-mono ${totalProfitPercent >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                     {totalProfitPercent > 0 ? '+' : ''}{totalProfitPercent.toFixed(2)}%
                   </TableCell>
                   <TableCell></TableCell>
@@ -225,7 +225,7 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
           <div className="flex flex-col">
             <span className="text-neutral-200 leading-none">{stock?.symbol}</span>
             {stock?.source === 'DNSE' ? (
-              <span className="text-[9px] font-bold text-emerald-500 mt-0.5">DNSE</span>
+              <span className="text-[9px] font-bold text-emerald-400 mt-0.5">DNSE</span>
             ) : (
               <span className="text-[9px] font-bold text-amber-500 mt-0.5">NHẬP TAY</span>
             )}
@@ -245,7 +245,7 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
         ) : (
           <div className="flex items-center justify-end space-x-1 group">
             <button 
-              className="px-1 text-[10px] font-bold text-neutral-600 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="px-1 text-[10px] font-bold text-neutral-600 hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-opacity"
               onClick={() => handleUpdateQuantity(stock.quantity - 100)}
             >-100</button>
             <span 
@@ -255,7 +255,7 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
               {stock.quantity.toLocaleString()}
             </span>
             <button 
-              className="px-1 text-[10px] font-bold text-neutral-600 hover:text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="px-1 text-[10px] font-bold text-neutral-600 hover:text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity"
               onClick={() => handleUpdateQuantity(stock.quantity + 100)}
             >+100</button>
           </div>
@@ -286,10 +286,10 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
       <TableCell className="text-right font-mono font-bold text-neutral-200">
         {formatCurrency(stock.currentValue)}
       </TableCell>
-      <TableCell className={`text-right font-mono font-bold ${stock.profit >= 0 ? 'text-emerald-400' : 'text-rose-500'}`}>
+      <TableCell className={`text-right font-mono font-bold ${stock.profit >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
         {stock.profit > 0 ? '+' : ''}{formatCurrency(stock.profit)}
       </TableCell>
-      <TableCell className={`text-right font-mono font-bold ${stock.profitPercent >= 0 ? 'text-emerald-400' : 'text-rose-500'}`}>
+      <TableCell className={`text-right font-mono font-bold ${stock.profitPercent >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
         {stock.profitPercent > 0 ? '+' : ''}{stock.profitPercent.toFixed(2)}%
       </TableCell>
       <TableCell className="text-right text-neutral-500 text-xs w-24">
@@ -318,7 +318,7 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
           <Button 
             variant="ghost" 
             size="icon" 
-            className="h-7 w-7 text-neutral-400 hover:text-rose-600 hover:bg-rose-50"
+            className="h-7 w-7 text-neutral-400 hover:text-rose-400 hover:bg-rose-50"
             onClick={() => {
               if (confirm(`Bạn có chắc muốn xóa mã ${stock.symbol} khỏi danh mục?`)) {
                 deleteStock(stock.id);
