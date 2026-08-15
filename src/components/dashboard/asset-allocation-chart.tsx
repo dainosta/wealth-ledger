@@ -6,7 +6,6 @@ import { formatCurrency } from '@/lib/calculations';
 interface AssetAllocationChartProps {
   cash: number;
   stocks: number;
-  gold: number;
 }
 
 const CustomTooltip = ({ active, payload }: any) => {
@@ -24,14 +23,10 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
-export function AssetAllocationChart({ cash, stocks, gold }: AssetAllocationChartProps) {
-  // We use the absolute value of gold debt to show its weight in the portfolio structure
-  const absGold = Math.abs(gold);
-  
+export function AssetAllocationChart({ cash, stocks }: AssetAllocationChartProps) {
   const rawData = [
     { name: 'Tiền mặt', value: cash, color: '#34d399' }, // emerald-400
     { name: 'Cổ phiếu', value: stocks, color: '#60a5fa' }, // blue-400
-    { name: 'Vàng', value: absGold, color: '#fbbf24' }, // amber-400
   ].filter(item => item.value > 0);
 
   const total = rawData.reduce((sum, item) => sum + item.value, 0);

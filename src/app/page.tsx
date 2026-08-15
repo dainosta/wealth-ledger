@@ -142,7 +142,6 @@ export default function Home() {
                     <AssetAllocationChart 
                       cash={liveCashBalance} 
                       stocks={totalStockValue} 
-                      gold={liveGoldDebt} 
                     />
                   </div>
                 )}
