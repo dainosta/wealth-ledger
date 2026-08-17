@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { CalculatedMonthlyRecord } from '@/types';
 import { formatCurrency } from '@/lib/calculations';
-import { useVnindexHistory } from '@/hooks/use-vnindex';
 import {
   LineChart,
   Line,
@@ -21,7 +20,7 @@ interface NetWorthChartProps {
   embedded?: boolean;
 }
 
-const CustomTooltip = ({ active, payload, label, mode }: any) => {
+const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-black p-3 rounded-none border border-neutral-800 text-sm z-50 shadow-none">
@@ -31,9 +30,7 @@ const CustomTooltip = ({ active, payload, label, mode }: any) => {
             <div key={index} className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-none" style={{ backgroundColor: entry.color }}></span>
               <span className="text-neutral-400 font-bold uppercase text-[10px] tracking-widest">{entry.name}</span>
-              <span className="font-mono font-bold text-neutral-100 ml-auto pl-4">
-                {mode === 'performance' ? `${entry.value.toFixed(2)}%` : formatCurrency(entry.value)}
-              </span>
+              <span className="font-mono font-bold text-neutral-100 ml-auto pl-4">{formatCurrency(entry.value)}</span>
             </div>
           ))}
         </div>
@@ -43,25 +40,8 @@ const CustomTooltip = ({ active, payload, label, mode }: any) => {
   return null;
 };
 
-// Helper to convert MM-YYYY to YYYY-MM-DD for API
-function getMonthBoundary(mmYYYY: string, isEnd = false) {
-  const [m, y] = mmYYYY.split('-');
-  if (isEnd) {
-    // Return last day of month
-    const date = new Date(Number(y), Number(m), 0);
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-  }
-  return `${y}-${m}-01`;
-}
-
 export const NetWorthChart = React.memo(function NetWorthChart({ data, embedded }: NetWorthChartProps) {
   const [filter, setFilter] = useState<'6M' | 'YTD' | '1Y' | '2Y' | '3Y' | '5Y' | 'ALL'>('ALL');
-  const [mode, setMode] = useState<'absolute' | 'performance'>('absolute');
-
-  // Fetch VNINDEX history from the very first record to the last record
-  const startDate = data && data.length > 0 ? getMonthBoundary(data[0].month_year) : '';
-  const endDate = data && data.length > 0 ? getMonthBoundary(data[data.length - 1].month_year, true) : '';
-  const { data: vnindexHistory } = useVnindexHistory(startDate, endDate);
 
   if (!data || data.length === 0) {
     return (
@@ -111,83 +91,22 @@ export const NetWorthChart = React.memo(function NetWorthChart({ data, embedded 
 
   const filteredData = getFilteredData();
 
-  // Create chart data mapping
-  const chartData = useMemo(() => {
-    if (mode === 'absolute') {
-      return filteredData.map((record) => ({
-        name: record.month_year,
-        'Tài sản ròng': record.net_worth,
-        'Danh mục cổ phiếu': record.portfolio_value,
-      }));
-    }
-
-    // Performance mode
-    if (filteredData.length === 0) return [];
-    
-    const baseNetWorth = filteredData[0].net_worth;
-    const basePortfolio = filteredData[0].portfolio_value;
-    
-    // Find closest VNIndex value for a given month-year
-    const getVnindexClose = (mmYYYY: string) => {
-      if (!vnindexHistory || vnindexHistory.length === 0) return null;
-      const [m, y] = mmYYYY.split('-');
-      // Find the last record in that month
-      const monthRecords = vnindexHistory.filter(r => {
-        const date = new Date(r.time);
-        return date.getFullYear() === Number(y) && (date.getMonth() + 1) === Number(m);
-      });
-      if (monthRecords.length > 0) {
-        return monthRecords[monthRecords.length - 1].close;
-      }
-      return null;
-    };
-
-    const baseVnindex = getVnindexClose(filteredData[0].month_year);
-
-    return filteredData.map((record) => {
-      const netWorthPerf = baseNetWorth ? ((record.net_worth - baseNetWorth) / baseNetWorth) * 100 : 0;
-      
-      const currentVnindex = getVnindexClose(record.month_year);
-      let vnindexPerf = 0;
-      if (baseVnindex && currentVnindex) {
-        vnindexPerf = ((currentVnindex - baseVnindex) / baseVnindex) * 100;
-      }
-
-      return {
-        name: record.month_year,
-        'Hiệu suất TS': netWorthPerf,
-        'VNIndex': vnindexPerf,
-      };
-    });
-  }, [filteredData, mode, vnindexHistory]);
+  const chartData = filteredData.map((record) => ({
+    name: record.month_year,
+    'Tài sản ròng': record.net_worth,
+    'Danh mục cổ phiếu': record.portfolio_value,
+  }));
 
   return (
     <Card className="h-full flex flex-col border-0 shadow-none rounded-none relative">
-      <CardHeader className="py-2 px-4 shrink-0 flex flex-row flex-wrap items-center justify-between border-b border-transparent gap-2">
-        <div className="flex items-center gap-4">
-          {!embedded && <CardTitle className="text-sm">Lịch sử tài sản</CardTitle>}
-          <div className="flex gap-0 bg-neutral-900 border border-neutral-800 p-0.5 rounded-none">
-            <button 
-              onClick={() => setMode('absolute')}
-              className={`text-[9px] font-bold px-3 py-1 rounded-none transition-all uppercase tracking-widest ${mode === 'absolute' ? 'bg-black text-emerald-400 border border-emerald-900/50' : 'text-neutral-500 hover:text-neutral-300 border border-transparent'}`}
-            >
-              Lợi nhuận
-            </button>
-            <button 
-              onClick={() => setMode('performance')}
-              className={`text-[9px] font-bold px-3 py-1 rounded-none transition-all uppercase tracking-widest ${mode === 'performance' ? 'bg-black text-red-400 border border-red-900/50' : 'text-neutral-500 hover:text-neutral-300 border border-transparent'}`}
-            >
-              Hiệu suất
-            </button>
-          </div>
-        </div>
-        
-        <div className="flex gap-0 bg-neutral-900 border border-neutral-800 p-0.5 rounded-none overflow-x-auto">
+      <CardHeader className="py-3 px-4 shrink-0 flex flex-row items-center justify-between border-b border-transparent">
+        {!embedded && <CardTitle className="text-sm">Lịch sử tài sản</CardTitle>}
+        <div className="flex gap-0 bg-neutral-900 border border-neutral-800 p-0.5 rounded-none">
           {['6M', 'YTD', '1Y', '2Y', '3Y', '5Y', 'ALL'].map((f) => (
             <button 
               key={f}
               onClick={() => setFilter(f as any)}
-              className={`text-[9px] font-bold px-3 py-1 rounded-none transition-all uppercase tracking-widest shrink-0 ${filter === f ? 'bg-black text-neutral-100 border border-neutral-700' : 'text-neutral-500 hover:text-neutral-300 border border-transparent'}`}
+              className={`text-[9px] font-bold px-3 py-1 rounded-none transition-all uppercase tracking-widest ${filter === f ? 'bg-black text-neutral-100 border border-neutral-700' : 'text-neutral-500 hover:text-neutral-300 border border-transparent'}`}
             >
               {f}
             </button>
@@ -226,52 +145,28 @@ export const NetWorthChart = React.memo(function NetWorthChart({ data, embedded 
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
-                tickFormatter={(value) => mode === 'performance' ? `${value.toFixed(0)}%` : `${(value / 1000000).toFixed(0)}tr`}
+                tickFormatter={(value) => `${(value / 1000000).toFixed(0)}tr`}
                 width={60}
                 tickMargin={8}
               />
-              <Tooltip content={<CustomTooltip mode={mode} />} cursor={{ stroke: '#9ca3af', strokeWidth: 1, strokeDasharray: '5 5' }} />
+              <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#9ca3af', strokeWidth: 1, strokeDasharray: '5 5' }} />
               <Legend verticalAlign="top" height={40} iconType="circle" wrapperStyle={{ fontSize: '13px' }}/>
-              
-              {mode === 'absolute' ? (
-                <>
-                  <Line
-                    type="monotone"
-                    dataKey="Tài sản ròng"
-                    stroke="#059669"
-                    strokeWidth={3}
-                    dot={{ r: 4, fill: '#059669', strokeWidth: 0 }}
-                    activeDot={{ r: 8, strokeWidth: 2, stroke: '#fff', fill: '#059669' }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="Danh mục cổ phiếu"
-                    stroke="#2563eb"
-                    strokeWidth={2}
-                    dot={{ r: 3, fill: '#2563eb', strokeWidth: 0 }}
-                    activeDot={{ r: 7, strokeWidth: 2, stroke: '#fff', fill: '#2563eb' }}
-                  />
-                </>
-              ) : (
-                <>
-                  <Line
-                    type="monotone"
-                    dataKey="Hiệu suất TS"
-                    stroke="#10b981"
-                    strokeWidth={3}
-                    dot={{ r: 4, fill: '#10b981', strokeWidth: 0 }}
-                    activeDot={{ r: 8, strokeWidth: 2, stroke: '#fff', fill: '#10b981' }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="VNIndex"
-                    stroke="#f59e0b"
-                    strokeWidth={2}
-                    dot={{ r: 3, fill: '#f59e0b', strokeWidth: 0 }}
-                    activeDot={{ r: 7, strokeWidth: 2, stroke: '#fff', fill: '#f59e0b' }}
-                  />
-                </>
-              )}
+              <Line
+                type="monotone"
+                dataKey="Tài sản ròng"
+                stroke="#059669"
+                strokeWidth={3}
+                dot={{ r: 4, fill: '#059669', strokeWidth: 0 }}
+                activeDot={{ r: 8, strokeWidth: 2, stroke: '#fff', fill: '#059669' }}
+              />
+              <Line
+                type="monotone"
+                dataKey="Danh mục cổ phiếu"
+                stroke="#2563eb"
+                strokeWidth={2}
+                dot={{ r: 3, fill: '#2563eb', strokeWidth: 0 }}
+                activeDot={{ r: 7, strokeWidth: 2, stroke: '#fff', fill: '#2563eb' }}
+              />
             </LineChart>
           </ResponsiveContainer>
         </div>
