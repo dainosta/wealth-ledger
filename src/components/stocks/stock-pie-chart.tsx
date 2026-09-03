@@ -99,19 +99,19 @@ export const StockPieChart = React.memo(function StockPieChart({ stocks }: { sto
   return (
     <div className="flex-1 flex flex-col lg:flex-row h-full min-h-0">
         {/* Left Column: Portfolio Summary */}
-        <div className="w-full lg:w-[45%] h-auto lg:h-full flex flex-col justify-center px-6 py-4 lg:py-0 border-b lg:border-b-0 lg:border-r border-neutral-100/60 order-2 lg:order-1">
+        <div className="w-full lg:w-[45%] h-auto lg:h-full flex flex-col justify-center px-6 py-4 lg:py-0 border-b lg:border-b-0 lg:border-r border-neutral-800 order-2 lg:order-1">
           <div className="space-y-4">
             <div>
-              <p className="text-sm font-bold text-neutral-800 mb-3">Tổng quan Phân bổ</p>
+              <p className="text-sm font-bold text-neutral-300 mb-3">Tổng quan Phân bổ</p>
               
               <div className="flex justify-between lg:block mb-3">
                 <p className="text-xs text-neutral-500 font-medium mb-0.5">Tổng giá trị danh mục</p>
-                <p className="text-lg font-bold text-neutral-900">{formatCurrency(totalValue)}</p>
+                <p className="text-lg font-bold text-neutral-200">{formatCurrency(totalValue)}</p>
               </div>
               
               <div className="flex justify-between lg:block mb-4">
                 <p className="text-xs text-neutral-500 font-medium mb-0.5">Số lượng mã nắm giữ</p>
-                <p className="text-base font-bold text-neutral-900">{stocks.length}</p>
+                <p className="text-base font-bold text-neutral-200">{stocks.length}</p>
               </div>
             </div>
 
@@ -120,11 +120,11 @@ export const StockPieChart = React.memo(function StockPieChart({ stocks }: { sto
               <div className="flex flex-col gap-1.5 overflow-y-auto max-h-[150px] pr-2">
                 {topStocks.map((stock, index) => (
                   <div key={stock.symbol} className="flex justify-between items-center text-xs">
-                    <span className="font-semibold text-neutral-400 flex items-center gap-1.5">
+                    <span className="font-semibold text-neutral-300 flex items-center gap-1.5">
                       <div className="w-3.5 h-3.5 rounded-none relative overflow-hidden bg-neutral-800 flex items-center justify-center text-[8px] text-white">
                         <span className="z-0 relative">{stock.symbol.charAt(0)}</span>
                         <img 
-                          src={stock.custom_logo || `https://static.tcbs.com.vn/company/logo/${stock.symbol}.png`} 
+                          src={stock.custom_logo || `https://finance.vietstock.vn/image/${stock.symbol}`} 
                           alt={stock.symbol} 
                           className="absolute inset-0 w-full h-full object-cover bg-white z-10"
                           onError={(e) => { e.currentTarget.style.display = 'none'; }}
@@ -132,13 +132,13 @@ export const StockPieChart = React.memo(function StockPieChart({ stocks }: { sto
                       </div>
                       {stock.symbol}
                     </span>
-                    <span className="text-neutral-500 font-medium">{stock.weight}%</span>
+                    <span className="text-neutral-400 font-medium">{stock.weight}%</span>
                   </div>
                 ))}
                 {othersWeight > 0 && (
                   <div className="flex justify-between items-center text-xs">
-                    <span className="font-semibold text-neutral-700">Khác</span>
-                    <span className="text-neutral-500 font-medium">{othersWeight.toFixed(2)}%</span>
+                    <span className="font-semibold text-neutral-300">Khác</span>
+                    <span className="text-neutral-400 font-medium">{othersWeight.toFixed(2)}%</span>
                   </div>
                 )}
               </div>

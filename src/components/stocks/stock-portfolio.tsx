@@ -212,7 +212,7 @@ function StockTableRow({ stock, totalValue, updateStock, deleteStock }: { stock:
           >
             <span className="z-0 relative">{stock?.symbol?.charAt(0) || '?'}</span>
             <img 
-              src={stock?.custom_logo || `https://static.tcbs.com.vn/company/logo/${stock?.symbol}.png`} 
+              src={stock?.custom_logo || `https://finance.vietstock.vn/image/${stock?.symbol}`} 
               alt={stock?.symbol} 
               className="absolute inset-0 w-full h-full object-cover bg-white z-10"
               onError={(e) => { e.currentTarget.style.display = 'none'; }}
